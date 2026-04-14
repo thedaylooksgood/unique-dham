@@ -21,15 +21,15 @@ export function Footer() {
                 </span>
               </div>
             </Link>
-            
+
             <p className="font-sacred text-xl text-saffron/60 italic border-l-2 border-saffron/20 pl-6">
-              ॐ सर्वमंगल मांगल्ये शिवे सर्वार्थ साधिके। 
+              ॐ सर्वमंगल मांगल्ये शिवे सर्वार्थ साधिके।
               <br />
               शरण्ये त्र्यम्बके गौरी नारायणी नमोस्तुते॥
             </p>
 
             <p className="font-body text-base text-warm-umber/60 max-w-md leading-relaxed">
-              Born in the misty hills of Darjeeling, our Dham is a sanctuary for every seeker. 
+              Born in the misty hills of Darjeeling, our Dham is a sanctuary for every seeker.
               We preserve the ancient traditions of Shakti while guiding global souls towards their divine purpose.
             </p>
 
@@ -70,21 +70,19 @@ export function Footer() {
               <li className="flex items-start gap-4">
                 <MapPin size={20} className="text-saffron/60 mt-1" />
                 <span className="font-body text-sacred-brown/60 text-sm leading-relaxed">
-                  Near Sacred Peaks, 
-                  <br />
                   Darjeeling, West Bengal, India
                 </span>
               </li>
               <li className="flex items-center gap-4">
                 <Phone size={20} className="text-saffron/60" />
                 <span className="font-body text-sacred-brown/60 text-sm">
-                  +91 (Ancient Connection)
+                  +91 9876543210
                 </span>
               </li>
               <li className="flex items-center gap-4">
                 <Mail size={20} className="text-saffron/60" />
                 <span className="font-body text-sacred-brown/60 text-sm">
-                  prayers@maauniquedham.com
+
                 </span>
               </li>
             </ul>
