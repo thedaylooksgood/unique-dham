@@ -44,7 +44,11 @@ export function Navbar() {
           href="/"
           className="flex items-center gap-3 transition-transform hover:scale-105"
         >
-          <OmIcon className="text-saffron h-8 w-8" />
+          <img 
+            src="/logo.png" 
+            alt="Maa Unique Dham Logo" 
+            className="h-12 w-auto object-contain drop-shadow-sm"
+          />
           <div className="flex flex-col">
             <span className="font-display text-xl tracking-tight text-gradient-saffron leading-none">
               MAA UNIQUE DHAM
@@ -96,7 +100,11 @@ export function Navbar() {
           >
             <div className="flex items-center justify-between h-20 px-6 border-b border-saffron/10">
               <Link href="/" className="flex items-center gap-2">
-                <OmIcon className="text-saffron h-7 w-7" />
+                <img 
+                  src="/logo.png" 
+                  alt="Maa Unique Dham Logo" 
+                  className="h-10 w-auto object-contain"
+                />
                 <span className="font-display text-lg text-gradient-saffron">MAA UNIQUE DHAM</span>
               </Link>
               <button

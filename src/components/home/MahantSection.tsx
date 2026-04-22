@@ -7,6 +7,7 @@ import { TextAnimate } from "@/components/ui/text-animate";
 import { AnimatedShinyText } from "@/components/ui/animated-shiny-text";
 import { Mountain, Sparkles, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const highlights = [
   { icon: Mountain, title: "Himalayan Shamanic Currents", color: "text-saffron" },
@@ -39,15 +40,15 @@ export function MahantSection() {
         </div>
 
         <div className="grid lg:grid-cols-5 gap-16 items-center">
-          {/* Large portrait image with BorderBeam */}
+          {/* Large portrait image with BorderBeam replaced by Lottie */}
           <BlurFade delay={0.4} direction="right" className="lg:col-span-2">
             <div className="relative group">
-              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl">
-                <Image
-                  src="https://images.unsplash.com/photo-1627734830030-cf867623a669?q=80&w=800&auto=format&fit=crop"
-                  alt="Shri Shri Mahant Yogiraj"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-ivory shadow-2xl flex items-center justify-center p-4">
+                <DotLottieReact
+                  src="/images/Indian Yogi.lottie"
+                  loop
+                  autoplay
+                  className="w-full h-full object-contain"
                 />
                 <BorderBeam size={250} duration={12} delay={9} colorFrom="#E8860C" colorTo="#C41E3A" />
               </div>
