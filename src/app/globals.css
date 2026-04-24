@@ -260,7 +260,7 @@
 
 @layer utilities {
   .bg-sacred-premium-gradient {
-    background: linear-gradient(135deg, var(--sacred-gradient-start), var(--sacred-gradient-mid), var(--sacred-gradient-end));
+    background: linear-gradient(to bottom right, var(--sacred-gradient-start), var(--sacred-gradient-mid), var(--sacred-gradient-end));
     position: relative;
     overflow: hidden;
   }
@@ -268,14 +268,14 @@
   .bg-sacred-premium-gradient::before {
     content: '';
     position: absolute;
-    top: -10%;
-    right: -5%;
-    width: 40%;
-    height: 40%;
-    background: #e95d24;
-    opacity: 0.05;
-    filter: blur(80px);
-    border-radius: 50%;
+    top: 2.5rem;
+    right: 2.5rem;
+    width: 16rem;
+    height: 16rem;
+    background-color: rgba(233, 93, 36, 0.05);
+    border-radius: 9999px;
+    filter: blur(64px);
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     pointer-events: none;
     z-index: 0;
   }
@@ -283,14 +283,13 @@
   .bg-sacred-premium-gradient::after {
     content: '';
     position: absolute;
-    bottom: -10%;
-    left: -5%;
-    width: 35%;
-    height: 35%;
-    background: #e95d24;
-    opacity: 0.08;
-    filter: blur(60px);
-    border-radius: 50%;
+    bottom: 2.5rem;
+    left: 2.5rem;
+    width: 12rem;
+    height: 12rem;
+    background-color: rgba(233, 93, 36, 0.08);
+    border-radius: 9999px;
+    filter: blur(40px);
     pointer-events: none;
     z-index: 0;
   }
