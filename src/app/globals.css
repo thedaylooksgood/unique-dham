@@ -21,16 +21,37 @@
   --color-deep-mahogany: #2D1810;
   --color-warm-umber: #6B4C3B;
   --color-parchment: #F7EDE2;
+  To replicate that exact premium look,
+  you can use the code below. I see you've already added the CSS variables and the .bg-sacred-premium-gradient utility to your globals.css, which is perfect.
 
-<<<<<<< HEAD
-  --color-sacred-accent: #e95d24;
+
+  Here is the exact JSX structure to use in your component to achieve that look: 1. Using your new Utility Class (Recommended) Since you added the pseudo-elements (::before and ::after) to your CSS,
+  you just need this simple structure: tsx <section className="bg-sacred-premium-gradient py-20 relative overflow-hidden"><div className="container mx-auto px-4 relative z-10"> {
+    /* Your content goes here */
+  }
+
+  <h2 className="text-4xl font-bold text-[#1a1a2e]">Premium <span className="text-[#e95d24]">Section</span></h2></div></section>2. The "Exact" Original Code (Tailwind Version) If you want to replicate it exactly as it was in the Coworking project without relying on the utility class,
+  here is the full block including the animated decorative elements: tsx <section className="relative py-16 md:py-24 bg-gradient-to-br from-[#fdf8f6] via-[#fef5f0] to-[#fff8f5] overflow-hidden"> {
+    /* TOP RIGHT GLOW: The subtle orange wash at the top */
+  }
+
+  <div className="absolute top-10 right-10 w-64 h-64 bg-[#e95d24]/5 rounded-full blur-3xl animate-pulse pointer-events-none" /> {
+    /* BOTTOM LEFT GLOW: The slightly stronger wash at the bottom */
+  }
+
+  <div className="absolute bottom-10 left-10 w-48 h-48 bg-[#e95d24]/8 rounded-full blur-2xl pointer-events-none" /><div className="container max-w-[1200px] mx-auto px-6 relative z-10"> {
+    /* YOUR CONTENT START */
+  }
+
+  <div className="flex items-center gap-3 mb-4"><span className="w-10 h-1 bg-gradient-to-r from-[#e95d24] to-orange-400 rounded-full" /><span className="text-[#e95d24] text-xs font-semibold uppercase tracking-widest">Premium Layout</span></div><h2 className="text-4xl font-extrabold text-[#1a1a2e] mb-4">Replicating the <span className="text-[#e95d24]">Exact Background</span></h2> {
+    /* YOUR CONTENT END */
+  }
+
+  </div></section>Why this works: The Gradient: from-[#fdf8f6] via-[#fef5f0] to-[#fff8f5] creates a warm,
+  expensive-looking "paper" feel rather than a flat white. The Blobs: Using absolute positioned divs with blur-3xl and very low opacity (/5 or /8) creates depth without being distracting. The Pulse: animate-pulse on the top blob makes the background feel "alive" and dynamic. The Z-Index: relative z-10 on the container ensures your text stays on top of the decorative glows. --color-sacred-accent: #e95d24;
   --color-sacred-gradient-start: #fdf8f6;
   --color-sacred-gradient-mid: #fef5f0;
   --color-sacred-gradient-end: #fff8f5;
-=======
-  --color-sacred-pink: #FAD6E5;
-  --color-sacred-orange: #FFE0C2;
->>>>>>> 9687203d72b27726feb650859edd620356156244
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
@@ -283,7 +304,6 @@
     border-radius: 50%;
     pointer-events: none;
     z-index: 0;
-    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   .bg-sacred-premium-gradient::after {
