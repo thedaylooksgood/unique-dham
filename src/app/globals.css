@@ -22,10 +22,15 @@
   --color-warm-umber: #6B4C3B;
   --color-parchment: #F7EDE2;
 
+<<<<<<< HEAD
   --color-sacred-accent: #e95d24;
   --color-sacred-gradient-start: #fdf8f6;
   --color-sacred-gradient-mid: #fef5f0;
   --color-sacred-gradient-end: #fff8f5;
+=======
+  --color-sacred-pink: #FAD6E5;
+  --color-sacred-orange: #FFE0C2;
+>>>>>>> 9687203d72b27726feb650859edd620356156244
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
