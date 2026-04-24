@@ -224,6 +224,12 @@
 }
 
 @layer base {
+  /* Prevent flash of content before preloader handles it */
+  html.js-loading body > *:not(.preloader-root) {
+    visibility: hidden;
+    opacity: 0;
+  }
+  
   * {
     @apply border-border outline-ring/50;
   }
