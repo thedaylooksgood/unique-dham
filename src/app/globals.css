@@ -22,8 +22,8 @@
   --color-warm-umber: #6B4C3B;
   --color-parchment: #F7EDE2;
 
-  --color-sacred-pink: #FFC2D1;
-  --color-sacred-orange: #FFCC99;
+  --color-sacred-pink: #FAD6E5;
+  --color-sacred-orange: #FFE0C2;
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
@@ -224,12 +224,13 @@
 }
 
 @layer base {
+
   /* Prevent flash of content before preloader handles it */
-  html.js-loading body > *:not(.preloader-root) {
+  html.js-loading body>*:not(.preloader-root) {
     visibility: hidden;
     opacity: 0;
   }
-  
+
   * {
     @apply border-border outline-ring/50;
   }
