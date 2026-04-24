@@ -1,30 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
+import { useEffect, useState, useRef } from "react";
 
 export function Preloader() {
-  const [phase, setPhase] = useState<"initial" | "loading" | "reversing" | "complete">("initial");
+  const [phase, setPhase] = useState<"loading" | "reversing" | "complete">("loading");
+  const [pageLoaded, setPageLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
+  // Track page load status
   useEffect(() => {
-    setPhase("loading");
-    const startTime = Date.now();
-    const minForwardDuration = 8000; // 8 seconds for a very slow, cinematic feel
-
-    const handleLoad = () => {
-      const elapsedTime = Date.now() - startTime;
-      const remainingTime = Math.max(0, minForwardDuration - elapsedTime);
-
-      setTimeout(() => {
-        setPhase("reversing");
-        // Reversing transition takes 4 seconds (even slower)
-        setTimeout(() => {
-          setPhase("complete");
-        }, 4000);
-      }, remainingTime);
-    };
-
+    const handleLoad = () => setPageLoaded(true);
     if (document.readyState === "complete") {
       handleLoad();
     } else {
@@ -33,49 +18,93 @@ export function Preloader() {
     }
   }, []);
 
+  // Handle Video Playback Speed and Direction
   useEffect(() => {
-    if (phase === "complete") {
-      document.documentElement.classList.remove("js-loading");
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (phase === "loading") {
+      video.playbackRate = 0.5; // Play slower (0.5x)
+      video.play().catch((e) => console.log("Video autoplay blocked", e));
+    } else if (phase === "reversing") {
+      video.pause();
+      
+      let lastTime = Date.now();
+      let reqId: number;
+      
+      const reverseStep = () => {
+        const now = Date.now();
+        const delta = (now - lastTime) / 1000;
+        lastTime = now;
+        
+        // Reverse at 0.5x speed
+        const newTime = video.currentTime - (delta * 0.5);
+        if (newTime <= 0) {
+          video.currentTime = 0;
+          setPhase("complete");
+        } else {
+          video.currentTime = newTime;
+          reqId = requestAnimationFrame(reverseStep);
+        }
+      };
+      
+      reqId = requestAnimationFrame(reverseStep);
+      return () => cancelAnimationFrame(reqId);
     }
   }, [phase]);
 
+  // Lock scrolling
+  useEffect(() => {
+    if (phase !== "complete") {
+      document.body.style.overflow = "hidden";
+      document.documentElement.classList.add("js-loading");
+    } else {
+      document.body.style.overflow = "";
+      document.documentElement.classList.remove("js-loading");
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.classList.remove("js-loading");
+    };
+  }, [phase]);
+
+  // Handle forward animation finishing
+  const handleVideoEnded = () => {
+    // Only reverse if the page is completely loaded
+    if (pageLoaded) {
+      setPhase("reversing");
+    } else {
+      // Otherwise, loop the animation again from the start
+      if (videoRef.current) {
+        videoRef.current.currentTime = 0;
+        videoRef.current.play().catch((e) => console.log(e));
+      }
+    }
+  };
+
+  if (phase === "complete") return null;
+
   return (
-    <AnimatePresence>
-      {phase !== "complete" && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.1, filter: "blur(20px)" }}
-          transition={{ duration: 4, ease: "easeInOut" }}
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-ivory preloader-root"
-        >
-          <motion.div 
-            className="relative w-[60vw] h-[60vw] max-w-[400px] max-h-[400px] md:w-[40vw] md:h-[40vw] md:max-w-[500px] md:max-h-[500px]"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={phase === "reversing" ? { scale: 0.4, opacity: 0 } : { scale: 1.05, opacity: 1 }}
-            transition={{ duration: 4, ease: "easeInOut" }}
-          >
-            <Image
-              src="/pre-loader-animation.gif"
-              alt="Maa Unique Dham Loading"
-              fill
-              className="object-contain"
-              priority
-              unoptimized
-            />
-          </motion.div>
-          
-          <motion.div 
-            className="absolute bottom-10 md:bottom-20 flex flex-col items-center gap-4"
-            animate={phase === "reversing" ? { y: 40, opacity: 0 } : { y: 0, opacity: 1 }}
-            transition={{ duration: 3, ease: "easeOut" }}
-          >
-             <span className="font-sacred text-2xl md:text-3xl text-saffron animate-pulse tracking-[0.3em] uppercase">
-               ॐ नमो दुर्गायै नमः
-             </span>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white preloader-root">
+      <div className="relative w-[60vw] h-[60vw] max-w-[400px] max-h-[400px] md:w-[40vw] md:h-[40vw] md:max-w-[500px] md:max-h-[500px]">
+        <video
+          ref={videoRef}
+          src="/pre-loader-animation.mp4"
+          className="w-full h-full object-contain"
+          playsInline
+          muted
+          onEnded={handleVideoEnded}
+          // Intentionally omitting loop=true so onEnded reliably fires
+        />
+      </div>
+      
+      <div className="absolute bottom-10 md:bottom-20 flex flex-col items-center gap-4">
+         <span className="font-sacred text-2xl md:text-3xl text-saffron animate-pulse tracking-[0.3em] uppercase">
+           ॐ नमो दुर्गायै नमः
+         </span>
+      </div>
+    </div>
   );
 }
+
