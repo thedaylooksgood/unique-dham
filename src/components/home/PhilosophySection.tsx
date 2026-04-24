@@ -5,7 +5,7 @@ import { BlurFade } from "@/components/ui/blur-fade";
 
 export function PhilosophySection() {
   return (
-    <section className="relative bg-sacred-orange overflow-hidden">
+    <section className="relative bg-white overflow-hidden">
       {/* Immersive TextReveal Section (adds scroll height) */}
       <TextReveal 
         children="Maa does not belong to a place. She reaches wherever she is called with truth. No seeker feels distant. No devotion goes unheard. No faith remains unanswered." 

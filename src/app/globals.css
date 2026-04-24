@@ -13,7 +13,7 @@
 
   --color-ivory: #FFFBF5;
   --color-sacred-brown: #1A0F0A;
-  --color-saffron: #E8860C;
+  --color-saffron: #e95d24;
   --color-vermillion: #C41E3A;
   --color-temple-red: #D4443B;
   --color-sandstone: #F5E6D3;
@@ -22,8 +22,10 @@
   --color-warm-umber: #6B4C3B;
   --color-parchment: #F7EDE2;
 
-  --color-sacred-pink: #FFC2D1;
-  --color-sacred-orange: #FFCC99;
+  --color-sacred-accent: #e95d24;
+  --color-sacred-gradient-start: #fdf8f6;
+  --color-sacred-gradient-mid: #fef5f0;
+  --color-sacred-gradient-end: #fff8f5;
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
@@ -205,7 +207,7 @@
   --card-foreground: #1A0F0A;
   --popover: #FFFBF5;
   --popover-foreground: #1A0F0A;
-  --primary: #E8860C;
+  --primary: #e95d24;
   --primary-foreground: #FFFBF5;
   --secondary: #C41E3A;
   --secondary-foreground: #FFFBF5;
@@ -213,23 +215,26 @@
   --muted-foreground: #6B4C3B;
   --accent: #D4443B;
   --accent-foreground: #FFFBF5;
-  --destructive: #C41E3A;
+  --destructive: #ffc6f7;
   --destructive-foreground: #FFFBF5;
-  --border: rgba(232, 134, 12, 0.15);
-  --input: rgba(232, 134, 12, 0.15);
-  --ring: #E8860C;
+  --border: rgba(233, 93, 36, 0.15);
+  --input: rgba(233, 93, 36, 0.15);
+  --ring: #e95d24;
   --radius: 0.75rem;
-  --sacred-pink: #FFD6E0;
-  --sacred-orange: #FFEDCC;
+  --sacred-accent: #e95d24;
+  --sacred-gradient-start: #fdf8f6;
+  --sacred-gradient-mid: #fef5f0;
+  --sacred-gradient-end: #fff8f5;
 }
 
 @layer base {
+
   /* Prevent flash of content before preloader handles it */
-  html.js-loading body > *:not(.preloader-root) {
+  html.js-loading body>*:not(.preloader-root) {
     visibility: hidden;
     opacity: 0;
   }
-  
+
   * {
     @apply border-border outline-ring/50;
   }
@@ -254,6 +259,43 @@
 }
 
 @layer utilities {
+  .bg-sacred-premium-gradient {
+    background: linear-gradient(135deg, var(--sacred-gradient-start), var(--sacred-gradient-mid), var(--sacred-gradient-end));
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bg-sacred-premium-gradient::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    right: -5%;
+    width: 40%;
+    height: 40%;
+    background: #e95d24;
+    opacity: 0.05;
+    filter: blur(80px);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .bg-sacred-premium-gradient::after {
+    content: '';
+    position: absolute;
+    bottom: -10%;
+    left: -5%;
+    width: 35%;
+    height: 35%;
+    background: #e95d24;
+    opacity: 0.08;
+    filter: blur(60px);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
   .text-gradient-saffron {
     background: linear-gradient(135deg, #E8860C, #C41E3A, #D4443B);
     -webkit-background-clip: text;

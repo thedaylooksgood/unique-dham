@@ -16,7 +16,7 @@ export function MissionSection() {
   const y = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
 
   return (
-    <section ref={ref} className="relative py-48 bg-sacred-pink overflow-hidden">
+    <section ref={ref} className="relative py-48 bg-sacred-premium-gradient overflow-hidden">
       {/* Parallax Background Image */}
       <motion.div 
         style={{ y }}

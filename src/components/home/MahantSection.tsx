@@ -17,7 +17,7 @@ const highlights = [
 
 export function MahantSection() {
   return (
-    <section id="mahant" className="relative py-32 bg-sacred-orange overflow-hidden" style={{ backgroundColor: '#FFEDCC' }}>
+    <section id="mahant" className="relative py-32 bg-white overflow-hidden">
       {/* Background patterns */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
         style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 30L0 0l30 30 30-30L30 30z' fill='%236B4C3B' fill-rule='evenodd'/%3E%3C/svg%3E")` }} 
