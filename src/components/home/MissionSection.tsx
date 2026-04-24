@@ -28,7 +28,7 @@ export function MissionSection() {
           fill
           className="object-cover opacity-10"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-sacred-pink via-transparent to-sacred-pink" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#fff8f5] via-transparent to-[#fdf8f6]" />
       </motion.div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
