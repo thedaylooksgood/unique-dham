@@ -40,7 +40,7 @@ const testimonials = [
 
 export function DevoteeSection() {
   return (
-    <section className="relative py-32 bg-ivory overflow-hidden">
+    <section className="relative py-32 bg-transparent overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 mb-20 text-center">
         <BlurFade delay={0.2}>
           <span className="font-body text-xs tracking-[0.3em] uppercase text-saffron font-bold mb-4 block">

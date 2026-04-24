@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { playfairDisplay, plusJakartaSans, tiroDevanagari } from "@/lib/fonts";
 import "./globals.css";
+import { Particles } from "@/components/ui/particles";
 
 export const metadata: Metadata = {
   title: "Maa Unique Dham | Darjeeling",
@@ -24,8 +25,17 @@ export default function RootLayout({
       lang="en"
       className={`${playfairDisplay.variable} ${plusJakartaSans.variable} ${tiroDevanagari.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-ivory text-sacred-brown">
-        {children}
+      <body className="min-h-full flex flex-col bg-ivory text-sacred-brown relative">
+        <Particles
+          className="fixed inset-0 z-0 pointer-events-none opacity-40"
+          quantity={60}
+          ease={80}
+          color="#E8860C"
+          refresh
+        />
+        <div className="relative z-10 flex flex-col flex-1 w-full">
+          {children}
+        </div>
       </body>
     </html>
   );

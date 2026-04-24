@@ -16,7 +16,7 @@ export function MissionSection() {
   const y = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
 
   return (
-    <section ref={ref} className="relative py-48 bg-sacred-brown overflow-hidden">
+    <section ref={ref} className="relative py-48 bg-sacred-brown/90 overflow-hidden">
       {/* Parallax Background Image */}
       <motion.div 
         style={{ y }}
@@ -58,7 +58,7 @@ export function MissionSection() {
         <div className="flex flex-wrap justify-center gap-6">
           {["Purity", "Authenticity", "Devotion"].map((value, idx) => (
             <BlurFade key={value} delay={0.6 + idx * 0.1}>
-              <div className="px-8 py-3 border border-saffron/30 rounded-full font-display text-sm tracking-widest uppercase text-ivory/90 bg-ivory/5 backdrop-blur-sm transition-all hover:bg-saffron/10 hover:border-saffron">
+              <div className="px-8 py-3 border border-saffron/30 rounded-full font-display text-sm tracking-widest uppercase text-ivory/90 bg-transparent/5 backdrop-blur-sm transition-all hover:bg-saffron/10 hover:border-saffron">
                 {value}
               </div>
             </BlurFade>

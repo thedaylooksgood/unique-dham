@@ -9,14 +9,14 @@ import { Sparkles, Heart } from "lucide-react";
 
 export function IntroSection() {
   return (
-    <section className="relative py-32 bg-background overflow-hidden">
+    <section className="relative py-32 bg-transparent overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           {/* Image Column */}
           <BlurFade delay={0.2} direction="right">
             <div className="relative group">
               <ShineBorder
-                className="relative flex w-full flex-col items-center justify-center overflow-hidden rounded-3xl bg-background md:shadow-2xl"
+                className="relative flex w-full flex-col items-center justify-center overflow-hidden rounded-3xl bg-transparent md:shadow-2xl"
                 shineColor={["#E8860C", "#C41E3A", "#D4443B"]}
               >
                 <div className="relative aspect-[4/5] w-full overflow-hidden">

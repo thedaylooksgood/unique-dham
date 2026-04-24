@@ -9,6 +9,7 @@ import { ServicesSection } from "@/components/home/ServicesSection";
 import { PhilosophySection } from "@/components/home/PhilosophySection";
 import { MissionSection } from "@/components/home/MissionSection";
 import { DevoteeSection } from "@/components/home/DevoteeSection";
+import { GallerySection } from "@/components/home/GallerySection";
 import { InvocationSection } from "@/components/home/InvocationSection";
 import { Footer } from "@/components/layout/Footer";
 
@@ -27,6 +28,7 @@ export default function Home() {
         <PhilosophySection />
         <MissionSection />
         <DevoteeSection />
+        <GallerySection />
         <InvocationSection />
       </main>
       <Footer />

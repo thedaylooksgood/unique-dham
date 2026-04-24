@@ -113,7 +113,7 @@ export function NavaDurgaSection() {
           {navaDurga.map((durga, idx) => (
             <BlurFade key={durga.id} delay={0.3 + idx * 0.1}>
               <ShineBorder
-                className="relative flex h-[500px] w-80 shrink-0 flex-col items-center justify-center overflow-hidden rounded-3xl bg-background shadow-xl"
+                className="relative flex h-[500px] w-80 shrink-0 flex-col items-center justify-center overflow-hidden rounded-3xl bg-transparent shadow-xl"
                 shineColor={["#E8860C", "#C41E3A", "#D4443B"]}
               >
                 <div className="relative h-full w-full">

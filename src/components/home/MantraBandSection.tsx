@@ -1,67 +1,51 @@
 "use client";
 
 import { Marquee } from "@/components/ui/marquee";
-import { ScrollVelocityContainer, ScrollVelocityRow } from "@/components/ui/scroll-based-velocity";
-import { Diamond } from "lucide-react";
+import { Bell, Flower2, Heart, Sparkles } from "lucide-react";
 
-const mantrasUpper = [
-  "ॐ नमो दुर्गायै नमः",
-  "जय माँ दुर्गा",
-  "या देवी सर्वभूतेषु शक्ति रूपेण संस्थिता",
-  "ॐ ऐं ह्रीं क्लीं चामुण्डायै विच्चे",
-  "ॐ सर्वमंगल मांगल्ये शिवे सर्वार्थ साधिके",
-];
-
-const mantrasLower = [
-  "Om Namo Durgayai Namah",
-  "Jaya Maa Durga",
-  "Ya Devi Sarvabhuteshu Shakti Rupena Samsthita",
-  "Om Aim Hrim Klim Chamundayai Vicce",
-  "Sarva Mangala Mangalye Shive Sarvartha Sadhike",
+const tickerItems = [
+  { icon: <Bell className="w-4 h-4 text-saffron" />, text: "Aarti at 6:30 PM", highlight: true },
+  { icon: <Flower2 className="w-4 h-4 text-vermillion" />, text: "Navratri Special Puja Open", highlight: false },
+  { icon: <Heart className="w-4 h-4 text-saffron" />, text: "Jai Maa Durga", highlight: false },
+  { icon: <Sparkles className="w-4 h-4 text-saffron" />, text: "Daily Darshan: 5:00 AM - 9:00 PM", highlight: true },
+  { icon: <Bell className="w-4 h-4 text-saffron" />, text: "Evening Bhajan: 7:15 PM", highlight: false },
 ];
 
 export function MantraBandSection() {
   return (
-    <div className="relative border-y border-saffron/10 bg-saffron/5 py-6 overflow-hidden">
-      {/* Upper Row: Devanagari Mantras */}
-      <Marquee pauseOnHover className="[--duration:40s]">
-        {mantrasUpper.map((mantra, i) => (
-          <div key={i} className="flex items-center gap-10 px-4">
-            <span className="font-sacred text-2xl md:text-3xl text-saffron/60">
-              {mantra}
-            </span>
-            <Diamond className="w-3 h-3 text-saffron/30 fill-saffron/10" />
-          </div>
-        ))}
-      </Marquee>
-
-      {/* Center Row: Velocity Scrolling Mantras (Interactive) */}
-      <div className="py-2 border-y border-saffron/5">
-        <ScrollVelocityContainer>
-          <ScrollVelocityRow 
-            baseVelocity={5}
-            className="font-display text-4xl md:text-6xl uppercase tracking-tighter text-saffron/10"
+    <div className="relative w-full border-y border-saffron/15 bg-transparent overflow-hidden group">
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 bg-gradient-to-r from-saffron/5 via-transparent to-saffron/5 opacity-50" />
+      
+      <Marquee pauseOnHover className="py-4 md:py-5 [--gap:3rem]">
+        {tickerItems.map((item, i) => (
+          <div 
+            key={i} 
+            className="flex items-center gap-4 px-6 border-r border-saffron/10 last:border-r-0"
           >
-            MAA UNIQUE DHAM ✧ DARJEELING ✧ SPIRITUAL AWAKENING ✧
-          </ScrollVelocityRow>
-        </ScrollVelocityContainer>
-      </div>
-
-      {/* Lower Row: English Transliterations */}
-      <Marquee reverse pauseOnHover className="[--duration:50s]">
-        {mantrasLower.map((mantra, i) => (
-          <div key={i} className="flex items-center gap-10 px-4">
-            <span className="font-body text-base md:text-lg uppercase tracking-widest text-saffron/40">
-              {mantra}
+            <div className="p-1.5 bg-saffron/10 rounded-full group-hover:scale-110 transition-transform duration-300">
+              {item.icon}
+            </div>
+            <span className={`font-body text-sm md:text-base tracking-wide whitespace-nowrap ${
+              item.highlight ? "text-sacred-brown font-semibold" : "text-sacred-brown/70"
+            }`}>
+              {item.text}
             </span>
-            <Diamond className="w-2 h-2 text-saffron/20 fill-saffron/5" />
+            <div className="w-1.5 h-1.5 rounded-full bg-saffron/20" />
           </div>
         ))}
       </Marquee>
 
-      {/* Subtle Gradient Overlays for smooth edges */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r from-ivory to-transparent z-10" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l from-ivory to-transparent z-10" />
+      {/* Modern Accents */}
+      <div className="absolute top-0 left-0 w-1/4 h-full bg-gradient-to-r from-ivory via-ivory/80 to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-1/4 h-full bg-gradient-to-l from-ivory via-ivory/80 to-transparent z-10 pointer-events-none" />
+      
+      {/* Subtle Glow Bar */}
+      <div className="absolute bottom-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-saffron/30 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-out" />
     </div>
   );
 }
+
+
+
+
