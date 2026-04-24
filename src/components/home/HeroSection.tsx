@@ -153,7 +153,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative h-[100svh] min-h-[600px] flex items-center justify-center overflow-hidden pt-16">
+    <section className="relative h-[100svh] min-h-[600px] flex items-center justify-center overflow-hidden pt-16 bg-white">
       {/* SVG Sketch Reveal Background */}
       <div className="absolute inset-0 z-0">
         <AnimatePresence mode="wait">
@@ -179,15 +179,12 @@ export function HeroSection() {
       />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center flex flex-col items-center justify-center">
-        {/* Soft Surreal Glow behind text */}
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle,rgba(255,255,255,0.7)_0%,transparent_70%)] blur-[60px] opacity-80" />
-
         {/* Mantra Rotation */}
         <BlurFade delay={0.2}>
           <div className="mb-6">
             <WordRotate
               words={mantras}
-              className="font-sacred text-xl md:text-2xl lg:text-3xl text-saffron italic drop-shadow-[0_2px_10px_rgba(255,255,255,0.8)] tracking-wide"
+              className="font-sacred text-xl md:text-2xl lg:text-3xl text-saffron italic drop-shadow-[0_0_15px_rgba(255,255,255,1)] tracking-wide"
               duration={4000}
             />
           </div>
@@ -203,17 +200,17 @@ export function HeroSection() {
           >
             {/* Main Heading */}
             <div className="space-y-4 mb-8">
-              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[0.9] text-sacred-brown tracking-tight drop-shadow-[0_2px_15px_rgba(255,255,255,0.5)]">
+              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[0.9] text-sacred-brown tracking-tight drop-shadow-[0_0_20px_rgba(255,255,255,1)]">
                 {heroContent[currentBanner].heading1}
                 <br />
-                <span className="text-gradient-saffron italic pr-2">
+                <span className="text-gradient-saffron italic pr-2 drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]">
                   {heroContent[currentBanner].heading2}
                 </span>
               </h1>
 
               <div className="flex items-center justify-center">
                 <SparklesText
-                  className="font-display text-4xl md:text-6xl lg:text-7xl leading-none text-sacred-brown drop-shadow-[0_2px_15px_rgba(255,255,255,0.5)]"
+                  className="font-display text-4xl md:text-6xl lg:text-7xl leading-none text-sacred-brown drop-shadow-[0_0_20px_rgba(255,255,255,1)]"
                   sparklesCount={12}
                   colors={{ first: "#E8860C", second: "#C41E3A" }}
                 >
@@ -223,7 +220,7 @@ export function HeroSection() {
             </div>
 
             {/* Subheading */}
-            <p className="font-body text-sm md:text-base lg:text-lg text-warm-umber max-w-2xl mx-auto mb-10 leading-relaxed font-semibold tracking-wide drop-shadow-[0_2px_10px_rgba(255,255,255,0.8)]">
+            <p className="font-body text-sm md:text-base lg:text-lg text-warm-umber max-w-2xl mx-auto mb-10 leading-relaxed font-semibold tracking-wide drop-shadow-[0_0_15px_rgba(255,255,255,1)]">
               {heroContent[currentBanner].desc}
             </p>
           </motion.div>
@@ -241,7 +238,7 @@ export function HeroSection() {
             </Link>
             <Link
               href="/#mahant"
-              className="group flex items-center gap-2 font-display text-sm tracking-widest uppercase text-sacred-brown hover:text-saffron transition-colors"
+              className="group flex items-center gap-2 font-display text-sm tracking-widest uppercase text-sacred-brown hover:text-saffron transition-colors drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]"
             >
               Meet Mahant Yogiraj
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -251,7 +248,7 @@ export function HeroSection() {
       </div>
 
       {/* Decorative Bottom Gradient */}
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-background to-transparent z-[2]" />
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-white to-transparent z-[2]" />
     </section>
   );
 }
