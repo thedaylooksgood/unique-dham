@@ -1,37 +1,21 @@
 "use client";
 
-import Image from "next/image";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { MagicCard } from "@/components/ui/magic-card";
-import { ShineBorder } from "@/components/ui/shine-border";
 import { SacredDivider } from "@/components/ui/SacredDivider";
 import { Sparkles, Heart } from "lucide-react";
+import { InteractiveDarshan } from "./InteractiveDarshan";
 
 export function IntroSection() {
   return (
-    <section className="relative py-32 bg-background overflow-hidden">
+    <section className="relative py-32 bg-sacred-pink overflow-hidden" style={{ backgroundColor: '#FFD6E0' }}>
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-20 items-center">
-          {/* Image Column */}
+          {/* Interactive Darshan Column */}
           <BlurFade delay={0.2} direction="right">
-            <div className="relative group">
-              <ShineBorder
-                className="relative flex w-full flex-col items-center justify-center overflow-hidden rounded-3xl bg-background md:shadow-2xl"
-                shineColor={["#E8860C", "#C41E3A", "#D4443B"]}
-              >
-                <div className="relative aspect-[4/5] w-full overflow-hidden">
-                  <Image
-                    src="https://images.unsplash.com/photo-1582555172866-9137e24683fb?q=80&w=800&auto=format&fit=crop"
-                    alt="Immortal presence of Maa"
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ivory via-transparent to-transparent opacity-60" />
-                </div>
-              </ShineBorder>
-              {/* Decorative behind-image border */}
-              <div className="absolute -bottom-6 -left-6 w-full h-full border-2 border-saffron/10 rounded-3xl -z-10 transition-transform group-hover:translate-x-2 group-hover:translate-y-2" />
-            </div>
+            <InteractiveDarshan
+              shineColor={["#E8860C", "#C41E3A", "#D4443B"]}
+            />
           </BlurFade>
 
           {/* Content Column */}

@@ -16,7 +16,7 @@ export function MissionSection() {
   const y = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
 
   return (
-    <section ref={ref} className="relative py-48 bg-sacred-brown overflow-hidden">
+    <section ref={ref} className="relative py-48 bg-sacred-pink overflow-hidden">
       {/* Parallax Background Image */}
       <motion.div 
         style={{ y }}
@@ -26,9 +26,9 @@ export function MissionSection() {
           src="https://images.unsplash.com/photo-1549216068-d6211028f30b?q=80&w=1200&auto=format&fit=crop"
           alt="Sacred Mountains of Darjeeling"
           fill
-          className="object-cover opacity-20"
+          className="object-cover opacity-10"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-sacred-brown via-transparent to-sacred-brown" />
+        <div className="absolute inset-0 bg-gradient-to-t from-sacred-pink via-transparent to-sacred-pink" />
       </motion.div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
@@ -41,7 +41,7 @@ export function MissionSection() {
             </div>
           </div>
           
-          <h2 className="font-display text-5xl md:text-7xl text-ivory leading-tight mb-10 tracking-tight">
+          <h2 className="font-display text-5xl md:text-7xl text-sacred-brown leading-tight mb-10 tracking-tight">
             REVIVING SHAKTI.
             <br />
             <span className="text-saffron italic">GUIDING SOULS.</span>
@@ -49,7 +49,7 @@ export function MissionSection() {
         </BlurFade>
 
         <BlurFade delay={0.4}>
-          <p className="font-body text-xl text-ivory/70 leading-relaxed mb-16 mx-auto max-w-2xl">
+          <p className="font-body text-xl text-warm-umber/80 leading-relaxed mb-16 mx-auto max-w-2xl">
             Our mission is to sustain Dharma and awaken the divine presence in every seeking heart, 
             bridging the ancient sanctity of the misty hills with the modern seeker.
           </p>
@@ -58,7 +58,7 @@ export function MissionSection() {
         <div className="flex flex-wrap justify-center gap-6">
           {["Purity", "Authenticity", "Devotion"].map((value, idx) => (
             <BlurFade key={value} delay={0.6 + idx * 0.1}>
-              <div className="px-8 py-3 border border-saffron/30 rounded-full font-display text-sm tracking-widest uppercase text-ivory/90 bg-ivory/5 backdrop-blur-sm transition-all hover:bg-saffron/10 hover:border-saffron">
+              <div className="px-8 py-3 border border-saffron/30 rounded-full font-display text-sm tracking-widest uppercase text-sacred-brown/90 bg-white/50 backdrop-blur-sm transition-all hover:bg-saffron/10 hover:border-saffron">
                 {value}
               </div>
             </BlurFade>

@@ -87,7 +87,7 @@ export function NavaDurgaSection() {
   const { scrollXProgress } = useScroll({ container: containerRef });
 
   return (
-    <section className="relative py-32 bg-warm-glow/20 overflow-hidden">
+    <section className="relative py-32 bg-sacred-orange overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 mb-16">
         <BlurFade delay={0.2} text-center="true">
           <div className="text-center">
@@ -113,7 +113,7 @@ export function NavaDurgaSection() {
           {navaDurga.map((durga, idx) => (
             <BlurFade key={durga.id} delay={0.3 + idx * 0.1}>
               <ShineBorder
-                className="relative flex h-[500px] w-80 shrink-0 flex-col items-center justify-center overflow-hidden rounded-3xl bg-background shadow-xl"
+                className="relative flex h-[500px] w-80 shrink-0 flex-col items-center justify-center overflow-hidden rounded-3xl bg-transparent shadow-xl"
                 shineColor={["#E8860C", "#C41E3A", "#D4443B"]}
               >
                 <div className="relative h-full w-full">

@@ -40,7 +40,7 @@ const testimonials = [
 
 export function DevoteeSection() {
   return (
-    <section className="relative py-32 bg-ivory overflow-hidden">
+    <section className="relative py-32 bg-sacred-orange overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 mb-20 text-center">
         <BlurFade delay={0.2}>
           <span className="font-body text-xs tracking-[0.3em] uppercase text-saffron font-bold mb-4 block">
@@ -68,8 +68,8 @@ export function DevoteeSection() {
         </Marquee>
       </div>
 
-      <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-background to-transparent pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-background to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-sacred-orange to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-sacred-orange to-transparent pointer-events-none" />
     </section>
   );
 }

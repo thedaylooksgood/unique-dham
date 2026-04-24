@@ -56,7 +56,7 @@ const metrics = [
 
 export function ServicesSection() {
   return (
-    <section className="relative py-32 bg-ivory overflow-hidden">
+    <section className="relative py-32 bg-sacred-pink overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-20">
           <BlurFade delay={0.2}>
@@ -83,13 +83,13 @@ export function ServicesSection() {
               <Link href={service.href} className="group h-full block">
                 {service.isFeatured ? (
                   <ShineBorder
-                    className="relative h-full w-full overflow-hidden rounded-3xl bg-background shadow-xl p-0"
+                    className="relative h-full w-full overflow-hidden rounded-3xl bg-transparent shadow-xl p-0"
                     shineColor={["#E8860C", "#C41E3A", "#D4443B"]}
                   >
                     <CardContent service={service} />
                   </ShineBorder>
                 ) : (
-                  <MagicCard className="h-full rounded-3xl border-saffron/5 bg-background shadow-sacred-warm hover:shadow-2xl transition-all duration-500">
+                  <MagicCard className="h-full rounded-3xl border-saffron/5 bg-transparent shadow-sacred-warm hover:shadow-2xl transition-all duration-500">
                     <CardContent service={service} />
                   </MagicCard>
                 )}

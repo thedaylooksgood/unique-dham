@@ -10,7 +10,7 @@ import { ArrowRight } from "lucide-react";
 
 export function InvocationSection() {
   return (
-    <section className="relative py-48 overflow-hidden bg-ivory">
+    <section className="relative py-48 overflow-hidden bg-sacred-orange">
       {/* Background with warm saffron glow and rising sparks */}
       <div 
         className="absolute inset-0 opacity-40"

@@ -23,7 +23,7 @@ const traditions = [
 
 export function TraditionSection() {
   return (
-    <section className="relative py-32 bg-background overflow-hidden">
+    <section className="relative py-32 bg-sacred-pink overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-24">
           <BlurFade delay={0.2}>
