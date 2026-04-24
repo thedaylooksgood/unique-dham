@@ -12,7 +12,7 @@ const images = [
 
 export function GallerySection() {
   return (
-    <section className="relative py-32 bg-transparent overflow-hidden">
+    <section className="relative py-32 bg-sacred-pink overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <BlurFade delay={0.2}>
