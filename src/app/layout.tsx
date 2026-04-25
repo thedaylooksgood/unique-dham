@@ -42,10 +42,10 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-ivory text-sacred-brown relative">
         <Preloader />
         <Particles
-          className="fixed inset-0 z-0 pointer-events-none opacity-40"
+          className="fixed inset-0 z-0 pointer-events-none opacity-40 md:hidden"
           quantity={60}
           ease={80}
-          color="#E8860C"
+          color="#FFD700"
           refresh
         />
         <div className="relative z-10 flex flex-col flex-1 w-full">

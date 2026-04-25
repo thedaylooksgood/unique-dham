@@ -294,6 +294,13 @@
     z-index: 0;
   }
 
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #FFD700, #DAA520, #B8860B);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
   .text-gradient-saffron {
     background: linear-gradient(135deg, #E8860C, #C41E3A, #D4443B);
     -webkit-background-clip: text;
