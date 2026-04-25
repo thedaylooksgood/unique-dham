@@ -87,8 +87,8 @@ export function NavaDurgaSection() {
   const { scrollXProgress } = useScroll({ container: containerRef });
 
   return (
-    <section className="relative py-32 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 mb-16">
+    <section className="relative py-32 px-6 bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto mb-16">
         <BlurFade delay={0.2} text-center="true">
           <div className="text-center">
             <span className="font-body text-xs tracking-[0.3em] uppercase text-saffron font-bold mb-4 block">
