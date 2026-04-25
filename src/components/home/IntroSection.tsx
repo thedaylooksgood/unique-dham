@@ -1,15 +1,14 @@
 "use client";
 
 import { BlurFade } from "@/components/ui/blur-fade";
-import { SacredDivider } from "@/components/ui/SacredDivider";
-import { Sparkles, Heart, ArrowRight } from "lucide-react";
+import { Heart, ArrowRight } from "lucide-react";
 import { InteractiveDarshan } from "./InteractiveDarshan";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import Link from "next/link";
 
 export function IntroSection() {
   return (
-    <section id="invocation" className="relative py-12 px-6 bg-sacred-premium-gradient overflow-hidden scroll-mt-24 min-h-[70vh] flex items-center">
+    <section id="invocation" className="relative py-8 px-6 bg-sacred-premium-gradient overflow-hidden scroll-mt-24 flex items-center">
       {/* Decorative background elements */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-saffron/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
       <div className="absolute bottom-0 left-0 w-64 h-64 bg-vermillion/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2" />
@@ -82,10 +81,6 @@ export function IntroSection() {
             </BlurFade>
           </div>
         </div>
-
-        <BlurFade delay={0.8} className="mt-24">
-          <SacredDivider />
-        </BlurFade>
       </div>
     </section>
   );

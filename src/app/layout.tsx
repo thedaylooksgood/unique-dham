@@ -26,19 +26,7 @@ export default function RootLayout({
       lang="en"
       className={`${playfairDisplay.variable} ${plusJakartaSans.variable} ${tiroDevanagari.variable} h-full antialiased js-loading`}
     >
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              document.documentElement.classList.add('js-loading');
-              window.addEventListener('load', function() {
-                // The preloader component will handle removing this, 
-                // but this is a safety fallback.
-              });
-            `,
-          }}
-        />
-      </head>
+      <head />
       <body className="min-h-full flex flex-col bg-ivory text-sacred-brown relative">
         <Preloader />
         <Particles
