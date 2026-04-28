@@ -3,7 +3,8 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { MantraBandSection } from "@/components/home/MantraBandSection";
 import { IntroSection } from "@/components/home/IntroSection";
 import { MahantSection } from "@/components/home/MahantSection";
-import { TraditionSection } from "@/components/home/TraditionSection";
+import { DhamFlipAnimation } from "@/components/home/DhamFlipAnimation";
+import { CinematicStorySection } from "@/components/home/CinematicStorySection";
 import { CultureSection } from "@/components/home/CultureSection";
 import { NavaDurgaSection } from "@/components/home/NavaDurgaSection";
 import { ServicesSection } from "@/components/home/ServicesSection";
@@ -23,7 +24,8 @@ export default function Home() {
         <MantraBandSection />
         <IntroSection />
         <MahantSection />
-        <TraditionSection />
+        <DhamFlipAnimation />
+        <CinematicStorySection />
         <CultureSection />
         <NavaDurgaSection />
         <ServicesSection />

@@ -336,3 +336,160 @@
     font-family: var(--font-sacred), serif;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   GSAP DHAM FLIP ANIMATION  –  Raw CSS (outside @layer so it's never purged)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Container base ─────────────────────────────────────────────────── */
+.dham-flip-container {
+  position: relative;
+  width: min(92vw, 1100px);
+  height: clamp(240px, 45vh, 580px);
+}
+
+/* ── Layout: FINAL (default) — tight cinematic row ─────────────────── */
+.dham-flip-container.final {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 1.2vw, 20px);
+}
+
+.dham-flip-container.final .fl-letter {
+  width: clamp(70px, 14vw, 190px);
+  height: clamp(90px, 18vw, 240px);
+  font-size: clamp(3rem, 11vw, 10rem);
+  border-radius: 10px;
+}
+
+.dham-flip-container.final .fl-of {
+  position: absolute;
+  top: 8%;
+  left: 4%;
+  opacity: 1;
+  font-size: clamp(0.9rem, 1.8vw, 1.4rem);
+}
+
+.dham-flip-container.final .fl-shakti {
+  position: absolute;
+  bottom: 8%;
+  right: 4%;
+  opacity: 1;
+  font-size: clamp(1.4rem, 3.5vw, 2.8rem);
+}
+
+/* ── Layout: PLAIN — wide spaced single row ─────────────────────────── */
+.dham-flip-container.plain {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 0;
+}
+
+.dham-flip-container.plain .fl-letter {
+  width: clamp(60px, 12vw, 160px);
+  height: clamp(80px, 16vw, 210px);
+  font-size: clamp(2.5rem, 9vw, 8rem);
+  border-radius: 50%;
+}
+
+.dham-flip-container.plain .fl-of,
+.dham-flip-container.plain .fl-shakti {
+  display: none;
+}
+
+/* ── Layout: COLUMNS — full-height vertical bars ───────────────────── */
+.dham-flip-container.columns {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(4px, 0.8vw, 12px);
+}
+
+.dham-flip-container.columns .fl-letter {
+  flex: 1;
+  height: 100%;
+  font-size: clamp(3rem, 8vw, 7rem);
+  border-radius: 6px;
+}
+
+.dham-flip-container.columns .fl-of,
+.dham-flip-container.columns .fl-shakti {
+  display: none;
+}
+
+/* ── Layout: GRID — 2×2 tile grid ──────────────────────────────────── */
+.dham-flip-container.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: clamp(8px, 1.5vw, 22px);
+  align-items: center;
+  justify-items: center;
+}
+
+.dham-flip-container.grid .fl-letter {
+  width: 100%;
+  height: 100%;
+  font-size: clamp(3.5rem, 9vw, 9rem);
+  border-radius: 12px;
+}
+
+.dham-flip-container.grid .fl-of,
+.dham-flip-container.grid .fl-shakti {
+  display: none;
+}
+
+/* ── Letter base styles ─────────────────────────────────────────────── */
+.fl-letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display), "Cinzel", serif;
+  font-weight: 800;
+  color: #e5b869;
+  will-change: transform;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6), 0 8px 32px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 2px 12px rgba(229, 184, 105, 0.4);
+  cursor: default;
+  user-select: none;
+}
+
+/* Letter accent colors */
+.fl-D { background: linear-gradient(145deg, #7a1515 0%, #4a0b0b 100%); }
+.fl-H { background: linear-gradient(145deg, #141e30 0%, #0a1020 100%); }
+.fl-A { background: linear-gradient(145deg, #b24e28 0%, #6b2e10 100%); }
+.fl-M { background: linear-gradient(145deg, #2a2320 0%, #181310 100%); }
+
+/* ── Subtitle/Label elements ────────────────────────────────────────── */
+.fl-of,
+.fl-shakti {
+  font-family: var(--font-body), sans-serif;
+  font-weight: 600;
+  color: #e5b869;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  opacity: 0; /* Hidden by default; shown in .final via override above */
+  will-change: transform, opacity;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* ── Particle drift animation (replaces Anime.js, zero scroll-thread cost) */
+@keyframes particleDrift {
+  0%   { transform: translate(0px, 0px)   scale(1);   opacity: 0.12; }
+  33%  { transform: translate(18px, -22px) scale(1.2); opacity: 0.45; }
+  66%  { transform: translate(-12px, 14px) scale(0.8); opacity: 0.25; }
+  100% { transform: translate(8px, -8px)  scale(1.1); opacity: 0.18; }
+}
+
+/* ── Scroll-indicator dot bounce */
+@keyframes scrollDot {
+  0%   { transform: translateY(0);   opacity: 1; }
+  60%  { transform: translateY(10px); opacity: 0.3; }
+  100% { transform: translateY(0);   opacity: 1; }
+}
