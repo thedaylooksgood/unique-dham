@@ -180,7 +180,7 @@ export function CinematicStorySection() {
   );
 
   return (
-    <section ref={sectionRef} className="cs-section bg-[#07030A] relative w-full h-screen overflow-hidden">
+    <section ref={sectionRef} className="cs-section bg-black relative w-full h-screen overflow-hidden">
       
       {/* ── Background Elements (Persistent) ─────────────────────────── */}
       <div className="cs-grain" aria-hidden />
@@ -209,7 +209,7 @@ export function CinematicStorySection() {
         return (
           <div
             key={ch.id}
-            className={`cs-panel-${i} absolute inset-0 w-full h-full overflow-hidden bg-[#07030A] shadow-[-20px_0_50px_rgba(0,0,0,0.8)]`}
+            className={`cs-panel-${i} absolute inset-0 w-full h-full overflow-hidden bg-black shadow-[-20px_0_50px_rgba(0,0,0,0.8)]`}
             style={{ zIndex: i + 10 }} // Higher chapters cover lower ones
           >
             {/* ── Photo Layer (Behind Text) ──────────────────────────── */}
@@ -240,8 +240,10 @@ export function CinematicStorySection() {
               )}
             </div>
 
-            {/* ── Vignette to ensure text readability ────────────────── */}
-            <div className="absolute inset-0 z-10 bg-radial-gradient from-transparent to-black/60 pointer-events-none" />
+            {/* ── Cloudy Glow Behind Text ────────────────────────────── */}
+            <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
+              <div className="w-[95vw] h-[65vh] md:w-[65vw] md:h-[55vh] bg-black/80 blur-[100px] rounded-full" />
+            </div>
 
             {/* ── Centered Text Layer ────────────────────────────────── */}
             <div className="relative z-20 w-full h-full flex flex-col items-center justify-center px-6 md:px-12 pointer-events-auto">
