@@ -4,6 +4,7 @@ import { MantraBandSection } from "@/components/home/MantraBandSection";
 import { IntroSection } from "@/components/home/IntroSection";
 import { MahantSection } from "@/components/home/MahantSection";
 import { TraditionSection } from "@/components/home/TraditionSection";
+import { CultureSection } from "@/components/home/CultureSection";
 import { NavaDurgaSection } from "@/components/home/NavaDurgaSection";
 import { ServicesSection } from "@/components/home/ServicesSection";
 import { PhilosophySection } from "@/components/home/PhilosophySection";
@@ -23,6 +24,7 @@ export default function Home() {
         <IntroSection />
         <MahantSection />
         <TraditionSection />
+        <CultureSection />
         <NavaDurgaSection />
         <ServicesSection />
         <PhilosophySection />

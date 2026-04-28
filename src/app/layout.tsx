@@ -26,7 +26,11 @@ export default function RootLayout({
       lang="en"
       className={`${playfairDisplay.variable} ${plusJakartaSans.variable} ${tiroDevanagari.variable} h-full antialiased js-loading`}
     >
-      <head />
+      <head>
+        <link rel="preconnect" href="https://www.youtube.com" />
+        <link rel="preconnect" href="https://www.google.com" />
+        <link rel="preconnect" href="https://i.ytimg.com" />
+      </head>
       <body className="min-h-full flex flex-col bg-ivory text-sacred-brown relative">
         <Preloader />
         <Particles

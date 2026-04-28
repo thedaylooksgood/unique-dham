@@ -68,26 +68,7 @@ export function TraditionSection() {
             </div>
           ))}
 
-          {/* Full-width final tradition */}
-          <BlurFade delay={0.8} direction="up">
-            <div className="relative w-full aspect-[21/9] rounded-3xl overflow-hidden group shadow-2xl">
-              <Image
-                src="https://images.unsplash.com/photo-1549216068-d6211028f30b?q=80&w=1200&auto=format&fit=crop"
-                alt="Darjeeling Spiritual Culture"
-                fill
-                className="object-cover transition-transform duration-1000 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-sacred-brown/80 via-sacred-brown/40 to-transparent" />
-              <div className="absolute inset-0 flex flex-col justify-center px-12 md:px-24 max-w-2xl gap-4">
-                <h3 className="font-display text-3xl md:text-5xl text-ivory">
-                  DARJEELING SPIRITUAL CULTURE
-                </h3>
-                <p className="font-body text-lg md:text-xl text-ivory/80 italic">
-                  "Where Buddhist serenity meets Hindu Shakti, in the eternal embrace of the mountains."
-                </p>
-              </div>
-            </div>
-          </BlurFade>
+
         </div>
       </div>
     </section>
