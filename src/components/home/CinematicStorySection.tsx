@@ -1,383 +1,313 @@
 "use client";
 
-import React, { useRef, useMemo } from "react";
+/**
+ * CinematicStorySection
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Awwwards-level Full-Screen Horizontal Wipe + Scattering Image Collapse
+ *
+ * Layout:
+ * - Text is perfectly centered on the screen.
+ * - Photos start scattered in the background. As you scroll, they collapse and
+ *   stick together behind the text.
+ * - Continuing to scroll triggers the next chapter to wipe in from the right edge,
+ *   completely covering the current chapter.
+ */
+
+import React, { useRef, useMemo, useState, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { getSequences } from "@/app/actions/getSequences";
 
-// Register plugins at module level — still SSR-safe because this file
-// is "use client" so it only runs in the browser.
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const chapters = [
+const CHAPTERS = [
   {
     id: "awakening",
-    title: "THE CALL OF SHAKTI",
-    subtitle: "Awakening",
-    text: "In the serene heights of the Himalayas, Her divine presence echoes across the mists of time. Maa Durga guides every seeker toward the eternal light.",
-    img: "/hero-himalaya.jpg",
+    num: "01",
+    sanskrit: "आवाहन",
+    title: "THE CALL",
+    titleAccent: "OF SHAKTI",
+    body: "In the serene heights of the Himalayas, Her divine presence echoes across eternal mists. The mountains tremble in reverence as Maa Durga awakens the soul of every seeker.",
+    part: "part 1",
     accent: "#C41E3A",
   },
   {
     id: "sadhana",
-    title: "ETERNAL SADHANA",
-    subtitle: "Devotion",
-    text: "Upholding centuries of Sanatan rites — from Kumari Puja to the Navpatrika, every chant resonates with Her fierce and boundless grace.",
-    img: "/hero-puja.jpg",
-    accent: "#e95d24",
+    num: "02",
+    sanskrit: "साधना",
+    title: "ETERNAL",
+    titleAccent: "SADHANA",
+    body: "Upholding five centuries of Sanatan rites — from Kumari Puja to the Navpatrika. Every chant, every flame, every offered flower resonates with Her fierce and boundless grace.",
+    part: "part 2",
+    accent: "#E8860C",
   },
   {
     id: "darshan",
-    title: "HER DIVINE EMBRACE",
-    subtitle: "Darshan",
-    text: "A unique confluence where devotion meets tranquility. Surrender at Her lotus feet and be held in the warmth of Her boundless compassion.",
-    img: "/hero-durga.jpg",
-    accent: "#E8860C",
+    num: "03",
+    sanskrit: "दर्शन",
+    title: "HER DIVINE",
+    titleAccent: "EMBRACE",
+    body: "At this sacred confluence of devotion and silence, time dissolves. Surrender at Her lotus feet and be held in the golden warmth of Her boundless, eternal compassion.",
+    part: "part 3",
+    accent: "#E5B869",
   },
-];
+] as const;
 
-// Generate stable particle positions once (avoids re-render re-randomisation)
-function generateParticles(count: number) {
-  return Array.from({ length: count }, (_, i) => ({
+// Deterministic particles
+function buildParticles(n: number) {
+  return Array.from({ length: n }, (_, i) => ({
     id: i,
-    cx: ((i * 97 + 13) % 100).toFixed(1),
-    cy: ((i * 61 + 7) % 100).toFixed(1),
-    r: (1 + (i % 3) * 0.6).toFixed(1),
-    opacity: 0.15 + (i % 5) * 0.07,
+    cx: ((i * 79 + 11) % 97).toFixed(1),
+    cy: ((i * 53 + 19) % 95).toFixed(1),
+    r: (0.8 + (i % 4) * 0.5).toFixed(1),
+    delay: ((i * 0.37) % 5).toFixed(2),
+    dur: (5 + (i % 7)).toFixed(0),
   }));
 }
 
 export function CinematicStorySection() {
-  const containerRef = useRef<HTMLElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const particles = useMemo(() => generateParticles(35), []);
+  const sectionRef = useRef<HTMLElement>(null);
+  const particles = useMemo(() => buildParticles(30), []);
+
+  const [sequences, setSequences] = useState<{ [key: string]: string[] }>({
+    "part 1": [],
+    "part 2": [],
+    "part 3": [],
+  });
+
+  // Fetch sequence photos from folders automatically
+  useEffect(() => {
+    async function fetchAll() {
+      const p1 = await getSequences("part 1");
+      const p2 = await getSequences("part 2");
+      const p3 = await getSequences("part 3");
+      setSequences({ "part 1": p1, "part 2": p2, "part 3": p3 });
+    }
+    fetchAll();
+  }, []);
 
   useGSAP(
     () => {
-      if (!containerRef.current || !trackRef.current) return;
+      if (!sectionRef.current) return;
 
-      const sections = gsap.utils.toArray<HTMLElement>(".story-panel");
-      const totalWidth = trackRef.current.scrollWidth;
+      // Clean up previous instances
+      ScrollTrigger.getAll().forEach((st) => {
+        if (st.trigger === sectionRef.current) st.kill();
+      });
 
-      // ── 1. Horizontal pin + scrub ─────────────────────────────────
-      const hScroll = gsap.to(sections, {
-        xPercent: -100 * (sections.length - 1),
-        ease: "none",
+      const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: containerRef.current,
+          trigger: sectionRef.current,
           pin: true,
-          scrub: 0.05,          // near-zero lag → feels like native scroll
-          end: () => `+=${totalWidth - window.innerWidth}`,
+          scrub: 1, // Smooth scrub
+          start: "top top",
+          end: `+=${CHAPTERS.length * 200}%`, // 2 screens of scroll per chapter
           invalidateOnRefresh: true,
-          anticipatePin: 1,
-          fastScrollEnd: true,   // snap-to-rest when user flicks fast
         },
       });
 
-      // ── 2. Per-section text reveals ───────────────────────────────
-      sections.forEach((panel, i) => {
-        const eyebrow = panel.querySelector<HTMLElement>(".panel-eyebrow");
-        const title   = panel.querySelector<HTMLElement>(".panel-title");
-        const body    = panel.querySelector<HTMLElement>(".panel-body");
-        const line    = panel.querySelector<HTMLElement>(".panel-line");
+      // ── Initial Setup ─────────────────────────────────────────────────
+      CHAPTERS.forEach((ch, i) => {
+        // Panels 1 and 2 start off-screen right
+        if (i > 0) {
+          gsap.set(`.cs-panel-${i}`, { xPercent: 100 });
+        }
 
-        // Skip first panel (already visible on load)
-        const targets = [eyebrow, line, title, body].filter(Boolean);
+        // Set vertical strips initially hidden via clip-path
+        const strips = gsap.utils.toArray<HTMLElement>(`.cs-strip-${ch.id}`);
+        if (strips.length > 0) {
+          gsap.set(strips, { clipPath: "inset(100% 0% 0% 0%)" });
+          
+          const imgs = gsap.utils.toArray<HTMLElement>(`.cs-strip-${ch.id} img`);
+          gsap.set(imgs, { scale: 1.2 });
+        }
+      });
 
-        gsap.fromTo(
-          targets,
-          { opacity: 0, y: 40 },
-          {
-            opacity: 1,
-            y: 0,
-            stagger: 0.08,
-            duration: 0.55,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: panel,
-              containerAnimation: hScroll,
-              start: "left 75%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
+      // ── Master Wipe Timeline ──────────────────────────────────────────
+      CHAPTERS.forEach((ch, i) => {
+        const strips = gsap.utils.toArray<HTMLElement>(`.cs-strip-${ch.id}`);
+        const imgs = gsap.utils.toArray<HTMLElement>(`.cs-strip-${ch.id} img`);
 
-        // ── Ken Burns parallax on the bg image ──────────────────────
-        const bg = panel.querySelector<HTMLElement>(".panel-bg");
-        if (bg) {
-          gsap.fromTo(
-            bg,
-            { scale: 1.18, x: "6%" },
+        // 1. Reveal vertical strips
+        if (strips.length > 0) {
+          tl.to(
+            strips,
             {
-              scale: 1.0,
-              x: "-6%",
-              ease: "none",
-              scrollTrigger: {
-                trigger: panel,
-                containerAnimation: hScroll,
-                start: "left right",
-                end: "right left",
-                scrub: true,
-              },
+              clipPath: "inset(0% 0% 0% 0%)",
+              duration: 1.5,
+              stagger: { each: 0.1, from: "center" },
+              ease: "power3.inOut",
+            }
+          );
+          
+          tl.to(
+            imgs,
+            {
+              scale: 1,
+              duration: 2,
+              ease: "power3.out",
+              stagger: { each: 0.1, from: "center" },
+            },
+            "<" // Sync with strip reveal
+          );
+        } else {
+          // Placeholder timeline gap
+          tl.to({}, { duration: 1.5 });
+        }
+
+        // 2. Add breathing room to read text and admire photos
+        tl.to({}, { duration: 1.0 });
+
+        // 3. Wipe in the NEXT chapter
+        if (i < CHAPTERS.length - 1) {
+          tl.to(
+            `.cs-panel-${i + 1}`,
+            {
+              xPercent: 0,
+              duration: 1.5,
+              ease: "power3.inOut",
             }
           );
         }
       });
 
-      // ── 3. Particle drift (CSS animation, no Anime.js on main thread) ──
-      // Handled purely via CSS @keyframes — zero JS cost on scroll
-
-      return () => {
-        ScrollTrigger.getAll().forEach((t) => t.kill());
-      };
+      return () => ScrollTrigger.getAll().forEach((t) => t.kill());
     },
-    { scope: containerRef }
+    { scope: sectionRef, dependencies: [sequences] }
   );
 
   return (
-    <section
-      ref={containerRef}
-      style={{
-        position: "relative",
-        width: "100%",
-        height: "100vh",
-        overflow: "hidden",
-        background: "linear-gradient(135deg, #fdf8f6 0%, #fef5f0 50%, #fff8f5 100%)",
-      }}
-    >
-      {/* ── Particle layer — purely CSS-animated, zero scroll cost ─── */}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          pointerEvents: "none",
-          zIndex: 20,
-          overflow: "hidden",
-        }}
-      >
-        <svg width="100%" height="100%" style={{ opacity: 0.5 }}>
+    <section ref={sectionRef} className="cs-section bg-[#07030A] relative w-full h-screen overflow-hidden">
+      
+      {/* ── Background Elements (Persistent) ─────────────────────────── */}
+      <div className="cs-grain" aria-hidden />
+      <div className="cs-particles" aria-hidden>
+        <svg width="100%" height="100%">
           {particles.map((p) => (
             <circle
               key={p.id}
-              className="sacred-particle"
               cx={`${p.cx}%`}
               cy={`${p.cy}%`}
               r={p.r}
-              fill="#e95d24"
+              fill="#E5B869"
               style={{
-                opacity: p.opacity,
-                animation: `particleDrift ${6 + (p.id % 6)}s ease-in-out ${(p.id * 0.3) % 4}s infinite alternate`,
+                animation: `csParticle ${p.dur}s ease-in-out ${p.delay}s infinite alternate`,
+                opacity: 0,
               }}
             />
           ))}
         </svg>
       </div>
 
-      {/* ── Scroll track ──────────────────────────────────────────── */}
-      <div
-        ref={trackRef}
-        style={{
-          display: "flex",
-          width: `${chapters.length * 100}vw`,
-          height: "100%",
-          willChange: "transform",
-        }}
-      >
-        {chapters.map((chapter, i) => (
+      {/* ── Chapter Panels ────────────────────────────────────────────── */}
+      {CHAPTERS.map((ch, i) => {
+        const imgs = sequences[ch.part];
+
+        return (
           <div
-            key={chapter.id}
-            className="story-panel"
-            style={{
-              position: "relative",
-              width: "100vw",
-              height: "100%",
-              flexShrink: 0,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "0 6vw",
-              overflow: "hidden",
-              willChange: "transform",
-            }}
+            key={ch.id}
+            className={`cs-panel-${i} absolute inset-0 w-full h-full overflow-hidden bg-[#07030A] shadow-[-20px_0_50px_rgba(0,0,0,0.8)]`}
+            style={{ zIndex: i + 10 }} // Higher chapters cover lower ones
           >
-            {/* Background image */}
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                zIndex: 0,
-                overflow: "hidden",
-              }}
-            >
-              <img
-                src={chapter.img}
-                alt={chapter.title}
-                className="panel-bg"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  opacity: 0.22,
-                  mixBlendMode: "luminosity",
-                  willChange: "transform",
-                  transformOrigin: "center center",
-                }}
-              />
-              {/* Gradient vignette */}
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: `linear-gradient(to right, rgba(253,248,246,0.85) 0%, rgba(253,248,246,0.3) 40%, rgba(253,248,246,0.3) 60%, rgba(253,248,246,0.85) 100%)`,
-                }}
-              />
+            {/* ── Photo Layer (Behind Text) ──────────────────────────── */}
+            <div className="absolute inset-0 z-0 flex pointer-events-none w-full h-full">
+              {imgs && imgs.length > 0 ? (
+                imgs.map((src, idx) => (
+                  <div key={`${ch.id}-${idx}`} className="flex-1 h-full overflow-hidden relative border-r border-white/5 last:border-r-0">
+                    <div
+                      className={`cs-strip-${ch.id} absolute inset-0 w-full h-full`}
+                    >
+                      <img
+                        src={src}
+                        alt={`${ch.title} photo ${idx}`}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div
+                  className={`absolute inset-0 flex items-center justify-center`}
+                >
+                  <p className="text-zinc-500 font-mono text-sm text-center tracking-widest px-6">
+                    ADD IMAGES TO FOLDER <br />
+                    <span className="text-white/60 mt-2 block font-sans">public/sequence/{ch.part}</span>
+                  </p>
+                </div>
+              )}
             </div>
 
-            {/* Content */}
-            <div
-              style={{
-                position: "relative",
-                zIndex: 10,
-                maxWidth: "900px",
-                width: "100%",
-                textAlign: "center",
-              }}
-            >
-              {/* Chapter number */}
+            {/* ── Vignette to ensure text readability ────────────────── */}
+            <div className="absolute inset-0 z-10 bg-radial-gradient from-transparent to-black/60 pointer-events-none" />
+
+            {/* ── Centered Text Layer ────────────────────────────────── */}
+            <div className="relative z-20 w-full h-full flex flex-col items-center justify-center px-6 md:px-12 pointer-events-auto">
               <div
-                className="panel-eyebrow"
+                className="text-center max-w-4xl"
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "1rem",
-                  marginBottom: "1.5rem",
+                  // "Slight white glow" so image is readable, with strong black drop shadow for contrast
+                  textShadow: "0 0 25px rgba(255,255,255,0.15), 0 4px 20px rgba(0,0,0,0.9)",
                 }}
               >
-                <div style={{ height: "1px", width: "2rem", background: chapter.accent, opacity: 0.5 }} />
-                <span
+                <div className="cs-num flex justify-center items-center gap-4 mb-4">
+                  <span style={{ color: ch.accent }}>—</span>
+                  <span className="tracking-[0.5em] text-white/70 text-xs md:text-sm">CHAPTER {ch.num}</span>
+                  <span style={{ color: ch.accent }}>—</span>
+                </div>
+
+                <div className="cs-sanskrit text-3xl md:text-5xl text-white/40 mb-2">{ch.sanskrit}</div>
+
+                <div
+                  className="cs-divider mx-auto my-6 w-16 h-[2px]"
                   style={{
-                    fontFamily: "var(--font-body), sans-serif",
-                    fontSize: "clamp(0.6rem, 1.1vw, 0.8rem)",
-                    letterSpacing: "0.45em",
-                    textTransform: "uppercase",
-                    color: chapter.accent,
-                    fontWeight: 700,
+                    background: `linear-gradient(90deg, transparent, ${ch.accent}, transparent)`,
+                  }}
+                />
+
+                <h2 className="cs-title text-5xl md:text-8xl font-black text-white mb-2 leading-none">
+                  {ch.title}
+                </h2>
+                <h2
+                  className="cs-title-accent text-4xl md:text-7xl font-black italic mb-6 leading-none"
+                  style={{
+                    background: `linear-gradient(135deg, ${ch.accent}, #FFD700)`,
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
                   }}
                 >
-                  {String(i + 1).padStart(2, "0")} — {chapter.subtitle}
-                </span>
-                <div style={{ height: "1px", width: "2rem", background: chapter.accent, opacity: 0.5 }} />
-              </div>
+                  {ch.titleAccent}
+                </h2>
 
-              {/* Decorative line */}
-              <div
-                className="panel-line"
-                style={{
-                  width: "clamp(40px, 6vw, 80px)",
-                  height: "3px",
-                  background: `linear-gradient(90deg, transparent, ${chapter.accent}, transparent)`,
-                  margin: "0 auto 2rem",
-                  borderRadius: "2px",
-                }}
-              />
+                <p className="cs-body text-base md:text-xl text-white/90 leading-relaxed font-medium mx-auto max-w-2xl drop-shadow-xl">
+                  {ch.body}
+                </p>
 
-              {/* Title */}
-              <h2
-                className="panel-title"
-                style={{
-                  fontFamily: "var(--font-display), serif",
-                  fontSize: "clamp(2.5rem, 7vw, 6.5rem)",
-                  fontWeight: 800,
-                  color: "#1A0F0A",
-                  lineHeight: 0.92,
-                  letterSpacing: "-0.02em",
-                  marginBottom: "clamp(1.2rem, 3vw, 2.5rem)",
-                }}
-              >
-                {chapter.title.split(" ").map((word, wi) => (
-                  <span
-                    key={wi}
-                    style={{
-                      display: wi % 2 !== 0 ? "block" : "inline",
-                      fontStyle: wi % 2 !== 0 ? "italic" : "normal",
-                      background:
-                        wi % 2 !== 0
-                          ? `linear-gradient(135deg, ${chapter.accent}, #C41E3A)`
-                          : undefined,
-                      WebkitBackgroundClip: wi % 2 !== 0 ? "text" : undefined,
-                      WebkitTextFillColor:
-                        wi % 2 !== 0 ? "transparent" : undefined,
-                      backgroundClip: wi % 2 !== 0 ? "text" : undefined,
-                    }}
-                  >
-                    {word}{" "}
+                <div className="cs-cta mt-8 flex justify-center items-center gap-4">
+                  <span className="cs-cta-line w-8 h-[1px] opacity-60" style={{ background: ch.accent }} />
+                  <span className="cs-cta-text tracking-[0.4em] text-xs font-bold" style={{ color: ch.accent }}>
+                    ◊ &nbsp; DISCOVER &nbsp; ◊
                   </span>
-                ))}
-              </h2>
-
-              {/* Body text */}
-              <p
-                className="panel-body"
-                style={{
-                  fontFamily: "var(--font-body), sans-serif",
-                  fontSize: "clamp(0.95rem, 1.8vw, 1.2rem)",
-                  color: "rgba(26,15,10,0.7)",
-                  lineHeight: 1.75,
-                  maxWidth: "560px",
-                  margin: "0 auto",
-                  fontWeight: 500,
-                }}
-              >
-                {chapter.text}
-              </p>
-
-              {/* Decorative SVG */}
-              <div style={{ marginTop: "clamp(2rem, 5vw, 4rem)", opacity: 0.25 }}>
-                <svg width="100" height="16" viewBox="0 0 100 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0 8 Q25 0 50 8 Q75 16 100 8" stroke={chapter.accent} strokeWidth="1.5" />
-                  <circle cx="50" cy="8" r="3" fill={chapter.accent} />
-                </svg>
+                  <span className="cs-cta-line w-8 h-[1px] opacity-60" style={{ background: ch.accent }} />
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
 
-      {/* Scroll indicator */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: "2rem",
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 30,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "0.5rem",
-          opacity: 0.5,
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "var(--font-body), sans-serif",
-            fontSize: "0.65rem",
-            letterSpacing: "0.3em",
-            textTransform: "uppercase",
-            color: "#1A0F0A",
-          }}
-        >
-          Scroll to explore
-        </span>
-        <svg width="20" height="28" viewBox="0 0 20 28" fill="none">
-          <rect x="1" y="1" width="18" height="26" rx="9" stroke="#1A0F0A" strokeWidth="1.5" />
-          <circle cx="10" cy="8" r="2.5" fill="#e95d24" style={{ animation: "scrollDot 1.8s ease-in-out infinite" }} />
-        </svg>
-      </div>
+            {/* ── Scroll hint (Only on first panel or global) ────────── */}
+            {i === 0 && (
+              <div className="absolute bottom-8 right-8 z-50 flex items-center gap-3">
+                <span className="uppercase tracking-widest text-xs text-white/40">Scroll Sequence</span>
+                <div className="cs-scroll-wheel">
+                  <div className="cs-scroll-dot" />
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })}
     </section>
   );
 }
