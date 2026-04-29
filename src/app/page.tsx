@@ -7,7 +7,6 @@ import { DhamFlipAnimation } from "@/components/home/DhamFlipAnimation";
 import { CinematicStorySection } from "@/components/home/CinematicStorySection";
 import { CultureSection } from "@/components/home/CultureSection";
 import { SacredStoreSection } from "@/components/sections/SacredStoreSection";
-import { PhilosophySection } from "@/components/home/PhilosophySection";
 import { MissionSection } from "@/components/home/MissionSection";
 import { DevoteeSection } from "@/components/home/DevoteeSection";
 import { GallerySection } from "@/components/home/GallerySection";
@@ -27,7 +26,6 @@ export default function Home() {
         <CinematicStorySection />
         <CultureSection />
         <SacredStoreSection />
-        <PhilosophySection />
         <MissionSection />
         <GallerySection />
         <InvocationSection />

@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Store,
@@ -65,14 +66,13 @@ export function SacredStoreSection() {
   const [cards, setCards] = useState(SACRED_OFFERS);
   const [isHovering, setIsHovering] = useState(false);
 
-  // Auto-play interval
+  // Auto-play interval - guaranteed autoscroll
   useEffect(() => {
-    if (isHovering) return;
     const timer = setInterval(() => {
       handleNext();
-    }, 4500);
+    }, 4000);
     return () => clearInterval(timer);
-  }, [isHovering, cards]);
+  }, [cards[0].id]); // Stable dependency size, re-triggers when cards rotate
 
   const handleNext = () => {
     setCards((prev) => {
@@ -109,22 +109,26 @@ export function SacredStoreSection() {
       <div className="max-w-[1360px] mx-auto px-4 md:px-8 relative z-10">
 
         {/* Header Section */}
-        <div className="text-center mb-20 md:mb-24">
+        <div className="text-center mb-20 md:mb-24 flex flex-col items-center">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-block px-5 py-2 mb-6 rounded-full bg-[#3a2e2b]/5 border border-[#3a2e2b]/10 text-[#8b5a47] text-xs font-bold tracking-[0.2em] uppercase"
+            className="flex items-center gap-3 mb-4"
           >
-            Sacred Services
+            <div className="w-8 h-px bg-saffron/60" />
+            <span className="font-body text-[10px] tracking-[0.4em] uppercase text-saffron font-bold">
+              Sacred Services
+            </span>
+            <div className="w-8 h-px bg-saffron/60" />
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-6xl font-serif text-[#3a2e2b] mb-6 tracking-tight uppercase"
+            className="text-4xl md:text-5xl font-display text-sacred-brown mb-6 tracking-tight leading-[1.1]"
           >
-            Divine Offerings
+            Divine <span className="italic text-gradient-saffron font-bold">Offerings.</span>
           </motion.h2>
         </div>
 
@@ -134,7 +138,11 @@ export function SacredStoreSection() {
           {/* =========================================
               LEFT COLUMN: Stable High-End Stack
               ========================================= */}
-          <div
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.6, duration: 0.8 }}
             className="lg:col-span-7 flex flex-col items-center justify-center w-full"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
@@ -248,13 +256,18 @@ export function SacredStoreSection() {
                 />
               ))}
             </div>
-
-          </div>
+          </motion.div>
 
           {/* =========================================
               RIGHT COLUMN: Elegant Proper List
               ========================================= */}
-          <div className="lg:col-span-5 flex flex-col h-[520px]">
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="lg:col-span-5 flex flex-col h-[550px]"
+          >
             <div className="bg-white rounded-[32px] p-8 md:p-10 shadow-[0_15px_40px_rgba(58,46,43,0.04)] h-full overflow-hidden flex flex-col relative border border-white">
 
               <div className="flex items-center justify-between mb-8 pb-5 border-b border-[#f0e4df]">
@@ -277,10 +290,10 @@ export function SacredStoreSection() {
                         <motion.div
                           key={item.id}
                           // Smooth, universally supported reveal (No flicker-prone clipPaths)
-                          initial={{ opacity: 0, y: 15, filter: "blur(4px)" }}
+                          initial={{ opacity: 0, x: -20, filter: "blur(4px)" }}
                           animate={{
                             opacity: 1,
-                            y: 0,
+                            x: 0,
                             filter: "blur(0px)",
                             transition: {
                               duration: 0.4,
@@ -308,7 +321,6 @@ export function SacredStoreSection() {
                             </div>
                             <div className="flex items-center justify-between">
                               <p className="text-[#8b7974] text-xs font-medium">{item.subtitle}</p>
-                              <span className="text-[#a67c6d]/80 text-[10px] font-bold tracking-widest uppercase">{item.time}</span>
                             </div>
                           </div>
                         </motion.div>
@@ -320,8 +332,19 @@ export function SacredStoreSection() {
                 <div className="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-white to-transparent pointer-events-none" />
               </div>
 
+              {/* Visit Store Button */}
+              <div className="mt-6 pt-6 border-t border-[#f0e4df]">
+                <Link 
+                  href="/store" 
+                  className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl bg-[#faf6f3] text-[#8b5a47] font-bold tracking-widest uppercase text-xs hover:bg-[#8b5a47] hover:text-white transition-all group/store"
+                >
+                  Visit Sacred Store
+                  <ArrowRight size={16} className="transition-transform group-hover/store:translate-x-1" />
+                </Link>
+              </div>
+
             </div>
-          </div>
+          </motion.div>
 
         </div>
       </div>

@@ -25,14 +25,18 @@ export function TraditionSection() {
   return (
     <section className="relative py-32 px-6 bg-sacred-premium-gradient overflow-hidden">
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="text-center mb-24">
+        <div className="text-center mb-24 flex flex-col items-center">
           <BlurFade delay={0.2}>
-            <span className="font-body text-xs tracking-[0.3em] uppercase text-saffron font-bold mb-4 block">
-              ◊ Our Heritage ◊
-            </span>
-            <TextAnimate animation="slideUp" duration={0.8} className="font-display text-4xl md:text-5xl text-sacred-brown">
-              WHERE TRADITION BREATHES
-            </TextAnimate>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-px bg-saffron/60" />
+              <span className="font-body text-[10px] tracking-[0.4em] uppercase text-saffron font-bold">
+                Our Heritage
+              </span>
+              <div className="w-8 h-px bg-saffron/60" />
+            </div>
+            <h2 className="font-display text-4xl md:text-5xl text-sacred-brown leading-[1.1]">
+              Where Tradition <span className="italic text-gradient-saffron font-bold">Breathes.</span>
+            </h2>
           </BlurFade>
         </div>
 

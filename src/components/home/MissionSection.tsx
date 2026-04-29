@@ -33,19 +33,21 @@ export function MissionSection() {
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
         <BlurFade delay={0.2}>
-          <div className="flex items-center justify-center mb-10">
-            <div className="group rounded-full border border-saffron/20 bg-saffron/5 px-6 py-1.5 transition-all">
-              <AnimatedShinyText className="font-body text-xs font-semibold tracking-[0.3em] uppercase text-saffron">
-                <span>◊ DARJEELING TO THE WORLD ◊</span>
-              </AnimatedShinyText>
+          <div className="flex flex-col items-center mb-10">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-px bg-saffron/60" />
+              <span className="font-body text-[10px] tracking-[0.4em] uppercase text-saffron font-bold">
+                Darjeeling to the World
+              </span>
+              <div className="w-8 h-px bg-saffron/60" />
             </div>
+            
+            <h2 className="font-display text-4xl md:text-5xl text-sacred-brown leading-[1.1] tracking-tight">
+              Reviving Shakti.
+              <br />
+              <span className="italic text-gradient-saffron font-bold">Guiding Souls.</span>
+            </h2>
           </div>
-          
-          <h2 className="font-display text-5xl md:text-7xl text-sacred-brown leading-tight mb-10 tracking-tight">
-            REVIVING SHAKTI.
-            <br />
-            <span className="text-saffron italic">GUIDING SOULS.</span>
-          </h2>
         </BlurFade>
 
         <BlurFade delay={0.4}>

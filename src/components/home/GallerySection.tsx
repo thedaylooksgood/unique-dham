@@ -14,13 +14,17 @@ export function GallerySection() {
   return (
     <section className="relative py-32 px-6 bg-sacred-premium-gradient overflow-hidden">
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 flex flex-col items-center">
           <BlurFade delay={0.2}>
-            <span className="font-body text-xs tracking-[0.3em] uppercase text-saffron font-bold mb-4 block">
-              ◊ Sacred Glimpses ◊
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl text-sacred-brown">
-              DIVINE GALLERY
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-px bg-saffron/60" />
+              <span className="font-body text-[10px] tracking-[0.4em] uppercase text-saffron font-bold">
+                Sacred Glimpses
+              </span>
+              <div className="w-8 h-px bg-saffron/60" />
+            </div>
+            <h2 className="font-display text-4xl md:text-5xl text-sacred-brown leading-[1.1]">
+              Divine <span className="italic text-gradient-saffron font-bold">Gallery.</span>
             </h2>
           </BlurFade>
         </div>

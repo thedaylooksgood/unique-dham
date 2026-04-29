@@ -21,16 +21,17 @@ export function MahantSection() {
           {/* LEFT: Text Content */}
           <div className="flex flex-col space-y-4">
             <BlurFade delay={0.2} direction="right">
-              <div className="flex items-center gap-3">
-                <span className="text-[#e76f51] text-xs font-bold tracking-[0.4em] uppercase">
-                  ◊ THE SPIRITUAL GUIDE ◊
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-8 h-px bg-saffron/60" />
+                <span className="font-body text-[10px] tracking-[0.4em] uppercase text-saffron font-bold">
+                  The Spiritual Guide
                 </span>
               </div>
 
               <div className="space-y-2 mt-2">
-                <h2 className="font-display text-5xl md:text-6xl lg:text-7xl text-[#2c2c2c] leading-tight">
+                <h2 className="font-display text-4xl md:text-5xl text-sacred-brown leading-[1.1]">
                   Shri Shri <br />
-                  <span className="italic font-display font-light text-[#2c2c2c]">Mahant Yogiraj</span>
+                  <span className="italic text-gradient-saffron font-bold">Mahant Yogiraj</span>
                 </h2>
               </div>
             </BlurFade>
