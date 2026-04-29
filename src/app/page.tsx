@@ -29,7 +29,6 @@ export default function Home() {
         <SacredStoreSection />
         <PhilosophySection />
         <MissionSection />
-        <DevoteeSection />
         <GallerySection />
         <InvocationSection />
       </main>
