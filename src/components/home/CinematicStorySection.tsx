@@ -102,6 +102,7 @@ export function CinematicStorySection() {
         scrollTrigger: {
           trigger: sectionRef.current,
           pin: true,
+          anticipatePin: 1, // Prevents slight jerk on pin entry
           scrub: 1, // Smooth scrub
           start: "top top",
           end: `+=${CHAPTERS.length * 200}%`, // 2 screens of scroll per chapter
@@ -119,7 +120,8 @@ export function CinematicStorySection() {
         // Set vertical strips initially hidden via clip-path
         const strips = gsap.utils.toArray<HTMLElement>(`.cs-strip-${ch.id}`);
         if (strips.length > 0) {
-          gsap.set(strips, { clipPath: "inset(100% 0% 0% 0%)" });
+          const isMobile = window.innerWidth < 768;
+          gsap.set(strips, { clipPath: isMobile ? "inset(0% 100% 0% 0%)" : "inset(100% 0% 0% 0%)" });
           
           const imgs = gsap.utils.toArray<HTMLElement>(`.cs-strip-${ch.id} img`);
           gsap.set(imgs, { scale: 1.2 });
@@ -180,7 +182,7 @@ export function CinematicStorySection() {
   );
 
   return (
-    <section ref={sectionRef} className="cs-section bg-black relative w-full h-screen overflow-hidden">
+    <section ref={sectionRef} className="cs-section bg-black relative w-full h-[100svh] overflow-hidden">
       
       {/* ── Background Elements (Persistent) ─────────────────────────── */}
       <div className="cs-grain" aria-hidden />
@@ -213,10 +215,10 @@ export function CinematicStorySection() {
             style={{ zIndex: i + 10 }} // Higher chapters cover lower ones
           >
             {/* ── Photo Layer (Behind Text) ──────────────────────────── */}
-            <div className="absolute inset-0 z-0 flex pointer-events-none w-full h-full">
+            <div className="absolute inset-0 z-0 flex flex-col md:flex-row pointer-events-none w-full h-full">
               {imgs && imgs.length > 0 ? (
                 imgs.map((src, idx) => (
-                  <div key={`${ch.id}-${idx}`} className="flex-1 h-full overflow-hidden relative border-r border-white/5 last:border-r-0">
+                  <div key={`${ch.id}-${idx}`} className="flex-1 overflow-hidden relative border-b md:border-b-0 md:border-r border-white/5 last:border-b-0 md:last:border-r-0">
                     <div
                       className={`cs-strip-${ch.id} absolute inset-0 w-full h-full`}
                     >
