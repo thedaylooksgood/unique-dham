@@ -108,7 +108,7 @@ export function NavaDurgaSection() {
       <div className="relative group">
         <div 
           ref={containerRef}
-          className="flex gap-8 overflow-x-auto pb-12 px-12 md:px-24 no-scrollbar cursor-grab active:cursor-grabbing scroll-smooth"
+          className="relative flex gap-8 overflow-x-auto pb-12 px-12 md:px-24 no-scrollbar cursor-grab active:cursor-grabbing scroll-smooth"
         >
           {navaDurga.map((durga, idx) => (
             <BlurFade key={durga.id} delay={0.3 + idx * 0.1}>

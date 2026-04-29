@@ -20,6 +20,9 @@ const mantras = [
 const banners = [
   "/images/home-page/hero/banner 1.png",
   "/images/home-page/hero/banner 2.png",
+  "/images/home-page/hero/banner 3.png",
+  "/images/home-page/hero/banner 4.png",
+  "/images/home-page/hero/banner 5.png",
 ];
 
 const heroContent = [
@@ -34,6 +37,24 @@ const heroContent = [
     heading2: "DARJEELING.",
     sparkle: "DIVINE BLISS.",
     desc: "Experience the eternal energy of Sanatan Shakti, flowing through the ancient peaks to touch every soul that seeks the truth.",
+  },
+  {
+    heading1: "THE ETERNAL LIGHT",
+    heading2: "OF THE HILLS.",
+    sparkle: "DIVINE PROTECTION.",
+    desc: "Walking the path of devotion where every breath is a prayer and every step is a blessing from the Divine Mother.",
+  },
+  {
+    heading1: "AWAKEN THE POWER",
+    heading2: "WITHIN.",
+    sparkle: "SACRED SHAKTI.",
+    desc: "Feel the primal energy of nature merging with your consciousness, guided by the ancient wisdom of the Dham.",
+  },
+  {
+    heading1: "A JOURNEY TO",
+    heading2: "YOUR SOUL.",
+    sparkle: "ETERNAL TRUTH.",
+    desc: "Transcending the material world to find the silence that speaks, the light that guides, and the mother that loves unconditionally.",
   },
 ];
 
@@ -126,6 +147,15 @@ function SketchRevealImage({
                 ease: [0.25, 0.1, 0.25, 1],
               }}
             />
+            {/* Full reveal at the end to ensure no gaps remain in the SVG layer */}
+            <motion.rect
+              width="1920"
+              height="1080"
+              fill="white"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 2.2, duration: 0.5, ease: "easeOut" }}
+            />
           </mask>
         </defs>
 
@@ -181,10 +211,12 @@ export function HeroSection() {
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center flex flex-col items-center justify-center">
         {/* Mantra Rotation */}
         <BlurFade delay={0.2}>
-          <div className="mb-6">
+          <div className="mb-6 relative">
+            {/* Mantra Cloud - Lighter sacred glow */}
+            <div className="absolute inset-x-[-20%] inset-y-[-15%] bg-[#FFFBF5]/70 blur-[20px] rounded-[100%] z-[-1] pointer-events-none scale-x-110 opacity-75" />
             <WordRotate
               words={mantras}
-              className="font-sacred text-xl md:text-2xl lg:text-3xl text-saffron italic drop-shadow-[0_0_15px_rgba(255,255,255,1)] tracking-wide"
+              className="font-sacred text-xl md:text-2xl lg:text-3xl text-saffron italic drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] tracking-wide"
               duration={4000}
             />
           </div>
@@ -198,31 +230,41 @@ export function HeroSection() {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.8 }}
           >
-            {/* Main Heading */}
-            <div className="space-y-4 mb-8">
-              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[0.9] text-sacred-brown tracking-tight drop-shadow-[0_0_20px_rgba(255,255,255,1)]">
-                {heroContent[currentBanner].heading1}
-                <br />
-                <span className="text-gradient-saffron italic pr-2 drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]">
-                  {heroContent[currentBanner].heading2}
-                </span>
-              </h1>
-
-              <div className="flex items-center justify-center">
-                <SparklesText
-                  className="font-display text-4xl md:text-6xl lg:text-7xl leading-none text-sacred-brown drop-shadow-[0_0_20px_rgba(255,255,255,1)]"
-                  sparklesCount={12}
-                  colors={{ first: "#E8860C", second: "#C41E3A" }}
-                >
-                  {heroContent[currentBanner].sparkle}
-                </SparklesText>
+            <div className="relative py-8 px-4">
+              {/* Cloud Overlay - Lighter and more subtle sacred mist */}
+              <div className="absolute inset-x-[-12%] inset-y-[-8%] pointer-events-none z-[-1]">
+                {/* Thick core layer - lighter ivory and lower opacity */}
+                <div className="absolute inset-0 bg-[#FFFBF5]/80 blur-[40px] rounded-[100%] opacity-80" />
+                {/* Secondary bloom - lower opacity */}
+                <div className="absolute inset-[-5%] bg-white/60 blur-[30px] rounded-[100%] opacity-60" />
               </div>
-            </div>
 
-            {/* Subheading */}
-            <p className="font-body text-sm md:text-base lg:text-lg text-warm-umber max-w-2xl mx-auto mb-10 leading-relaxed font-semibold tracking-wide drop-shadow-[0_0_15px_rgba(255,255,255,1)]">
-              {heroContent[currentBanner].desc}
-            </p>
+              {/* Main Heading */}
+              <div className="space-y-4 mb-8">
+                <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[0.9] text-sacred-brown tracking-tight drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]">
+                  {heroContent[currentBanner].heading1}
+                  <br />
+                  <span className="text-gradient-saffron italic pr-2 drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]">
+                    {heroContent[currentBanner].heading2}
+                  </span>
+                </h1>
+
+                <div className="flex items-center justify-center">
+                  <SparklesText
+                    className="font-display text-4xl md:text-6xl lg:text-7xl leading-none text-sacred-brown drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]"
+                    sparklesCount={12}
+                    colors={{ first: "#E8860C", second: "#C41E3A" }}
+                  >
+                    {heroContent[currentBanner].sparkle}
+                  </SparklesText>
+                </div>
+              </div>
+
+              {/* Subheading */}
+              <p className="font-body text-sm md:text-base lg:text-lg text-warm-umber max-w-2xl mx-auto mb-2 leading-relaxed font-semibold tracking-wide drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">
+                {heroContent[currentBanner].desc}
+              </p>
+            </div>
           </motion.div>
         </AnimatePresence>
 
