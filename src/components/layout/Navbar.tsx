@@ -14,6 +14,7 @@ const navLinks = [
   { href: "/puja-booking", label: "Puja Booking" },
   { href: "/guidance", label: "Guidance" },
   { href: "/sacred-store", label: "Sacred Store" },
+  { href: "/gallery", label: "Gallery" },
 ];
 
 export function Navbar() {

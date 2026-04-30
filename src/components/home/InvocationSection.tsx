@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { SparklesText } from "@/components/ui/sparkles-text";
 import { Particles } from "@/components/ui/particles";
@@ -10,14 +11,20 @@ import { ArrowRight } from "lucide-react";
 
 export function InvocationSection() {
   return (
-    <section className="relative py-48 overflow-hidden bg-white">
-      {/* Background with warm saffron glow and rising sparks */}
-      <div 
-        className="absolute inset-0 opacity-40"
-        style={{
-          background: "radial-gradient(circle at 50% 50%, rgba(232, 134, 12, 0.1), transparent 80%)"
-        }}
-      />
+    <section className="relative py-20 overflow-hidden bg-transparent">
+      {/* Reused Background Image from DhamFlipAnimation */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/home-page/dham-section-bg-new.png"
+          alt="Invocation Background"
+          fill
+          className="object-cover opacity-100"
+          priority
+          unoptimized
+        />
+        {/* Subtle overlay to soften the background for text readability */}
+        <div className="absolute inset-0 bg-[#FFFBF5]/20 backdrop-blur-[1px]" />
+      </div>
       
       <Particles
         className="absolute inset-0"
@@ -29,13 +36,13 @@ export function InvocationSection() {
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
         <BlurFade delay={0.2}>
-          <p className="font-body text-xl md:text-2xl text-warm-umber/70 mb-12 italic">
+          <p className="font-body text-xl md:text-2xl text-warm-umber/70 mb-8 italic">
             "If you have reached here, it is not by chance."
           </p>
         </BlurFade>
 
         <BlurFade delay={0.4}>
-          <div className="flex items-center justify-center mb-16">
+          <div className="flex items-center justify-center mb-10">
             <SparklesText 
               className="font-display text-5xl md:text-7xl lg:text-8xl text-sacred-brown tracking-tighter"
               sparklesCount={15}
@@ -66,8 +73,15 @@ export function InvocationSection() {
         </BlurFade>
 
         <BlurFade delay={0.8}>
-          <div className="mt-24 flex flex-col items-center gap-4">
-            <OmIcon className="text-saffron/30 h-10 w-10 animate-pulse" />
+          <div className="mt-12 flex flex-col items-center gap-4">
+            <div className="relative h-16 w-16 animate-pulse opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
+              <Image
+                src="/logo.png"
+                alt="Maa Unique Dham Logo"
+                fill
+                className="object-contain"
+              />
+            </div>
             <div className="w-px h-16 bg-gradient-to-b from-saffron/20 to-transparent" />
           </div>
         </BlurFade>
