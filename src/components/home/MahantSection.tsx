@@ -12,18 +12,17 @@ const highlights = [
 
 export function MahantSection() {
   return (
-    <section id="mahant" className="relative py-8 px-6 md:px-16 bg-[#f7efe5] overflow-hidden scroll-mt-24">
+    <section id="mahant" className="relative py-8 px-6 md:px-16 bg-transparent overflow-hidden scroll-mt-24">
 
-      {/* --- BACKGROUND IMAGE: The Serene Vibe --- */}
-      {/* Make sure 'serene-bg.jpg' is in your public/images/home-page folder! */}
-      <div className="absolute inset-0 z-0 opacity-30 mix-blend-multiply pointer-events-none">
+      {/* --- BACKGROUND IMAGE --- */}
+      <div className="absolute inset-0 -z-10 w-full h-full pointer-events-none">
         <Image
-          src="/images/home-page/serene-bg.jpg"
-          alt="Serene Background"
+          src="/images/home-page/mahant/mahant-section-bg.png"
+          alt="Mahant Section Background"
           fill
-          className="object-cover"
-          quality={80}
+          className="object-fill contrast-[1.15] brightness-[1.02]"
           priority
+          unoptimized
         />
       </div>
 
@@ -92,8 +91,8 @@ export function MahantSection() {
                 className="relative w-full h-full"
                 style={{
                   // This is the magic sauce! 
-                  maskImage: "url('/images/home-page/intro/brush-mask.png')",
-                  WebkitMaskImage: "url('/images/home-page/intro/brush-mask.png')",
+                  maskImage: "url('/images/home-page/mahant/brush-mask.png')",
+                  WebkitMaskImage: "url('/images/home-page/mahant/brush-mask.png')",
                   // 100% 100% stretches the brush shape to fit the container perfectly
                   maskSize: "100% 100%",
                   WebkitMaskSize: "100% 100%",
@@ -104,7 +103,7 @@ export function MahantSection() {
                 }}
               >
                 <Image
-                  src="/images/home-page/yogiraj.png"
+                  src="/images/home-page/mahant/yogiraj.png"
                   alt="Mahant Yogiraj in meditation"
                   fill
                   sizes="(max-width: 500px) 80vw, 30vw"
