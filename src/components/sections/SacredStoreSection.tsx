@@ -109,7 +109,7 @@ export function SacredStoreSection() {
       <div className="max-w-[1360px] mx-auto px-4 md:px-8 relative z-10">
 
         {/* Header Section */}
-        <div className="text-center mb-20 md:mb-24 flex flex-col items-center">
+        <div className="text-center mb-5 md:mb-5 flex flex-col items-center">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -334,8 +334,8 @@ export function SacredStoreSection() {
 
               {/* Visit Store Button */}
               <div className="mt-6 pt-6 border-t border-[#f0e4df]">
-                <Link 
-                  href="/store" 
+                <Link
+                  href="/store"
                   className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl bg-[#faf6f3] text-[#8b5a47] font-bold tracking-widest uppercase text-xs hover:bg-[#8b5a47] hover:text-white transition-all group/store"
                 >
                   Visit Sacred Store
