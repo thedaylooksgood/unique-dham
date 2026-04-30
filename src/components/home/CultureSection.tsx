@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { DiaTextReveal } from "@/components/ui/dia-text-reveal";
 import { Volume2, VolumeX, Eye, X } from "lucide-react";
@@ -30,8 +31,21 @@ export function CultureSection() {
   }, [isSpotlight]);
 
   return (
-    <section className="relative py-0 md:py-24 px-0 md:px-12 bg-ivory overflow-hidden">
-      <div className="w-full md:max-w-7xl mx-auto">
+    <section className="relative py-12 md:py-32 px-0 md:px-12 bg-[#FFFBF5] overflow-hidden">
+      {/* --- BACKGROUND IMAGE (Outside the video frame) --- */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <Image
+          src="/images/home-page/video-section-bg.png"
+          alt="Video Section Background"
+          fill
+          className="object-cover opacity-100"
+          priority
+          unoptimized
+        />
+        {/* Subtle overlay to ensure text remains readable if the background is busy */}
+        <div className="absolute inset-0 bg-white/10 backdrop-blur-[2px]" />
+      </div>
+      <div className="relative z-10 w-full md:max-w-7xl mx-auto">
         <BlurFade delay={0.2} inView>
           <div className="relative w-full aspect-[9/16] md:aspect-[21/9] rounded-none md:rounded-[3rem] overflow-hidden shadow-2xl bg-sacred-brown group">
             
