@@ -13,7 +13,19 @@ const highlights = [
 export function MahantSection() {
   return (
     <section id="mahant" className="relative py-8 px-6 md:px-16 bg-[#f7efe5] overflow-hidden scroll-mt-24">
-      {/* Background is now clean, chakra/mandala removed as requested */}
+
+      {/* --- BACKGROUND IMAGE: The Serene Vibe --- */}
+      {/* Make sure 'serene-bg.jpg' is in your public/images/home-page folder! */}
+      <div className="absolute inset-0 z-0 opacity-30 mix-blend-multiply pointer-events-none">
+        <Image
+          src="/images/home-page/serene-bg.jpg"
+          alt="Serene Background"
+          fill
+          className="object-cover"
+          quality={80}
+          priority
+        />
+      </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -54,7 +66,7 @@ export function MahantSection() {
               </div>
             </BlurFade>
 
-            {/* Horizontal Icons (Bottom Row) - Allowed to bleed into right column */}
+            {/* Horizontal Icons (Bottom Row) */}
             <div className="flex flex-wrap lg:flex-nowrap items-center gap-10 pt-2 relative z-20 w-full lg:w-[120%]">
               {highlights.map((item, index) => (
                 <BlurFade key={item.title} delay={0.6 + index * 0.1} direction="up">
@@ -72,33 +84,36 @@ export function MahantSection() {
             </div>
           </div>
 
-          {/* RIGHT: Image Block (CSS Blended to replicate design style) */}
-          <BlurFade delay={0.4} direction="left" className="relative h-full min-h-[600px] flex items-center justify-center">
-            <div className="relative w-full h-full">
-              {/* Heavy CSS Masking for seamless edge blending */}
+          {/* RIGHT: Image Block with BRUSH STROKE MASK */}
+          <BlurFade delay={0.4} direction="left" className="relative h-full min-h-[700px] flex items-center justify-center">
+            <div className="relative w-full h-[650px]"> {/* Increased height for better visibility */}
+
               <div
-                className="relative w-full h-full scale-110"
+                className="relative w-full h-full"
                 style={{
-                  maskImage: 'linear-gradient(to right, transparent 5%, black 40%), linear-gradient(to top, transparent 5%, black 20%, black 80%, transparent 95%)',
-                  WebkitMaskImage: 'linear-gradient(to right, transparent 5%, black 40%), linear-gradient(to top, transparent 5%, black 20%, black 80%, transparent 95%)',
-                  maskComposite: 'intersect',
-                  WebkitMaskComposite: 'source-in',
+                  // This is the magic sauce! 
+                  maskImage: "url('/images/home-page/intro/brush-mask.png')",
+                  WebkitMaskImage: "url('/images/home-page/intro/brush-mask.png')",
+                  // 100% 100% stretches the brush shape to fit the container perfectly
+                  maskSize: "100% 100%",
+                  WebkitMaskSize: "100% 100%",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskPosition: "center",
+                  WebkitMaskPosition: "center",
                 }}
               >
                 <Image
                   src="/images/home-page/yogiraj.png"
                   alt="Mahant Yogiraj in meditation"
                   fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-contain object-right select-none pointer-events-none drop-shadow-sm transition-opacity duration-500"
+                  sizes="(max-width: 500px) 80vw, 30vw"
+                  className="object-cover object-center select-none pointer-events-none drop-shadow-sm transition-opacity duration-500"
                   priority
                 />
               </div>
 
-              {/* Edge Overlays to finalize the blend into the #f7efe5 background */}
-              <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-[#f7efe5] to-transparent pointer-events-none opacity-80" />
-              <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-[#f7efe5] to-transparent pointer-events-none opacity-80" />
-              <div className="absolute inset-x-0 top-0 h-1/4 bg-gradient-to-b from-[#f7efe5] to-transparent pointer-events-none opacity-80" />
+              {/* Notice I removed the extra gradient overlays here so ONLY the pure brush stroke shows! */}
             </div>
           </BlurFade>
 

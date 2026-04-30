@@ -7,16 +7,43 @@ export function Preloader() {
   const [pageLoaded, setPageLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Track page load status
+  // Track page load status with a safety timeout
   useEffect(() => {
-    const handleLoad = () => setPageLoaded(true);
+    let safetyTimeout: NodeJS.Timeout;
+
+    const handleLoad = () => {
+      setPageLoaded(true);
+      if (safetyTimeout) clearTimeout(safetyTimeout);
+    };
+
     if (document.readyState === "complete") {
       handleLoad();
     } else {
       window.addEventListener("load", handleLoad);
-      return () => window.removeEventListener("load", handleLoad);
+      // Force pageLoaded to true after 5 seconds if load event hasn't fired
+      safetyTimeout = setTimeout(() => {
+        console.warn("Preloader: Load event timed out, forcing progress");
+        handleLoad();
+      }, 5000);
+
+      return () => {
+        window.removeEventListener("load", handleLoad);
+        if (safetyTimeout) clearTimeout(safetyTimeout);
+      };
     }
   }, []);
+
+  // Global safety timeout to ensure preloader ALWAYS disappears
+  useEffect(() => {
+    const totalSafetyTimeout = setTimeout(() => {
+      if (phase !== "complete") {
+        console.warn("Preloader: Emergency timeout triggered");
+        setPhase("complete");
+      }
+    }, 10000); // 10 seconds absolute limit
+
+    return () => clearTimeout(totalSafetyTimeout);
+  }, [phase]);
 
   // Handle Video Playback Speed and Direction
   useEffect(() => {
@@ -25,7 +52,16 @@ export function Preloader() {
 
     if (phase === "loading") {
       video.playbackRate = 0.5; // Play slower (0.5x)
-      video.play().catch((e) => console.log("Video autoplay blocked", e));
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((e) => {
+          console.warn("Video autoplay blocked or failed", e);
+          // If video fails, and page is loaded, just move on
+          if (pageLoaded) {
+            setPhase("reversing");
+          }
+        });
+      }
     } else if (phase === "reversing") {
       video.pause();
       
@@ -51,7 +87,7 @@ export function Preloader() {
       reqId = requestAnimationFrame(reverseStep);
       return () => cancelAnimationFrame(reqId);
     }
-  }, [phase]);
+  }, [phase, pageLoaded]);
 
   // Lock scrolling
   useEffect(() => {
@@ -78,7 +114,7 @@ export function Preloader() {
       // Otherwise, loop the animation again from the start
       if (videoRef.current) {
         videoRef.current.currentTime = 0;
-        videoRef.current.play().catch((e) => console.log(e));
+        videoRef.current.play().catch((e) => console.warn(e));
       }
     }
   };
@@ -95,6 +131,10 @@ export function Preloader() {
           playsInline
           muted
           onEnded={handleVideoEnded}
+          onError={() => {
+            console.error("Preloader video failed to load");
+            if (pageLoaded) setPhase("complete");
+          }}
           // Intentionally omitting loop=true so onEnded reliably fires
         />
       </div>
