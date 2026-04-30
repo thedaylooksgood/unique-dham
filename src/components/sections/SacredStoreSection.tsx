@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -105,7 +106,20 @@ export function SacredStoreSection() {
   const activeCard = cards[0];
 
   return (
-    <section className="relative w-full min-h-screen bg-[#faf6f3] py-24 overflow-hidden font-sans">
+    <section className="relative w-full min-h-screen bg-transparent py-24 overflow-hidden font-sans">
+      {/* --- BACKGROUND IMAGE --- */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <Image
+          src="/images/home-page/store-section-bg.png"
+          alt="Sacred Store Background"
+          fill
+          className="object-cover opacity-100"
+          priority
+          unoptimized
+        />
+        {/* Subtly darkened bottom to blend with next section if needed */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#FFFBF5]/20" />
+      </div>
       <div className="max-w-[1360px] mx-auto px-4 md:px-8 relative z-10">
 
         {/* Header Section */}

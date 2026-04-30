@@ -16,19 +16,21 @@ export function MissionSection() {
   const y = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
 
   return (
-    <section ref={ref} className="relative py-48 bg-sacred-premium-gradient overflow-hidden">
+    <section ref={ref} className="relative py-48 bg-transparent overflow-hidden">
       {/* Parallax Background Image */}
       <motion.div 
         style={{ y }}
         className="absolute inset-0 z-0 h-[140%] -top-[20%]"
       >
         <Image
-          src="https://images.unsplash.com/photo-1549216068-d6211028f30b?q=80&w=1200&auto=format&fit=crop"
-          alt="Sacred Mountains of Darjeeling"
+          src="/images/home-page/darjeeling-section-bg.png"
+          alt="Sacred Darjeeling Mountains"
           fill
-          className="object-cover opacity-10"
+          className="object-cover"
+          priority
+          unoptimized
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#fff8f5] via-transparent to-[#fdf8f6]" />
+        {/* Subtle blending overlays removed to respect the branded image */}
       </motion.div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
