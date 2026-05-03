@@ -3,6 +3,7 @@ import { playfairDisplay, plusJakartaSans, tiroDevanagari } from "@/lib/fonts";
 import "./globals.css";
 import { Particles } from "@/components/ui/particles";
 import { Preloader } from "@/components/layout/Preloader";
+import { SmoothScroll } from "@/components/providers/SmoothScroll";
 
 export const metadata: Metadata = {
   title: "Maa Unique Dham | Darjeeling",
@@ -41,7 +42,9 @@ export default function RootLayout({
           refresh
         />
         <div className="relative z-10 flex flex-col flex-1 w-full">
-          {children}
+          <SmoothScroll>
+            {children}
+          </SmoothScroll>
         </div>
       </body>
     </html>
