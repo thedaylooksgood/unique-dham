@@ -67,13 +67,14 @@ const pujasData = [
 // BULLETPROOF COMPONENTS
 // ----------------------------------------------------------------------
 
-// Flawless Word-level mask reveal. Safe for all browsers.
+// Safe Word Reveal Component - NO Tailwind transforms, only GSAP
 const MaskedTitle = ({ text, className = "" }: { text: string; className?: string }) => {
   return (
     <span className={`inline-block ${className}`}>
       {text.split(" ").map((word, index) => (
         <span key={index} className="inline-block overflow-hidden pb-4 mr-[0.25em] align-bottom">
-          <span className="hero-word inline-block translate-y-[120%] rotate-[3deg] opacity-0 origin-top-left">
+          {/* GSAP will handle the initial hidden state to avoid FOUC while keeping it accessible if JS fails */}
+          <span className="hero-word inline-block origin-top-left" style={{ visibility: "hidden" }}>
             {word}
           </span>
         </span>
@@ -128,31 +129,31 @@ export default function PujaGalleryClient() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // 1. Hero Text Reveal: Smooth, upward mask slide. No glitching.
-    gsap.to(".hero-word", {
-      y: "0%",
-      rotate: 0,
-      opacity: 1,
-      duration: 1.2,
-      stagger: 0.1,
-      ease: "power4.out",
-      delay: 0.2
-    });
+    // 1. Hero Text Reveal
+    gsap.fromTo(".hero-word",
+      { yPercent: 120, rotate: 5, autoAlpha: 0 },
+      { yPercent: 0, rotate: 0, autoAlpha: 1, duration: 1.2, stagger: 0.1, ease: "power4.out", delay: 0.1 }
+    );
 
-    // 2. Beautiful Word-by-Word Scroll Opacity Reveal
+    gsap.fromTo(".sparkle-text",
+      { autoAlpha: 0, y: 20 },
+      { autoAlpha: 1, y: 0, duration: 1, ease: "power2.out" }
+    );
+
+    // 2. Scroll-Triggered Paragraph Scrub
     const scrollWords = gsap.utils.toArray<HTMLElement>(".scroll-word");
     gsap.to(scrollWords, {
-      opacity: 1,
+      color: "#1A1108",
       stagger: 0.1,
       scrollTrigger: {
         trigger: ".intro-scroll-container",
-        start: "top 80%", // Starts when paragraph hits bottom 20% of screen
-        end: "bottom 50%", // Finishes when it hits middle of screen
+        start: "top 85%",
+        end: "bottom 60%",
         scrub: true,
       }
     });
 
-    // 3. Sticky Card Logic & Internal Animations
+    // 3. Sticky Card Animations
     const cards = gsap.utils.toArray<HTMLElement>(".sticky-card");
 
     cards.forEach((card, index) => {
@@ -162,10 +163,10 @@ export default function PujaGalleryClient() {
 
       // Slide up content when card enters
       gsap.fromTo(textElements,
-        { y: 40, opacity: 0 },
+        { y: 50, autoAlpha: 0 },
         {
-          y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out",
-          scrollTrigger: { trigger: card, start: "top 65%" }
+          y: 0, autoAlpha: 1, duration: 1, stagger: 0.1, ease: "power3.out",
+          scrollTrigger: { trigger: card, start: "top 70%" }
         }
       );
 
@@ -205,11 +206,11 @@ export default function PujaGalleryClient() {
       {/* =========================================================
           HERO & SCROLL INTRO SECTION (FIXED SPACING)
           ========================================================= */}
-      <section className="pt-32 md:pt-48 pb-24 px-6 max-w-[1400px] mx-auto w-full flex flex-col items-center">
+      <section className="pt-32 pb-24 px-6 max-w-[1400px] mx-auto w-full flex flex-col items-center">
 
         {/* Title Area */}
         <div className="text-center w-full flex flex-col items-center">
-          <span className="flex items-center justify-center gap-3 font-body text-xs tracking-[0.4em] uppercase text-[#F97316] font-bold mb-8">
+          <span className="sparkle-text flex items-center justify-center gap-3 font-body text-xs tracking-[0.4em] uppercase text-[#F97316] font-bold mb-8" style={{ visibility: "hidden" }}>
             <Sparkles className="w-4 h-4" /> Spiritual Awakenings <Sparkles className="w-4 h-4" />
           </span>
 
@@ -221,11 +222,11 @@ export default function PujaGalleryClient() {
           </h1>
         </div>
 
-        {/* Scroll-Triggered Text Block */}
-        <div className="intro-scroll-container max-w-4xl mx-auto mt-20 md:mt-32 px-4 text-center">
+        {/* Scroll-Triggered Text Block (Moved up to remove the massive gap) */}
+        <div className="intro-scroll-container max-w-4xl mx-auto mt-16 md:mt-24 px-4 text-center">
           <p className="font-display text-3xl md:text-5xl leading-[1.3] text-[#1A1108]">
             {"Every ritual is a doorway to the divine. Experience profound transformation through authentic Vedic practices, designed to align your soul with cosmic abundance.".split(" ").map((word, i) => (
-              <span key={i} className="scroll-word inline-block mr-[0.25em] opacity-20">
+              <span key={i} className="scroll-word inline-block mr-[0.25em] text-[#1A1108]/20 transition-colors duration-100">
                 {word}
               </span>
             ))}
@@ -252,7 +253,7 @@ export default function PujaGalleryClient() {
                 <div className={cn("w-full lg:w-[48%] flex flex-col justify-center z-10", !isEven && "lg:order-2")}>
 
                   {/* Meta Details */}
-                  <div className="reveal-text flex items-center gap-6 mb-8">
+                  <div className="reveal-text flex items-center gap-6 mb-8" style={{ visibility: "hidden" }}>
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-[2px] bg-[#F97316]" />
                       <span className="font-body text-[#1A1108]/60 tracking-[0.3em] uppercase text-[10px] md:text-xs font-bold">
@@ -268,17 +269,17 @@ export default function PujaGalleryClient() {
                   </div>
 
                   {/* Title */}
-                  <h2 className="reveal-text font-display text-4xl md:text-6xl text-[#1A1108] mb-6 leading-[1.1] tracking-tight">
+                  <h2 className="reveal-text font-display text-4xl md:text-6xl text-[#1A1108] mb-6 leading-[1.1] tracking-tight" style={{ visibility: "hidden" }}>
                     {puja.name}
                   </h2>
 
                   {/* Description */}
-                  <p className="reveal-text font-body text-[#1A1108]/70 text-base md:text-lg leading-relaxed mb-8">
+                  <p className="reveal-text font-body text-[#1A1108]/70 text-base md:text-lg leading-relaxed mb-8" style={{ visibility: "hidden" }}>
                     {puja.description}
                   </p>
 
                   {/* Benefits List */}
-                  <div className="reveal-text mb-10 space-y-3 border-l-2 border-[#1A1108]/10 pl-5">
+                  <div className="reveal-text mb-10 space-y-3 border-l-2 border-[#1A1108]/10 pl-5" style={{ visibility: "hidden" }}>
                     {puja.benefits.map((benefit, i) => (
                       <div key={i} className="flex items-center gap-3">
                         <CheckCircle2 className="w-4 h-4 text-[#F97316] shrink-0" />
@@ -288,7 +289,7 @@ export default function PujaGalleryClient() {
                   </div>
 
                   {/* Action Button */}
-                  <div className="reveal-text pt-2">
+                  <div className="reveal-text pt-2" style={{ visibility: "hidden" }}>
                     <MagneticButton href={`/puja-booking/${puja.id}`}>
                       Reserve Ritual
                     </MagneticButton>
