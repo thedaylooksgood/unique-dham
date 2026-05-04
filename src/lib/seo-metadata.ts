@@ -18,7 +18,7 @@ const siteConfig = {
     "Spiritual Guidance",
     "Online Puja Booking"
   ],
-  googleVerification: "google267a6b5cf39818e4", // Updated with user's specific code
+  googleVerification: "mLv150vGWImZ6OzkhcyMd8s89eqNzrAPk-WhTlKfC6M",
 };
 
 export function constructMetadata({
