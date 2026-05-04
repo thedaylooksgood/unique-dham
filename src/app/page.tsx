@@ -13,7 +13,27 @@ import { GallerySection } from "@/components/home/GallerySection";
 import { InvocationSection } from "@/components/home/InvocationSection";
 import { Footer } from "@/components/layout/Footer";
 
-export default function Home() {
+// Server Actions
+import { getSequences } from "@/app/actions/getSequences";
+import { getGalleryImages } from "@/app/actions/getGalleryImages";
+
+export default async function Home() {
+  // Parallel fetching of all required page data
+  const [p1, p2, p3, allGalleryImages] = await Promise.all([
+    getSequences("part 1"),
+    getSequences("part 2"),
+    getSequences("part 3"),
+    getGalleryImages(),
+  ]);
+
+  const sequences = {
+    "part 1": p1,
+    "part 2": p2,
+    "part 3": p3,
+  };
+
+  const galleryImages = allGalleryImages.slice(0, 12);
+
   return (
     <>
       <Navbar />
@@ -23,11 +43,11 @@ export default function Home() {
         <IntroSection />
         <MahantSection />
         <DhamFlipAnimation />
-        <CinematicStorySection />
+        <CinematicStorySection sequences={sequences} />
         <CultureSection />
         <SacredStoreSection />
         <MissionSection />
-        <GallerySection />
+        <GallerySection images={galleryImages} />
         <InvocationSection />
       </main>
       <Footer />

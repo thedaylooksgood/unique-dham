@@ -1,25 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { ArrowRight, Eye, X, Maximize2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { getGalleryImages } from "@/app/actions/getGalleryImages";
 
-export function GallerySection() {
-  const [images, setImages] = useState<string[]>([]);
+
+export function GallerySection({ images }: { images: string[] }) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchImages() {
-      const imgs = await getGalleryImages();
-      // Show only a compact set for the home page
-      setImages(imgs.slice(0, 12));
-    }
-    fetchImages();
-  }, []);
 
   return (
     <section className="relative py-24 px-4 md:px-12 bg-transparent overflow-hidden">

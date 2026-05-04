@@ -10,8 +10,13 @@
 
 import React, { useRef } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import Image from "next/image";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export function DhamFlipAnimation() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -19,10 +24,7 @@ export function DhamFlipAnimation() {
   const bgRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
-    async () => {
-      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
-      gsap.registerPlugin(ScrollTrigger);
-
+    () => {
       if (!sectionRef.current || !containerRef.current) return;
 
       // Initial soft fade-in for the very first words so they don't pop abruptly
@@ -42,6 +44,7 @@ export function DhamFlipAnimation() {
           end: "+=5000", // Increased scroll distance for 3 distinct phases
           pin: true,
           scrub: 1.2, // Buttery smooth dampening
+          refreshPriority: 2,
         }
       });
 

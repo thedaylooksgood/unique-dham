@@ -5,6 +5,7 @@ import { Particles } from "@/components/ui/particles";
 import { Preloader } from "@/components/layout/Preloader";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import NextTopLoader from 'nextjs-toploader';
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Maa Unique Dham | Darjeeling",
@@ -32,6 +33,13 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.youtube.com" />
         <link rel="preconnect" href="https://www.google.com" />
         <link rel="preconnect" href="https://i.ytimg.com" />
+        <Script
+          id="scroll-restoration"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `if ('scrollRestoration' in history) history.scrollRestoration = 'manual';`,
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col bg-ivory text-sacred-brown relative">
         <NextTopLoader 

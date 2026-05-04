@@ -119,7 +119,7 @@ export function GuidanceCarousel() {
                     </button>
 
                     {/* Cards Container */}
-                    <div className="relative w-full h-[300px] md:h-[320px] lg:h-[350px] flex items-center justify-center perspective-2000">
+                    <div className="relative w-full h-[520px] sm:h-[480px] md:h-[320px] lg:h-[350px] flex items-center justify-center perspective-2000">
                         <AnimatePresence initial={false} mode="wait">
                             {guidanceTypes.map((type, index) => {
                                 const isActive = index === activeIndex;
@@ -202,7 +202,7 @@ export function GuidanceCarousel() {
                                                                 {type.title}
                                                             </h3>
                                                             <p className={cn(
-                                                                "font-sans text-sm md:text-base lg:text-lg leading-relaxed transition-opacity line-clamp-4 md:line-clamp-none",
+                                                                "font-sans text-sm md:text-base lg:text-lg leading-relaxed transition-opacity",
                                                                 isActive ? "text-[#2B2118]/60 font-medium" : "text-[#2B2118]/20"
                                                             )}>
                                                                 {type.description}

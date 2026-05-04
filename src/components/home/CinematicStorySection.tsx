@@ -13,11 +13,10 @@
  *   completely covering the current chapter.
  */
 
-import React, { useRef, useMemo, useState, useEffect } from "react";
+import React, { useRef, useMemo } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { getSequences } from "@/app/actions/getSequences";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -68,35 +67,17 @@ function buildParticles(n: number) {
   }));
 }
 
-export function CinematicStorySection() {
+export function CinematicStorySection({ 
+  sequences 
+}: { 
+  sequences: { [key: string]: string[] } 
+}) {
   const sectionRef = useRef<HTMLElement>(null);
   const particles = useMemo(() => buildParticles(30), []);
-
-  const [sequences, setSequences] = useState<{ [key: string]: string[] }>({
-    "part 1": [],
-    "part 2": [],
-    "part 3": [],
-  });
-
-  // Fetch sequence photos from folders automatically
-  useEffect(() => {
-    async function fetchAll() {
-      const p1 = await getSequences("part 1");
-      const p2 = await getSequences("part 2");
-      const p3 = await getSequences("part 3");
-      setSequences({ "part 1": p1, "part 2": p2, "part 3": p3 });
-    }
-    fetchAll();
-  }, []);
 
   useGSAP(
     () => {
       if (!sectionRef.current) return;
-
-      // Clean up previous instances
-      ScrollTrigger.getAll().forEach((st) => {
-        if (st.trigger === sectionRef.current) st.kill();
-      });
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -105,14 +86,15 @@ export function CinematicStorySection() {
           anticipatePin: 1, // Prevents slight jerk on pin entry
           scrub: 1, // Smooth scrub
           start: "top top",
-          end: `+=${CHAPTERS.length * 200}%`, // 2 screens of scroll per chapter
+          end: `+=${CHAPTERS.length * 300}%`, // 3 screens of scroll per chapter
           invalidateOnRefresh: true,
+          refreshPriority: 1,
         },
       });
 
       // ── Initial Setup ─────────────────────────────────────────────────
       CHAPTERS.forEach((ch, i) => {
-        // Panels 1 and 2 start off-screen right
+        // Panels 1 and 2 start off-screen right, Panel 0 is visible
         if (i > 0) {
           gsap.set(`.cs-panel-${i}`, { xPercent: 100 });
         }
@@ -121,6 +103,7 @@ export function CinematicStorySection() {
         const strips = gsap.utils.toArray<HTMLElement>(`.cs-strip-${ch.id}`);
         if (strips.length > 0) {
           const isMobile = window.innerWidth < 768;
+          // Set initial clipPath for ALL chapters to ensure they all have a "reveal" animation
           gsap.set(strips, { clipPath: isMobile ? "inset(0% 100% 0% 0%)" : "inset(100% 0% 0% 0%)" });
           
           const imgs = gsap.utils.toArray<HTMLElement>(`.cs-strip-${ch.id} img`);
@@ -176,9 +159,14 @@ export function CinematicStorySection() {
         }
       });
 
-      return () => ScrollTrigger.getAll().forEach((t) => t.kill());
+      // 4. Add a final hold at the end of the section so the last chapter 
+      // stays pinned for a moment before the next section arrives
+      tl.to({}, { duration: 2.0 });
+
+      // Force a refresh to ensure positions are correct immediately
+      ScrollTrigger.refresh();
     },
-    { scope: sectionRef, dependencies: [sequences] }
+    { scope: sectionRef }
   );
 
   return (

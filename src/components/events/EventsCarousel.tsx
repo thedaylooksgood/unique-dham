@@ -13,7 +13,8 @@ import {
   LayoutGrid,
   CalendarDays,
   ArrowRight,
-  ExternalLink
+  ExternalLink,
+  X
 } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -114,6 +115,7 @@ export default function EventsCarousel() {
   const [view, setView] = useState<ViewType>('list');
   const [currentMonthIndex, setCurrentMonthIndex] = useState(5); // June
   const [currentYear, setCurrentYear] = useState(2026);
+  const [selectedEvents, setSelectedEvents] = useState<TempleEvent[] | null>(null);
   
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -340,6 +342,7 @@ export default function EventsCarousel() {
                       currentMonthIndex={currentMonthIndex} 
                       currentYear={currentYear}
                       onMonthChange={changeMonth}
+                      onDayClick={setSelectedEvents}
                       compact 
                     />
                   </div>
@@ -359,8 +362,79 @@ export default function EventsCarousel() {
                   currentMonthIndex={currentMonthIndex} 
                   currentYear={currentYear}
                   onMonthChange={changeMonth}
+                  onDayClick={setSelectedEvents}
                 />
               </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Event Detail Popup Modal */}
+          <AnimatePresence>
+            {selectedEvents && (
+              <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setSelectedEvents(null)}
+                  className="absolute inset-0 bg-sacred-brown/40 backdrop-blur-sm"
+                />
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                  className="relative w-full max-w-lg bg-white rounded-[2rem] overflow-hidden shadow-2xl"
+                >
+                  <div className="p-8">
+                    <div className="flex justify-between items-start mb-6">
+                      <div>
+                        <div className="text-sacred-brown/40 text-xs font-bold tracking-[0.2em] uppercase mb-1">
+                          {selectedEvents[0].day} {selectedEvents[0].month} {selectedEvents[0].year}
+                        </div>
+                        <h2 className="text-2xl font-display text-sacred-brown">Events on this day</h2>
+                      </div>
+                      <button 
+                        onClick={() => setSelectedEvents(null)}
+                        className="p-2 rounded-full hover:bg-ivory transition-colors text-sacred-brown/40 hover:text-sacred-brown"
+                      >
+                        <X size={24} />
+                      </button>
+                    </div>
+
+                    <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+                      {selectedEvents.map((event: TempleEvent) => (
+                        <div key={event.id} className="p-6 rounded-2xl border border-sacred-brown/10 bg-ivory/20 hover:border-saffron/30 transition-colors group">
+                          <h3 className="text-xl font-bold text-sacred-brown mb-3 group-hover:text-saffron transition-colors">
+                            {event.title}
+                          </h3>
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-2 text-sacred-brown/60 text-sm">
+                              <Clock size={16} className="text-saffron" />
+                              {event.time}
+                            </div>
+                            <div className="flex items-center gap-2 text-sacred-brown/60 text-sm">
+                              <MapPin size={16} className="text-saffron" />
+                              {event.location}
+                            </div>
+                          </div>
+                          {event.description && (
+                            <p className="mt-4 text-sacred-brown/70 text-sm leading-relaxed">
+                              {event.description}
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+
+                    <button 
+                      onClick={() => setSelectedEvents(null)}
+                      className="w-full mt-8 py-4 bg-sacred-brown text-white rounded-xl font-bold hover:bg-sacred-brown/90 transition-all active:scale-95"
+                    >
+                      Close Details
+                    </button>
+                  </div>
+                </motion.div>
+              </div>
             )}
           </AnimatePresence>
         </div>
@@ -454,10 +528,11 @@ interface CalendarProps {
   currentMonthIndex: number;
   currentYear: number;
   onMonthChange: (dir: 'next' | 'prev') => void;
+  onDayClick: (events: TempleEvent[]) => void;
   compact?: boolean;
 }
 
-function CalendarView({ events, currentMonthIndex, currentYear, onMonthChange, compact = false }: CalendarProps) {
+function CalendarView({ events, currentMonthIndex, currentYear, onMonthChange, onDayClick, compact = false }: CalendarProps) {
   const monthNames = [
     "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
     "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"
@@ -518,22 +593,25 @@ function CalendarView({ events, currentMonthIndex, currentYear, onMonthChange, c
           return (
             <div 
               key={i} 
+              onClick={() => hasEvents && onDayClick(dayEvents)}
               className={cn(
-                "bg-white relative transition-all duration-300 group hover:bg-saffron/5",
-                compact ? "h-16" : "min-h-[130px] p-4 flex flex-col gap-2"
+                "bg-white relative transition-all duration-300 group overflow-hidden",
+                hasEvents ? "cursor-pointer hover:bg-saffron/5" : "cursor-default",
+                compact ? "h-16" : "h-16 md:min-h-[130px] md:p-4 flex flex-col items-center justify-center md:items-stretch md:justify-start gap-2"
               )}
             >
               <div className={cn(
                 "flex items-center justify-center transition-all",
-                hasEvents && !compact ? "w-9 h-9 rounded-full bg-saffron text-white shadow-lg shadow-saffron/20" : "text-sacred-brown/40 group-hover:text-sacred-brown",
+                hasEvents && !compact ? "w-8 h-8 md:w-9 md:h-9 rounded-full bg-saffron text-white shadow-lg shadow-saffron/20" : "text-sacred-brown/40 group-hover:text-sacred-brown",
                 hasEvents && compact ? "w-7 h-7 rounded-full bg-saffron text-white mx-auto mt-2" : "",
-                !hasEvents && compact ? "mt-4 text-center" : ""
+                !hasEvents && compact ? "mt-4 text-center" : "",
+                !hasEvents && !compact ? "text-center md:text-left md:ml-4" : ""
               )}>
-                <span className={cn("font-bold", compact ? "text-xs" : "text-base")}>{dayNum}</span>
+                <span className={cn("font-bold", compact ? "text-xs" : "text-sm md:text-base")}>{dayNum}</span>
               </div>
 
               {!compact && hasEvents && (
-                <div className="space-y-1.5">
+                <div className="hidden md:block space-y-1.5">
                   {dayEvents.map(e => (
                     <div key={e.id} className="text-[11px] p-2 bg-saffron/5 text-saffron rounded-lg font-bold leading-tight border border-saffron/10 line-clamp-2">
                       {e.title}
@@ -542,9 +620,12 @@ function CalendarView({ events, currentMonthIndex, currentYear, onMonthChange, c
                 </div>
               )}
 
-              {/* Dot indicator for compact view */}
-              {compact && hasEvents && (
-                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-saffron rounded-full" />
+              {/* Dot indicator for mobile (non-compact) or compact view */}
+              {hasEvents && (
+                <div className={cn(
+                  "absolute bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-saffron rounded-full",
+                  !compact && "md:hidden"
+                )} />
               )}
             </div>
           );
