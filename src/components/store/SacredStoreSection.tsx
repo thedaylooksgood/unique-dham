@@ -5,9 +5,10 @@ import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { MagicCard } from "@/components/ui/magic-card";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
-import { X, ShoppingBag, Info, ChevronLeft, ChevronRight, Sparkles, Gem, Zap, Droplets, Flame, Heart } from "lucide-react";
+import { X, ShoppingBag, Info, ChevronLeft, ChevronRight, Sparkles, Gem, Zap, Droplets, Flame, Heart, User, Phone, MessageSquare, Send, CheckCircle2, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { useLenis } from "lenis/react";
 
 // Mapping icons to string keys for serialization
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -38,8 +39,47 @@ interface SacredStoreSectionProps {
 export function SacredStoreSection({ products, backgroundImage }: SacredStoreSectionProps) {
     const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [formData, setFormData] = useState({ name: "", phone: "", productId: "", message: "" });
+    const lenis = useLenis();
 
     const activeProduct = products.find((p) => p.id === selectedProduct);
+
+    // Auto-select current product when modal opens
+    useEffect(() => {
+        if (selectedProduct) {
+            setFormData(prev => ({ ...prev, productId: selectedProduct }));
+        }
+    }, [selectedProduct]);
+
+    // Lock scroll when modal is open
+    useEffect(() => {
+        if (selectedProduct) {
+            document.body.style.overflow = "hidden";
+            document.documentElement.style.overflow = "hidden";
+            lenis?.stop();
+        } else {
+            document.body.style.overflow = "unset";
+            document.documentElement.style.overflow = "unset";
+            lenis?.start();
+        }
+        return () => {
+            document.body.style.overflow = "unset";
+            document.documentElement.style.overflow = "unset";
+            lenis?.start();
+        };
+    }, [selectedProduct, lenis]);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        // Simulate API call
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+    };
 
     const handleNext = useCallback(() => {
         setCurrentIndex((prev) => (prev + 1) % products.length);
@@ -292,95 +332,198 @@ export function SacredStoreSection({ products, backgroundImage }: SacredStoreSec
                 {/* Product Inquiry Modal */}
                 <AnimatePresence>
                     {selectedProduct && activeProduct && (
-                        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
+                        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6 overflow-y-auto bg-sacred-brown/40 backdrop-blur-sm">
                             <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
                                 onClick={() => setSelectedProduct(null)}
-                                className="absolute inset-0 bg-sacred-brown/80 backdrop-blur-md"
+                                className="fixed inset-0 pointer-events-auto"
                             />
                             <motion.div
-                                initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                                initial={{ scale: 0.9, opacity: 0, y: 20 }}
                                 animate={{ scale: 1, opacity: 1, y: 0 }}
-                                exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                                exit={{ scale: 0.9, opacity: 0, y: 20 }}
                                 transition={{ type: "spring", damping: 30, stiffness: 400 }}
-                                className="relative w-full max-w-lg bg-[#FDFBF7] rounded-[2.5rem] shadow-2xl overflow-hidden border border-saffron/20"
+                                className="relative w-full max-w-xl bg-ivory/95 backdrop-blur-3xl border border-saffron/20 rounded-3xl shadow-2xl overflow-hidden my-auto pointer-events-auto max-h-[95vh] flex flex-col mx-4"
                             >
-                                <div className="p-8 md:p-10">
-                                    <div className="flex items-start justify-between mb-8">
-                                        <div className="flex items-center gap-4">
-                                            <div className={cn("p-4 rounded-2xl shadow-inner", activeProduct.bg)}>
-                                                {(() => {
-                                                    const Icon = ICON_MAP[activeProduct.icon] || ShoppingBag;
-                                                    return <Icon className={cn("w-8 h-8", activeProduct.color)} />;
-                                                })()}
-                                            </div>
-                                            <div>
-                                                <h3 className="font-display text-2xl md:text-3xl text-sacred-brown leading-none mb-2">
-                                                    {activeProduct.name}
-                                                </h3>
-                                                <span className="font-body text-[10px] tracking-[0.2em] uppercase text-saffron font-bold">
-                                                    {activeProduct.category}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <motion.button
-                                            whileHover={{ scale: 1.1, rotate: 90 }}
-                                            whileTap={{ scale: 0.9 }}
-                                            onClick={() => setSelectedProduct(null)}
-                                            className="p-2 bg-saffron/10 hover:bg-saffron/20 rounded-full transition-colors"
-                                        >
-                                            <X size={24} className="text-sacred-brown" />
-                                        </motion.button>
-                                    </div>
+                                <button
+                                    onClick={() => setSelectedProduct(null)}
+                                    className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 hover:bg-saffron/10 rounded-full transition-colors z-[110]"
+                                >
+                                    <X size={20} className="text-sacred-brown/60" />
+                                </button>
 
-                                    <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
-                                        <div className="space-y-2">
-                                            <label className="font-body text-[10px] tracking-widest uppercase text-warm-umber/80 ml-2 font-bold">Full Name</label>
-                                            <input
-                                                type="text"
-                                                placeholder="Type your name..."
-                                                className="w-full px-6 py-4 bg-white border border-saffron/15 rounded-2xl text-sacred-brown placeholder:text-warm-umber/30 focus:outline-none focus:ring-2 focus:ring-saffron/40 focus:border-transparent transition-all shadow-sm"
-                                            />
-                                        </div>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                            <div className="space-y-2">
-                                                <label className="font-body text-[10px] tracking-widest uppercase text-warm-umber/80 ml-2 font-bold">Email</label>
-                                                <input
-                                                    type="email"
-                                                    placeholder="your@email.com"
-                                                    className="w-full px-6 py-4 bg-white border border-saffron/15 rounded-2xl text-sacred-brown placeholder:text-warm-umber/30 focus:outline-none focus:ring-2 focus:ring-saffron/40 focus:border-transparent transition-all shadow-sm"
-                                                />
-                                            </div>
-                                            <div className="space-y-2">
-                                                <label className="font-body text-[10px] tracking-widest uppercase text-warm-umber/80 ml-2 font-bold">Location</label>
-                                                <input
-                                                    type="text"
-                                                    placeholder="City, Country"
-                                                    className="w-full px-6 py-4 bg-white border border-saffron/15 rounded-2xl text-sacred-brown placeholder:text-warm-umber/30 focus:outline-none focus:ring-2 focus:ring-saffron/40 focus:border-transparent transition-all shadow-sm"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="font-body text-[10px] tracking-widest uppercase text-warm-umber/80 ml-2 font-bold">Intention / Sankalp</label>
-                                            <textarea
-                                                rows={3}
-                                                placeholder="How do you wish for this item to serve your path?"
-                                                className="w-full px-6 py-4 bg-white border border-saffron/15 rounded-2xl text-sacred-brown placeholder:text-warm-umber/30 resize-none focus:outline-none focus:ring-2 focus:ring-saffron/40 focus:border-transparent transition-all shadow-sm"
-                                            />
-                                        </div>
-
-                                        <div className="pt-6">
-                                            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                                                <ShimmerButton className="w-full py-5 rounded-2xl shadow-xl shadow-saffron/20">
-                                                    <span className="font-display text-sm tracking-[0.2em] uppercase font-bold">
-                                                        Submit Request
+                                <div className="p-8 sm:p-10 overflow-y-auto custom-scrollbar">
+                                    <AnimatePresence mode="wait">
+                                        {!isSubmitted ? (
+                                            <motion.div
+                                                key="form"
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -10 }}
+                                            >
+                                                <div className="mb-8">
+                                                    <span className="font-bold text-[10px] tracking-[0.3em] uppercase text-saffron mb-2 block">
+                                                        Secure Product Enquiry
                                                     </span>
-                                                </ShimmerButton>
+                                                    <h3 className="font-display text-3xl sm:text-4xl text-sacred-brown mb-2 leading-tight">
+                                                        {activeProduct.name}
+                                                    </h3>
+                                                    <p className="text-warm-umber/60 text-sm font-medium">Leave your details to receive acquisition info.</p>
+                                                </div>
+
+                                                <form className="space-y-6" onSubmit={handleSubmit}>
+                                                    <div className="space-y-2.5">
+                                                        <label className="flex items-center gap-2 text-[10px] font-bold tracking-[0.1em] uppercase text-sacred-brown ml-1">
+                                                            <Sparkles size={14} className="text-saffron" /> Select Item <span className="text-saffron">*</span>
+                                                        </label>
+                                                        <div className="relative">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                                                className="w-full px-5 py-4 bg-white border border-saffron/10 rounded-xl text-sacred-brown focus:outline-none focus:ring-4 focus:ring-saffron/5 focus:border-saffron/20 transition-all font-bold text-base flex items-center justify-between group hover:border-saffron/30"
+                                                            >
+                                                                <span className="truncate">
+                                                                    {products.find(p => p.id === formData.productId)?.name || "Select Item"}
+                                                                </span>
+                                                                <ChevronDown 
+                                                                    size={20} 
+                                                                    className={cn("text-saffron/50 group-hover:text-saffron transition-all duration-300", isDropdownOpen ? "rotate-180" : "rotate-0")} 
+                                                                />
+                                                            </button>
+
+                                                            <AnimatePresence>
+                                                                {isDropdownOpen && (
+                                                                    <>
+                                                                        <div 
+                                                                            className="fixed inset-0 z-[120]" 
+                                                                            onClick={() => setIsDropdownOpen(false)} 
+                                                                        />
+                                                                        <motion.div
+                                                                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                                            transition={{ duration: 0.2, ease: "easeOut" }}
+                                                                            className="absolute left-0 right-0 top-full mt-2 bg-white/95 backdrop-blur-xl border border-saffron/20 rounded-2xl shadow-2xl z-[130] overflow-hidden py-2"
+                                                                        >
+                                                                            <div className="max-h-60 overflow-y-auto custom-scrollbar">
+                                                                                {products.map(p => (
+                                                                                    <button
+                                                                                        key={p.id}
+                                                                                        type="button"
+                                                                                        onClick={() => {
+                                                                                            setFormData({ ...formData, productId: p.id });
+                                                                                            setIsDropdownOpen(false);
+                                                                                        }}
+                                                                                        className={cn(
+                                                                                            "w-full px-5 py-3 text-left transition-all flex items-center justify-between group",
+                                                                                            formData.productId === p.id 
+                                                                                                ? "bg-saffron/10 text-saffron font-bold" 
+                                                                                                : "text-sacred-brown hover:bg-saffron/5 hover:text-saffron"
+                                                                                        )}
+                                                                                    >
+                                                                                        <span className="text-sm sm:text-base">{p.name}</span>
+                                                                                        {formData.productId === p.id && (
+                                                                                            <div className="w-2 h-2 rounded-full bg-saffron shadow-[0_0_8px_rgba(233,93,36,0.5)]" />
+                                                                                        )}
+                                                                                    </button>
+                                                                                ))}
+                                                                            </div>
+                                                                        </motion.div>
+                                                                    </>
+                                                                )}
+                                                            </AnimatePresence>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                                        <div className="space-y-2.5">
+                                                            <label className="flex items-center gap-2 text-[10px] font-bold tracking-[0.1em] uppercase text-sacred-brown ml-1">
+                                                                <User size={14} className="text-saffron" /> Full Name <span className="text-saffron">*</span>
+                                                            </label>
+                                                            <input
+                                                                required
+                                                                type="text"
+                                                                placeholder="Enter your name"
+                                                                value={formData.name}
+                                                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                                                className="w-full px-5 py-4 bg-white border border-saffron/10 rounded-xl text-sacred-brown placeholder:text-sacred-brown/20 focus:outline-none focus:ring-4 focus:ring-saffron/5 focus:border-saffron/20 transition-all font-bold text-base"
+                                                            />
+                                                        </div>
+
+                                                        <div className="space-y-2.5">
+                                                            <label className="flex items-center gap-2 text-[10px] font-bold tracking-[0.1em] uppercase text-sacred-brown ml-1">
+                                                                <Phone size={14} className="text-saffron" /> Phone <span className="text-saffron">*</span>
+                                                            </label>
+                                                            <input
+                                                                required
+                                                                type="tel"
+                                                                placeholder="Phone number"
+                                                                value={formData.phone}
+                                                                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                                                className="w-full px-5 py-4 bg-white border border-saffron/10 rounded-xl text-sacred-brown placeholder:text-sacred-brown/20 focus:outline-none focus:ring-4 focus:ring-saffron/5 focus:border-saffron/20 transition-all font-bold text-base"
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="space-y-2.5">
+                                                        <label className="flex items-center gap-2 text-[10px] font-bold tracking-[0.1em] uppercase text-sacred-brown ml-1">
+                                                            <MessageSquare size={14} className="text-saffron" /> Special Intentions
+                                                        </label>
+                                                        <textarea
+                                                            rows={3}
+                                                            placeholder="Tell us about the specific intention for this item..."
+                                                            value={formData.message}
+                                                            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                                                            className="w-full px-5 py-4 bg-white border border-saffron/10 rounded-xl text-sacred-brown placeholder:text-sacred-brown/20 focus:outline-none focus:ring-4 focus:ring-saffron/5 focus:border-saffron/20 transition-all font-bold text-base resize-none"
+                                                        />
+                                                    </div>
+
+                                                    <div className="pt-2">
+                                                        <ShimmerButton
+                                                            type="submit"
+                                                            disabled={isSubmitting}
+                                                            background="#e95d24"
+                                                            className="w-full py-4.5 rounded-xl shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-transform disabled:opacity-70"
+                                                        >
+                                                            <div className="flex items-center justify-center gap-3">
+                                                                <span className="font-display text-sm tracking-widest uppercase text-white">
+                                                                    {isSubmitting ? "Sending..." : "Request Item"}
+                                                                </span>
+                                                                {!isSubmitting && <Send size={18} className="text-white" />}
+                                                            </div>
+                                                        </ShimmerButton>
+                                                    </div>
+                                                </form>
                                             </motion.div>
-                                        </div>
-                                    </form>
+                                        ) : (
+                                            <motion.div
+                                                key="success"
+                                                initial={{ opacity: 0, scale: 0.9 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                className="text-center py-12"
+                                            >
+                                                <div className="w-20 h-20 bg-saffron/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                                                    <CheckCircle2 size={40} className="text-saffron" />
+                                                </div>
+                                                <h3 className="font-display text-3xl text-sacred-brown mb-4">Aadesh, {formData.name}</h3>
+                                                <p className="text-warm-umber/80 mb-8 max-w-sm mx-auto leading-relaxed">
+                                                    Your enquiry has been received. Our store coordinator will reach out to you within 24 hours to discuss the acquisition.
+                                                </p>
+                                                <button
+                                                    onClick={() => {
+                                                        setIsSubmitted(false);
+                                                        setSelectedProduct(null);
+                                                        setFormData({ name: "", phone: "", productId: "", message: "" });
+                                                    }}
+                                                    className="text-saffron font-display text-xs tracking-widest uppercase border-b border-saffron/30 pb-1 hover:border-saffron transition-all"
+                                                >
+                                                    Close Window
+                                                </button>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
                                 </div>
                             </motion.div>
                         </div>
