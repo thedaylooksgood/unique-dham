@@ -12,30 +12,36 @@ import {
   Mail,
   Clock,
   Sparkles,
-  Info
+  Info,
+  User,
+  Phone,
+  MessageSquare,
+  Send,
+  ChevronDown
 } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { pujasData } from "@/lib/data/pujas";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
+import { useLenis } from "lenis/react";
 
 const layoutConfig = {
   container: {
-    mt: "mt-4 md:mt-6 lg:mt-8",
+    mt: "mt-0 md:mt-6 lg:mt-8",
     maxW: "max-w-7xl"
   },
   textSection: {
-    mt: "mt-0 lg:mt-[-40px]", // Added negative margin to push text up
-    pt: "pt-2 md:pt-4 lg:pt-6",
-    pb: "pb-8 md:pb-12", 
-    innerPy: "py-4 md:py-6",
-    spacing: "space-y-4 md:space-y-5",
-    px: "px-6 md:px-16 lg:px-0"
+    mt: "mt-4 md:mt-8 lg:mt-[-40px]",
+    pt: "pt-4 md:pt-4 lg:pt-6",
+    pb: "pb-6 md:pb-12", 
+    innerPy: "py-6 md:py-6",
+    spacing: "space-y-5 md:space-y-5",
+    px: "px-4 md:px-16 lg:px-0"
   },
   imageSection: {
-    mt: "mt-4 lg:mt-10",
+    mt: "mt-0 lg:mt-10",
     p: "p-0",
-    h: "h-[350px] md:h-[450px] lg:h-[550px]"
+    h: "h-[45vh] md:h-[450px] lg:h-[550px]"
   }
 };
 
@@ -45,6 +51,46 @@ export default function PujaBookingClient() {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [formData, setFormData] = useState({ name: "", phone: "", pujaId: pujasData[0].id, message: "" });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const lenis = useLenis();
+
+  const activePuja = pujasData[activeIndex];
+
+  // Auto-select current puja when modal opens
+  React.useEffect(() => {
+    if (isEnquiryModalOpen) {
+      setFormData(prev => ({ ...prev, pujaId: activePuja.id }));
+    }
+  }, [isEnquiryModalOpen, activePuja.id]);
+
+  // Lock scroll when modal is open
+  React.useEffect(() => {
+    if (isEnquiryModalOpen || isVideoModalOpen) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+      lenis?.stop();
+    } else {
+      document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
+      lenis?.start();
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
+      lenis?.start();
+    };
+  }, [isEnquiryModalOpen, isVideoModalOpen, lenis]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    setIsSubmitting(false);
+    setIsSubmitted(true);
+  };
 
   const scrollLeftNav = () => {
     if (scrollContainerRef.current) {
@@ -57,8 +103,6 @@ export default function PujaBookingClient() {
       scrollContainerRef.current.scrollBy({ left: 300, behavior: "smooth" });
     }
   };
-
-  const activePuja = pujasData[activeIndex];
 
   const handleNext = () => setActiveIndex((prev) => (prev + 1) % pujasData.length);
   const handlePrev = () => setActiveIndex((prev) => (prev - 1 + pujasData.length) % pujasData.length);
@@ -87,10 +131,10 @@ export default function PujaBookingClient() {
       </div>
 
       {/* Main Content Layout */}
-      <div className={cn("relative z-10 w-full mx-auto flex-grow flex flex-col lg:flex-row items-center gap-8 lg:gap-0", layoutConfig.container.maxW)}>
+      <div className={cn("relative z-10 w-full mx-auto flex-grow flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-0", layoutConfig.container.maxW)}>
 
         {/* --- LEFT CONTENT AREA --- */}
-        <div className={cn("w-full lg:w-[45%] h-full flex flex-col justify-start z-20 relative", layoutConfig.textSection.px, layoutConfig.textSection.pt, layoutConfig.textSection.pb, layoutConfig.textSection.mt)}>
+        <div className={cn("w-full lg:w-[45%] h-full flex flex-col justify-center z-20 relative", layoutConfig.textSection.px, layoutConfig.textSection.pt, "pb-4 md:pb-12", "mt-4 md:mt-8 lg:mt-[-40px]")}>
           <AnimatePresence mode="wait">
             <motion.div
               key={activePuja.id}
@@ -99,32 +143,32 @@ export default function PujaBookingClient() {
               exit={{ opacity: 0, x: 20 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
               className={cn("w-full", layoutConfig.textSection.spacing,
-                "p-6 md:p-8 lg:p-0 lg:py-10",
-                "bg-ivory/85 md:bg-ivory/70 lg:bg-transparent",
-                "backdrop-blur-xl lg:backdrop-blur-none",
-                "rounded-[2rem] lg:rounded-none",
-                "border border-white/60 lg:border-none",
-                "shadow-2xl shadow-black/5 lg:shadow-none"
+                "p-5 md:p-10 lg:p-0 lg:py-10",
+                "bg-ivory/90 md:bg-ivory/70 lg:bg-transparent",
+                "backdrop-blur-2xl lg:backdrop-blur-none",
+                "rounded-[2.5rem] lg:rounded-none",
+                "border border-white/80 lg:border-none",
+                "shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] lg:shadow-none"
               )}
             >
               {/* Meta Info */}
-              <div className="flex items-center gap-4">
-                <div className="px-3 py-1 bg-saffron/10 border border-saffron/20 rounded-full flex items-center gap-2">
-                  <Clock size={12} className="text-saffron" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-saffron">
+              <div className="flex flex-wrap items-center gap-3 md:gap-4">
+                <div className="px-2.5 sm:px-3 py-1 bg-saffron/10 border border-saffron/20 rounded-full flex items-center gap-1.5 md:gap-2">
+                  <Clock size={10} className="text-saffron md:w-3 md:h-3" />
+                  <span className="text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.15em] sm:tracking-[0.2em] text-saffron">
                     {activePuja.duration}
                   </span>
                 </div>
-                <div className="px-3 py-1 bg-warm-umber/5 border border-warm-umber/10 rounded-full flex items-center gap-2">
-                  <Sparkles size={12} className="text-warm-umber/60" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-warm-umber/60">
+                <div className="px-2.5 sm:px-3 py-1 bg-warm-umber/5 border border-warm-umber/10 rounded-full flex items-center gap-1.5 md:gap-2">
+                  <Sparkles size={10} className="text-warm-umber/60 md:w-3 md:h-3" />
+                  <span className="text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.15em] sm:tracking-[0.2em] text-warm-umber/60">
                     {activePuja.deity}
                   </span>
                 </div>
               </div>
 
               {/* Title */}
-              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-sacred-brown tracking-tight">
+              <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-sacred-brown tracking-tight">
                 {activePuja.name}
               </h1>
 
@@ -153,7 +197,7 @@ export default function PujaBookingClient() {
                       {/* Subtle glow behind icon */}
                       <div className="absolute inset-0 bg-saffron/10 blur-[6px] rounded-full -z-10 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
-                    <span className="text-[15px] font-medium text-sacred-brown/80 leading-snug tracking-wide group-hover:text-sacred-brown transition-colors">
+                    <span className="text-[13px] md:text-[15px] font-medium text-sacred-brown/80 leading-snug tracking-wide group-hover:text-sacred-brown transition-colors">
                       {benefit}
                     </span>
                   </div>
@@ -162,15 +206,17 @@ export default function PujaBookingClient() {
 
               {/* Primary Actions */}
               <div className="flex flex-nowrap items-center gap-4 lg:gap-6">
-                <ShimmerButton
-                  onClick={() => setIsEnquiryModalOpen(true)}
-                  className="px-6 md:px-8 py-3 md:py-3.5 shadow-2xl hover:scale-105 transition-transform"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="font-display text-sm tracking-widest uppercase">Reserve Ritual</span>
-                    <ArrowRight size={16} />
-                  </div>
-                </ShimmerButton>
+                {activePuja.isBookable !== false && (
+                  <ShimmerButton
+                    onClick={() => setIsEnquiryModalOpen(true)}
+                    className="px-5 sm:px-8 py-3 md:py-3.5 shadow-2xl hover:scale-105 transition-transform"
+                  >
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <span className="font-display text-[10px] sm:text-sm tracking-[0.15em] sm:tracking-widest uppercase">Book Puja</span>
+                      <ArrowRight size={14} className="sm:w-4 sm:h-4" />
+                    </div>
+                  </ShimmerButton>
+                )}
 
                 <button
                   onClick={() => setIsVideoModalOpen(true)}
@@ -184,12 +230,30 @@ export default function PujaBookingClient() {
                   </span>
                 </button>
               </div>
+
+              {/* Mobile Navigation Arrows (Inline for better reach) */}
+              <div className="flex items-center justify-between pt-6 mt-2 border-t border-sacred-brown/5 lg:hidden">
+                <button
+                  onClick={handlePrev}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-saffron/5 border border-saffron/10 text-saffron hover:bg-saffron hover:text-white transition-all duration-300"
+                >
+                  <ChevronLeft size={18} />
+                  <span className="text-[10px] font-bold uppercase tracking-widest">Previous</span>
+                </button>
+                <button
+                  onClick={handleNext}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-saffron/5 border border-saffron/10 text-saffron hover:bg-saffron hover:text-white transition-all duration-300"
+                >
+                  <span className="text-[10px] font-bold uppercase tracking-widest">Next Puja</span>
+                  <ChevronRight size={18} />
+                </button>
+              </div>
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* --- RIGHT IMAGE AREA (Background on mobile) --- */}
-        <div className={cn("absolute lg:relative inset-0 lg:inset-auto w-full lg:w-[55%] h-full z-0 lg:z-10 flex items-center justify-center lg:order-2", layoutConfig.imageSection.mt, layoutConfig.imageSection.p)}>
+        {/* --- RIGHT IMAGE AREA --- */}
+        <div className={cn("hidden lg:flex lg:w-[55%] h-full z-10 items-center justify-center lg:order-2", layoutConfig.imageSection.mt, layoutConfig.imageSection.p)}>
           {/* Mobile Overlay */}
           <div className="absolute inset-0 bg-black/20 lg:hidden z-10 pointer-events-none" />
 
@@ -219,22 +283,22 @@ export default function PujaBookingClient() {
               />
             </AnimatePresence>
           </div>
+        </div>
 
-          {/* Nav Arrows (Beside the image) */}
-          <div className="absolute top-[65%] lg:top-1/2 -translate-y-1/2 inset-x-4 lg:-inset-x-2 flex justify-between z-30 pointer-events-none">
-            <button
-              onClick={handlePrev}
-              className="pointer-events-auto w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-black/30 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-saffron hover:border-saffron hover:scale-110 transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.12)] group/btn"
-            >
-              <ChevronLeft size={24} className="group-hover/btn:-translate-x-1 transition-transform drop-shadow-md" />
-            </button>
-            <button
-              onClick={handleNext}
-              className="pointer-events-auto w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-black/30 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-saffron hover:border-saffron hover:scale-110 transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.12)] group/btn"
-            >
-              <ChevronRight size={24} className="group-hover/btn:translate-x-1 transition-transform drop-shadow-md" />
-            </button>
-          </div>
+        {/* Desktop-only Nav Arrows (Absolute overlay) */}
+        <div className="hidden lg:flex absolute top-1/2 -translate-y-1/2 -inset-x-4 justify-between z-30 pointer-events-none">
+          <button
+            onClick={handlePrev}
+            className="pointer-events-auto w-14 h-14 rounded-full bg-black/30 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-saffron hover:border-saffron hover:scale-110 transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.12)] group/btn"
+          >
+            <ChevronLeft size={24} className="group-hover/btn:-translate-x-1 transition-transform drop-shadow-md" />
+          </button>
+          <button
+            onClick={handleNext}
+            className="pointer-events-auto w-14 h-14 rounded-full bg-black/30 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-saffron hover:border-saffron hover:scale-110 transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.12)] group/btn"
+          >
+            <ChevronRight size={24} className="group-hover/btn:translate-x-1 transition-transform drop-shadow-md" />
+          </button>
         </div>
       </div>
 
@@ -250,7 +314,7 @@ export default function PujaBookingClient() {
           }}
           className={cn(
             "mx-auto pointer-events-auto bg-ivory border border-saffron/20 shadow-[0_20px_50px_rgba(233,93,36,0.1)] rounded-2xl overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col",
-            isExpanded ? "p-4 md:p-6" : "p-2"
+            isExpanded ? "p-4 md:p-6" : "p-1 md:p-2"
           )}
         >
           {/* Dock Header */}
@@ -304,17 +368,17 @@ export default function PujaBookingClient() {
                       if (isExpanded) setIsExpanded(false);
                     }}
                     className={cn(
-                      "group relative flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-2.5 rounded-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] whitespace-nowrap",
+                      "group relative flex items-center gap-1.5 sm:gap-2 md:gap-3 px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-2.5 rounded-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] whitespace-nowrap",
                       isActive
                         ? "bg-saffron text-white shadow-lg shadow-saffron/30 scale-105"
                         : "hover:bg-saffron/5 text-sacred-brown/70 hover:text-saffron",
-                      isExpanded && "min-w-[200px] md:min-w-[280px] justify-start bg-white/50 border border-saffron/5 shadow-sm py-3 md:py-4"
+                      isExpanded && "min-w-[160px] sm:min-w-[200px] md:min-w-[280px] justify-start bg-white/50 border border-saffron/5 shadow-sm py-2.5 sm:py-3 md:py-4"
                     )}
                   >
                     <Icon size={14} className={cn("md:w-[18px] md:h-[18px] transition-transform duration-500", isActive ? "scale-110" : "group-hover:scale-110")} />
                     <div className="flex flex-col items-start min-w-0 overflow-hidden">
                       <span className={cn(
-                        "text-[11px] md:text-xs xl:text-sm font-bold tracking-wide transition-all duration-500 truncate w-full",
+                        "text-[10px] sm:text-[11px] md:text-xs xl:text-sm font-bold tracking-wide transition-all duration-500 truncate w-full",
                         isActive ? "opacity-100" : "opacity-80"
                       )}>
                         {puja.name}
@@ -360,78 +424,160 @@ export default function PujaBookingClient() {
       {/* Enquiry Modal */}
       <AnimatePresence>
         {isEnquiryModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-sacred-brown/40 backdrop-blur-sm">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsEnquiryModalOpen(false)}
-              className="absolute inset-0 bg-sacred-brown/80"
+              className="fixed inset-0 pointer-events-auto"
             />
             <motion.div
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="relative w-full max-w-xl bg-ivory rounded-[2.5rem] shadow-2xl overflow-hidden border border-saffron/20"
+              className="relative w-full max-w-xl bg-ivory/95 backdrop-blur-3xl border border-saffron/20 rounded-3xl shadow-2xl overflow-hidden my-auto pointer-events-auto max-h-[95vh] flex flex-col mx-4"
             >
-              <div className="p-8 md:p-12">
-                <div className="flex items-center justify-between mb-10">
-                  <div>
-                    <span className="font-bold text-[10px] tracking-[0.3em] uppercase text-saffron mb-2 block">
-                      Secure Ritual Booking
-                    </span>
-                    <h3 className="font-display text-3xl text-sacred-brown">
-                      {activePuja.name}
-                    </h3>
-                  </div>
-                  <button
-                    onClick={() => setIsEnquiryModalOpen(false)}
-                    className="p-3 hover:bg-saffron/10 rounded-full transition-colors self-start border border-saffron/10"
-                  >
-                    <X size={20} className="text-sacred-brown/60" />
-                  </button>
-                </div>
+              <button
+                onClick={() => setIsEnquiryModalOpen(false)}
+                className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 hover:bg-saffron/10 rounded-full transition-colors z-[110]"
+              >
+                <X size={20} className="text-sacred-brown/60" />
+              </button>
 
-                <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold tracking-widest uppercase text-warm-umber/60 ml-1">Your Name</label>
-                      <input
-                        type="text"
-                        placeholder="Aditya Sharma"
-                        className="w-full px-6 py-4 bg-white border border-saffron/10 rounded-2xl text-sacred-brown placeholder:text-warm-umber/20 focus:outline-none focus:ring-2 focus:ring-saffron/20 transition-all"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold tracking-widest uppercase text-warm-umber/60 ml-1">Phone Number</label>
-                      <input
-                        type="tel"
-                        placeholder="+91 82508 88275"
-                        className="w-full px-6 py-4 bg-white border border-saffron/10 rounded-2xl text-sacred-brown placeholder:text-warm-umber/20 focus:outline-none focus:ring-2 focus:ring-saffron/20 transition-all"
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold tracking-widest uppercase text-warm-umber/60 ml-1">Ritual Intentions / Details</label>
-                    <textarea
-                      rows={4}
-                      placeholder="Tell us about the specific intention for this ritual..."
-                      className="w-full px-6 py-4 bg-white border border-saffron/10 rounded-2xl text-sacred-brown placeholder:text-warm-umber/20 focus:outline-none focus:ring-2 focus:ring-saffron/20 transition-all resize-none"
-                    />
-                  </div>
-
-                  <div className="pt-4">
-                    <ShimmerButton className="w-full py-5 rounded-2xl shadow-xl">
-                      <div className="flex items-center justify-center gap-3">
-                        <Mail size={18} />
-                        <span className="font-display text-sm tracking-widest uppercase">Request Booking Details</span>
+              <div className="p-8 sm:p-10 overflow-y-auto custom-scrollbar">
+                <AnimatePresence mode="wait">
+                  {!isSubmitted ? (
+                    <motion.div
+                      key="form"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                    >
+                      <div className="mb-8">
+                        <span className="font-bold text-[10px] tracking-[0.3em] uppercase text-saffron mb-2 block">
+                          Secure Ritual Booking
+                        </span>
+                        <h3 className="font-display text-3xl sm:text-4xl text-sacred-brown mb-2 leading-tight">
+                          {activePuja.name}
+                        </h3>
+                        <p className="text-warm-umber/60 text-sm font-medium">Just leave your details and we'll reach out.</p>
                       </div>
-                    </ShimmerButton>
-                  </div>
-                  <p className="text-center text-[10px] text-warm-umber/40 uppercase tracking-widest">
-                    Our temple coordinator will contact you within 24 hours
-                  </p>
-                </form>
+
+                      <form className="space-y-6" onSubmit={handleSubmit}>
+                        <div className="space-y-2.5">
+                          <label className="flex items-center gap-2 text-[10px] font-bold tracking-[0.1em] uppercase text-sacred-brown ml-1">
+                            <Sparkles size={14} className="text-saffron" /> Select Ritual <span className="text-saffron">*</span>
+                          </label>
+                          <div className="relative group">
+                            <select
+                              required
+                              value={formData.pujaId}
+                              onChange={(e) => setFormData({ ...formData, pujaId: e.target.value })}
+                              className="w-full px-5 py-4 bg-white border border-saffron/10 rounded-xl text-sacred-brown focus:outline-none focus:ring-4 focus:ring-saffron/5 focus:border-saffron/20 transition-all font-bold text-base appearance-none cursor-pointer pr-12 group-hover:border-saffron/30"
+                            >
+                              {pujasData.filter(p => p.isBookable !== false).map(p => (
+                                <option key={p.id} value={p.id} className="py-2">{p.name}</option>
+                              ))}
+                            </select>
+                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-saffron/50 group-hover:text-saffron transition-colors">
+                              <ChevronDown size={20} />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                          <div className="space-y-2.5">
+                            <label className="flex items-center gap-2 text-[10px] font-bold tracking-[0.1em] uppercase text-sacred-brown ml-1">
+                              <User size={14} className="text-saffron" /> Full Name <span className="text-saffron">*</span>
+                            </label>
+                            <input
+                              required
+                              type="text"
+                              placeholder="Enter your name"
+                              value={formData.name}
+                              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                              className="w-full px-5 py-4 bg-white border border-saffron/10 rounded-xl text-sacred-brown placeholder:text-sacred-brown/20 focus:outline-none focus:ring-4 focus:ring-saffron/5 focus:border-saffron/20 transition-all font-bold text-base"
+                            />
+                          </div>
+
+                          <div className="space-y-2.5">
+                            <label className="flex items-center gap-2 text-[10px] font-bold tracking-[0.1em] uppercase text-sacred-brown ml-1">
+                              <Phone size={14} className="text-saffron" /> Phone <span className="text-saffron">*</span>
+                            </label>
+                            <input
+                              required
+                              type="tel"
+                              placeholder="Phone number"
+                              value={formData.phone}
+                              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                              className="w-full px-5 py-4 bg-white border border-saffron/10 rounded-xl text-sacred-brown placeholder:text-sacred-brown/20 focus:outline-none focus:ring-4 focus:ring-saffron/5 focus:border-saffron/20 transition-all font-bold text-base"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-2.5">
+                          <label className="flex items-center gap-2 text-[10px] font-bold tracking-[0.1em] uppercase text-sacred-brown ml-1">
+                            <MessageSquare size={14} className="text-saffron" /> Special Intentions
+                          </label>
+                          <textarea
+                            rows={3}
+                            placeholder="Tell us about the specific intention for this ritual..."
+                            value={formData.message}
+                            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                            className="w-full px-5 py-4 bg-white border border-saffron/10 rounded-xl text-sacred-brown placeholder:text-sacred-brown/20 focus:outline-none focus:ring-4 focus:ring-saffron/5 focus:border-saffron/20 transition-all font-bold text-base resize-none"
+                          />
+                        </div>
+
+                        <div className="pt-2">
+                          <ShimmerButton
+                            type="submit"
+                            disabled={isSubmitting}
+                            background="#e95d24"
+                            className="w-full py-4.5 rounded-xl shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-transform disabled:opacity-70"
+                          >
+                            <div className="flex items-center justify-center gap-3">
+                              <span className="font-display text-sm tracking-widest uppercase text-white">
+                                {isSubmitting ? "Sending..." : "Request Booking"}
+                              </span>
+                              {!isSubmitting && <Send size={18} className="text-white" />}
+                            </div>
+                          </ShimmerButton>
+                        </div>
+                        <p className="text-center text-[9px] text-black/40 uppercase tracking-[0.15em] leading-relaxed">
+                          Our temple coordinator will contact you within 24 hours to finalize the ritual.
+                        </p>
+                      </form>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="flex flex-col items-center text-center gap-6 py-4"
+                    >
+                      <div className="w-20 h-20 rounded-full bg-saffron/10 flex items-center justify-center text-saffron">
+                        <CheckCircle2 size={40} />
+                      </div>
+                      <div>
+                        <h3 className="font-display text-3xl text-sacred-brown mb-3">Thank You, {formData.name.split(' ')[0]}!</h3>
+                        <p className="font-body text-warm-umber/70 leading-relaxed max-w-xs font-bold">
+                          Your ritual booking request has been received. Our team will contact you on <span className="text-saffron">{formData.phone}</span> very soon.
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setIsSubmitted(false);
+                          setIsEnquiryModalOpen(false);
+                          setFormData({ name: "", phone: "", pujaId: activePuja.id, message: "" });
+                        }}
+                        className="text-saffron font-display text-xs tracking-widest uppercase border-b border-saffron/30 pb-1 hover:border-saffron transition-all"
+                      >
+                        Back to Rituals
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </motion.div>
           </div>

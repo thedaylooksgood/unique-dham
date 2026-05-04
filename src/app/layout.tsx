@@ -27,9 +27,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.google.com" />
         <link rel="preconnect" href="https://i.ytimg.com" />
         <link rel="sitemap" type="application/xml" href="https://unique-dham.vercel.app/sitemap.xml" />
+      </head>
+      <body className="min-h-full flex flex-col bg-ivory text-sacred-brown relative">
         <Script
           id="scroll-restoration"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `if ('scrollRestoration' in history) history.scrollRestoration = 'manual';`,
           }}
@@ -37,6 +39,7 @@ export default function RootLayout({
         <Script
           id="structured-data"
           type="application/ld+json"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
@@ -59,8 +62,6 @@ export default function RootLayout({
             })
           }}
         />
-      </head>
-      <body className="min-h-full flex flex-col bg-ivory text-sacred-brown relative">
         <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID || ""} />
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ""} />
         <NextTopLoader 

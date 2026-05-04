@@ -11,6 +11,7 @@ export interface Puja {
     icon: LucideIcon;
     image: string;
     videoUrl: string;
+    isBookable?: boolean;
 }
 
 export const pujasData: Puja[] = [
@@ -25,6 +26,7 @@ export const pujasData: Puja[] = [
         icon: Sparkles,
         image: "/images/pujas/1.jpeg",
         videoUrl: "https://www.youtube.com/embed/YOUR_VIDEO_ID_HERE",
+        isBookable: true,
     },
     {
         id: "aayush",
@@ -37,6 +39,7 @@ export const pujasData: Puja[] = [
         icon: Heart,
         image: "/images/pujas/2.jpeg",
         videoUrl: "https://www.youtube.com/embed/YOUR_VIDEO_ID_HERE",
+        isBookable: true,
     },
     {
         id: "financial",
@@ -49,6 +52,7 @@ export const pujasData: Puja[] = [
         icon: Coins,
         image: "/images/pujas/3.jpeg",
         videoUrl: "https://www.youtube.com/embed/YOUR_VIDEO_ID_HERE",
+        isBookable: true,
     },
     {
         id: "relationship",
@@ -61,6 +65,7 @@ export const pujasData: Puja[] = [
         icon: Users,
         image: "/images/pujas/4.jpeg",
         videoUrl: "https://www.youtube.com/embed/YOUR_VIDEO_ID_HERE",
+        isBookable: true,
     },
     {
         id: "health",
@@ -73,6 +78,7 @@ export const pujasData: Puja[] = [
         icon: Activity,
         image: "/images/pujas/5.jpeg",
         videoUrl: "https://www.youtube.com/embed/YOUR_VIDEO_ID_HERE",
+        isBookable: true,
     },
     {
         id: "durga-special",
@@ -85,6 +91,7 @@ export const pujasData: Puja[] = [
         icon: Flower2,
         image: "/images/pujas/6.jpeg",
         videoUrl: "https://www.youtube.com/embed/YOUR_VIDEO_ID_HERE",
+        isBookable: false,
     },
     {
         id: "savan-month",
@@ -97,6 +104,7 @@ export const pujasData: Puja[] = [
         icon: Flame,
         image: "/images/pujas/7.jpeg",
         videoUrl: "https://www.youtube.com/embed/YOUR_VIDEO_ID_HERE",
+        isBookable: false,
     },
 
 ];
