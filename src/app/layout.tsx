@@ -33,6 +33,31 @@ export default function RootLayout({
             __html: `if ('scrollRestoration' in history) history.scrollRestoration = 'manual';`,
           }}
         />
+        <Script
+          id="structured-data"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "HinduTemple",
+              "name": "Maa Unique Dham",
+              "description": "A sacred spiritual platform born in the hills of Darjeeling. Where Maa is not invoked. She Arrives.",
+              "url": "https://unique-dham.vercel.app",
+              "logo": "https://unique-dham.vercel.app/logo.png",
+              "image": "https://unique-dham.vercel.app/og-image.jpg",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Darjeeling",
+                "addressRegion": "West Bengal",
+                "addressCountry": "IN"
+              },
+              "sameAs": [
+                "https://www.instagram.com/maauniquedham",
+                "https://www.facebook.com/maauniquedham"
+              ]
+            })
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col bg-ivory text-sacred-brown relative">
         <GoogleTagManager gtmId="GTM-XXXXXXX" />

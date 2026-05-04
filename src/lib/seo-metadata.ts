@@ -4,8 +4,8 @@ const siteConfig = {
   name: "Maa Unique Dham",
   shortName: "Maa Unique Dham",
   description: "A sacred spiritual platform born in the hills of Darjeeling. Where Maa is not invoked. She Arrives.",
-  url: "https://maauniquedham.vercel.app",
-  ogImage: "https://maauniquedham.vercel.app/og-image.jpg",
+  url: "https://unique-dham.vercel.app",
+  ogImage: "https://unique-dham.vercel.app/og-image.jpg",
   keywords: [
     "Maa Unique Dham",
     "Darjeeling",

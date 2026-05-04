@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://maauniquedham.vercel.app';
+  const baseUrl = 'https://unique-dham.vercel.app';
 
   const routes = [
     '',

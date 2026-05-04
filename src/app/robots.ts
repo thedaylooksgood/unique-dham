@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/private/',
     },
-    sitemap: 'https://maauniquedham.vercel.app/sitemap.xml',
+    sitemap: 'https://unique-dham.vercel.app/sitemap.xml',
   };
 }
