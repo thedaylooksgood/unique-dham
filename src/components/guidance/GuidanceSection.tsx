@@ -13,33 +13,24 @@ const guidanceTypes = [
         id: "spiritual-career",
         title: "Spiritual Career Guidance",
         description: "Navigate your soul's purpose and professional path through traditional Vedic analysis of work-life (Artha) and spiritual duty (Dharma). Discover how to align your career with your highest spiritual calling and find fulfillment, clarity, and success.",
-        duration: "45 MIN SESSION",
-        iconSrc: "/images/icon-compass.png",
-        fallbackIcon: Compass,
+        iconSrc: "/images/guidance-icons/1.png",
         glowColor: "#D35D31",
-        lightGlow: "#FDE9E2", 
         textColor: "text-[#D35D31]",
     },
     {
         id: "personal-guidance",
         title: "Personal Guidance",
         description: "Receive deep spiritual direction tailored to your individual journey (Atma-Jnana). Explore karmic pattern resolution, inner peace, relationship harmony, and personal sadhana path transformation. Gain clarity and spiritual fortitude through Maa's direct energetic connection.",
-        duration: "60 MIN SESSION",
-        iconSrc: "/images/icon-moon.png",
-        fallbackIcon: Moon,
-        glowColor: "#E63971", 
-        lightGlow: "#FDF0F4", 
+        iconSrc: "/images/guidance-icons/3.png",
+        glowColor: "#E63971",
         textColor: "text-[#E63971]",
     },
     {
         id: "personal-readings",
         title: "Personal Readings",
         description: "Access foresight and ancient traditional wisdom through detailed personal readings. Uncover insights into health, family, spiritual development, and future possibilities. Direct and intuitive readings providing clarity and guidance for your personal life path.",
-        duration: "45 MIN SESSION",
-        iconSrc: "/images/icon-sun.png",
-        fallbackIcon: Sun,
+        iconSrc: "/images/guidance-icons/2.png",
         glowColor: "#D88C2A",
-        lightGlow: "#FEF7E8", 
         textColor: "text-[#D88C2A]",
     },
 ];
@@ -66,14 +57,20 @@ export function GuidanceCarousel() {
     };
 
     return (
-        <section className="relative min-h-screen py-20 md:py-32 w-full flex flex-col items-center justify-center overflow-hidden bg-[#Fdfbf7] font-sans">
-            {/* Background Image Setup */}
-            <div
-                className="absolute inset-0 z-0 opacity-40 bg-cover bg-center bg-no-repeat pointer-events-none mix-blend-multiply"
-                style={{ backgroundImage: "url('/images/himalaya-bg.png')" }}
-            />
-            {/* Soft gradient overlay */}
-            <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#Fdfbf7]/90 via-[#Fdfbf7]/60 to-[#Fdfbf7]" />
+        <section className="relative min-h-screen pt-20 md:pt-25 pb-5 md:pb-10 w-full flex flex-col items-center justify-center overflow-hidden bg-transparent font-sans">
+            {/* Background Image Setup (Exactly like Home Page Hero) */}
+            <div className="absolute inset-0 z-0">
+                <Image
+                    src="/images/home-page/hero/banner 1.png"
+                    alt="Sacred Hero Background"
+                    fill
+                    className="object-cover"
+                    priority
+                    unoptimized
+                />
+                {/* Subtle Bottom Gradient like Home Page */}
+                <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#Fdfbf7] to-transparent z-[1]" />
+            </div>
 
             <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col items-center">
 
@@ -105,29 +102,37 @@ export function GuidanceCarousel() {
                     onMouseLeave={() => setIsHovered(false)}
                 >
                     {/* Navigation Arrows (Desktop) */}
-                    <button onClick={handlePrevious} className="hidden xl:flex absolute left-0 -translate-x-1/2 top-1/2 -translate-y-1/2 z-40 text-[#2B2118]/30 hover:text-[#2B2118] transition-all hover:scale-110 p-4" aria-label="Previous">
-                        <ChevronLeft size={64} strokeWidth={1} />
+                    {/* Navigation Arrows (Desktop) */}
+                    <button
+                        onClick={handlePrevious}
+                        className="hidden xl:flex absolute left-0 -translate-x-1/2 top-1/2 -translate-y-1/2 z-40 w-16 h-16 rounded-full bg-white/60 backdrop-blur-md border border-white shadow-xl items-center justify-center text-[#2B2118]/60 hover:text-saffron hover:border-saffron hover:scale-110 transition-all duration-500 group/btn"
+                        aria-label="Previous"
+                    >
+                        <ChevronLeft size={32} strokeWidth={1.5} className="group-hover/btn:-translate-x-1 transition-transform" />
                     </button>
-                    <button onClick={handleNext} className="hidden xl:flex absolute right-0 translate-x-1/2 top-1/2 -translate-y-1/2 z-40 text-[#2B2118]/30 hover:text-[#2B2118] transition-all hover:scale-110 p-4" aria-label="Next">
-                        <ChevronRight size={64} strokeWidth={1} />
+                    <button
+                        onClick={handleNext}
+                        className="hidden xl:flex absolute right-0 translate-x-1/2 top-1/2 -translate-y-1/2 z-40 w-16 h-16 rounded-full bg-white/60 backdrop-blur-md border border-white shadow-xl items-center justify-center text-[#2B2118]/60 hover:text-saffron hover:border-saffron hover:scale-110 transition-all duration-500 group/btn"
+                        aria-label="Next"
+                    >
+                        <ChevronRight size={32} strokeWidth={1.5} className="group-hover/btn:translate-x-1 transition-transform" />
                     </button>
 
                     {/* Cards Container */}
-                    <div className="relative w-full h-[500px] md:h-[450px] lg:h-[380px] flex items-center justify-center perspective-2000">
+                    <div className="relative w-full h-[300px] md:h-[320px] lg:h-[350px] flex items-center justify-center perspective-2000">
                         <AnimatePresence initial={false} mode="wait">
                             {guidanceTypes.map((type, index) => {
                                 const isActive = index === activeIndex;
                                 const isPrev = index === (activeIndex - 1 + guidanceTypes.length) % guidanceTypes.length;
                                 const isNext = index === (activeIndex + 1) % guidanceTypes.length;
 
-                                // We only render the active, previous, and next to keep the DOM light and animations smooth
                                 if (!isActive && !isPrev && !isNext) return null;
 
                                 return (
                                     <motion.div
                                         key={type.id}
                                         initial={{ opacity: 0, scale: 0.85, x: isNext ? "110%" : "-110%" }}
-                                        animate={{ 
+                                        animate={{
                                             opacity: isActive ? 1 : 0.2,
                                             scale: isActive ? 1 : 0.8,
                                             x: isActive ? "0%" : isPrev ? "-110%" : "110%",
@@ -135,9 +140,14 @@ export function GuidanceCarousel() {
                                             rotateY: isActive ? 0 : isPrev ? 10 : -10,
                                             zIndex: isActive ? 30 : 10,
                                         }}
-                                        transition={{ 
+                                        whileHover={isActive ? {
+                                            y: -8,
+                                            scale: 1.02,
+                                            transition: { duration: 0.4, ease: "easeOut" }
+                                        } : {}}
+                                        transition={{
                                             duration: 0.8,
-                                            ease: [0.32, 0.72, 0, 1] // Silky smooth "out-expo" easing
+                                            ease: [0.32, 0.72, 0, 1]
                                         }}
                                         onClick={() => setActiveIndex(index)}
                                         className={cn(
@@ -145,61 +155,46 @@ export function GuidanceCarousel() {
                                             !isActive && "pointer-events-none md:pointer-events-auto"
                                         )}
                                     >
-                                        <div className="w-full h-full p-2"> {/* Tiny padding to prevent clipping */}
+                                        <div className="w-full h-full p-2">
                                             <MagicCard
-                                                mode="orb"
-                                                glowFrom={type.lightGlow}
-                                                glowTo={type.lightGlow}
-                                                glowOpacity={isActive ? 0.35 : 0.1}
-                                                glowSize={700}
+                                                mode="gradient"
+                                                gradientSize={0}
                                                 className={cn(
-                                                    "w-full h-full p-6 md:p-8 border-2 transition-colors duration-500 overflow-hidden",
-                                                    isActive 
-                                                        ? "bg-white/95 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.12)] border-white/90" 
-                                                        : "bg-white/20 border-white/5 hover:bg-white/40",
+                                                    "w-full h-full p-6 md:p-8 border-2 transition-all duration-500 overflow-hidden",
+                                                    isActive
+                                                        ? "bg-white/95 border-white shadow-[0_25px_60px_-15px_rgba(0,0,0,0.1)]"
+                                                        : "bg-white/40 border-white/20 hover:bg-white/60",
                                                     "backdrop-blur-3xl rounded-[2.5rem] md:rounded-[3.5rem]"
                                                 )}
                                             >
-                                                {/* Float wrapper - separate from the main transition to avoid "stickiness" */}
-                                                <motion.div 
-                                                    animate={isActive ? { y: [0, -6, 0] } : {}}
-                                                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                                                    className="flex flex-col md:flex-row h-full w-full relative z-10 gap-6 md:gap-10 items-center"
-                                                >
-                                                    
+                                                {/* Clean layout without continuous float to avoid choppiness */}
+                                                <div className="flex flex-col md:flex-row h-full w-full relative z-10 gap-6 md:gap-10 items-center">
+
                                                     {/* Left Side: Icon Container */}
-                                                    <div className="w-24 h-24 md:w-36 md:h-36 relative flex items-center justify-center shrink-0">
+                                                    <div className="w-28 h-28 md:w-56 md:h-56 relative flex items-center justify-center shrink-0">
                                                         <motion.div
                                                             animate={{ rotate: 360 }}
                                                             transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
                                                             className={cn("absolute inset-0 rounded-full border border-dashed opacity-10", type.textColor)}
                                                         />
-                                                        
-                                                        <div className="relative w-12 h-12 md:w-16 md:h-16 z-10 flex items-center justify-center">
+
+                                                        <motion.div
+                                                            whileHover={{ scale: 1.05, rotate: 5 }}
+                                                            className="relative w-24 h-24 md:w-48 md:h-48 z-10 flex items-center justify-center transition-transform"
+                                                        >
                                                             <Image
                                                                 src={type.iconSrc}
                                                                 alt={type.title}
                                                                 fill
-                                                                className="object-contain opacity-0" 
-                                                                onLoadingComplete={(img) => img.classList.remove('opacity-0')}
+                                                                className="object-contain"
+                                                                priority
                                                             />
-                                                            <type.fallbackIcon className={cn("w-full h-full absolute inset-0 opacity-20", type.textColor)} />
-                                                        </div>
-
-                                                        {isActive && (
-                                                            <motion.div
-                                                                initial={{ opacity: 0, scale: 0 }}
-                                                                animate={{ opacity: 1, scale: 1 }}
-                                                                className="absolute top-0 right-0 text-[#D88C2A]/40"
-                                                            >
-                                                                <Sparkles className="w-6 h-6 animate-pulse" />
-                                                            </motion.div>
-                                                        )}
+                                                        </motion.div>
                                                     </div>
 
                                                     {/* Right Side: Text & Info */}
                                                     <div className="flex-1 flex flex-col justify-center text-center md:text-left h-full">
-                                                        <div className="mb-4 md:mb-6">
+                                                        <div className="mb-2">
                                                             <h3 className={cn(
                                                                 "font-serif text-2xl md:text-3xl lg:text-4xl mb-2 md:mb-3 font-bold tracking-tight transition-colors leading-tight",
                                                                 isActive ? "text-[#2B2118]" : "text-[#2B2118]/30"
@@ -207,31 +202,14 @@ export function GuidanceCarousel() {
                                                                 {type.title}
                                                             </h3>
                                                             <p className={cn(
-                                                                "font-sans text-sm md:text-base lg:text-lg leading-relaxed transition-opacity line-clamp-3 md:line-clamp-none",
+                                                                "font-sans text-sm md:text-base lg:text-lg leading-relaxed transition-opacity line-clamp-4 md:line-clamp-none",
                                                                 isActive ? "text-[#2B2118]/60 font-medium" : "text-[#2B2118]/20"
                                                             )}>
                                                                 {type.description}
                                                             </p>
                                                         </div>
-
-                                                        {/* Duration Badge */}
-                                                        <div className="mt-auto flex justify-center md:justify-start">
-                                                            <div className={cn(
-                                                                "flex items-center gap-3 font-bold tracking-[0.2em] px-6 py-3 md:px-8 md:py-4 rounded-full transition-all",
-                                                                isActive
-                                                                    ? "text-white shadow-md"
-                                                                    : "bg-[#2B2118]/5 text-[#2B2118]/20"
-                                                            )}
-                                                            style={isActive ? { background: `linear-gradient(135deg, ${type.glowColor}cc, ${type.glowColor})` } : {}}
-                                                            >
-                                                                <Calendar className="w-4 h-4 md:w-5 md:h-5" />
-                                                                <span className="font-sans text-[10px] md:text-xs uppercase font-bold whitespace-nowrap">
-                                                                    {type.duration}
-                                                                </span>
-                                                            </div>
-                                                        </div>
                                                     </div>
-                                                </motion.div>
+                                                </div>
                                             </MagicCard>
                                         </div>
                                     </motion.div>
@@ -257,12 +235,21 @@ export function GuidanceCarousel() {
                         ))}
                     </div>
                     {/* Mobile Only Arrows */}
-                    <div className="flex gap-16 mt-8 xl:hidden">
-                         <button onClick={handlePrevious} className="text-[#2B2118]/10 hover:text-[#2B2118] transition-colors p-2 active:scale-90" aria-label="Previous">
-                            <ChevronLeft size={44} strokeWidth={1} />
+                    {/* Mobile Only Arrows */}
+                    <div className="flex gap-10 mt-8 xl:hidden">
+                        <button
+                            onClick={handlePrevious}
+                            className="w-14 h-14 rounded-full bg-white/80 backdrop-blur-sm border border-[#2B2118]/10 shadow-lg flex items-center justify-center text-[#2B2118]/60 active:scale-90 transition-all"
+                            aria-label="Previous"
+                        >
+                            <ChevronLeft size={28} strokeWidth={1.5} />
                         </button>
-                        <button onClick={handleNext} className="text-[#2B2118]/10 hover:text-[#2B2118] transition-colors p-2 active:scale-90" aria-label="Next">
-                            <ChevronRight size={44} strokeWidth={1} />
+                        <button
+                            onClick={handleNext}
+                            className="w-14 h-14 rounded-full bg-white/80 backdrop-blur-sm border border-[#2B2118]/10 shadow-lg flex items-center justify-center text-[#2B2118]/60 active:scale-90 transition-all"
+                            aria-label="Next"
+                        >
+                            <ChevronRight size={28} strokeWidth={1.5} />
                         </button>
                     </div>
                 </div>

@@ -4,6 +4,7 @@ import "./globals.css";
 import { Particles } from "@/components/ui/particles";
 import { Preloader } from "@/components/layout/Preloader";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
+import NextTopLoader from 'nextjs-toploader';
 
 export const metadata: Metadata = {
   title: "Maa Unique Dham | Darjeeling",
@@ -33,6 +34,17 @@ export default function RootLayout({
         <link rel="preconnect" href="https://i.ytimg.com" />
       </head>
       <body className="min-h-full flex flex-col bg-ivory text-sacred-brown relative">
+        <NextTopLoader 
+          color="#e95d24"
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={3}
+          crawl={true}
+          showSpinner={false}
+          easing="ease"
+          speed={200}
+          shadow="0 0 10px #e95d24,0 0 5px #e95d24"
+        />
         <Preloader />
         <Particles
           className="fixed inset-0 z-0 pointer-events-none opacity-40 md:hidden"

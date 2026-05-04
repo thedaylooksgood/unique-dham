@@ -17,6 +17,7 @@ interface MagicCardBaseProps {
   gradientSize?: number
   gradientFrom?: string
   gradientTo?: string
+  style?: React.CSSProperties
 }
 
 interface MagicCardGradientProps extends MagicCardBaseProps {
@@ -64,6 +65,7 @@ export function MagicCard(props: MagicCardProps) {
     gradientFrom = "#9E7AFF",
     gradientTo = "#FE8BBB",
     mode = "gradient",
+    style,
   } = props
 
   const glowFrom = isOrbMode(props) ? (props.glowFrom ?? "#ee4f27") : "#ee4f27"
@@ -166,6 +168,7 @@ export function MagicCard(props: MagicCardProps) {
       onPointerLeave={() => reset("leave")}
       onPointerEnter={() => reset("enter")}
       style={{
+        ...style,
         background: useMotionTemplate`
           linear-gradient(var(--color-background) 0 0) padding-box,
           radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px,

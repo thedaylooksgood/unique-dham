@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { BlurFade } from "@/components/ui/blur-fade";
-import Image from "next/image";
+
 import Link from "next/link";
 import { ArrowLeft, Eye, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -25,8 +25,23 @@ export default function GalleryPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-[#FFFBF5] pt-32 pb-24">
-        <div className="max-w-7xl mx-auto px-6">
+      <main className="relative min-h-screen pt-32 pb-24">
+        {/* Sticky background — fixed so it never scrolls */}
+        <div className="fixed inset-0 -z-10">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/home-page/hero/banner 1.png"
+            alt=""
+            aria-hidden="true"
+            className="w-full h-full object-cover"
+            style={{ objectPosition: "center center" }}
+          />
+          {/* Light warm overlay so text stays readable */}
+          <div className="absolute inset-0 bg-[#FDFBF7]/30" />
+          {/* Bottom gradient fade */}
+          <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#FDFBF7] to-transparent" />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-6">
           
           <BlurFade delay={0.1}>
             <Link 

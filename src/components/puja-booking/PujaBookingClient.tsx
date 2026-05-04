@@ -14,6 +14,7 @@ import {
   Sparkles,
   Info
 } from "lucide-react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { pujasData } from "@/lib/data/pujas";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
@@ -63,7 +64,21 @@ export default function PujaBookingClient() {
   const handlePrev = () => setActiveIndex((prev) => (prev - 1 + pujasData.length) % pujasData.length);
 
   return (
-    <div className={cn("relative w-full min-h-[calc(100vh-8rem)] flex flex-col bg-ivory text-sacred-brown font-body selection:bg-saffron selection:text-white overflow-x-hidden", layoutConfig.container.mt)}>
+    <div className={cn("relative w-full min-h-[calc(100vh-8rem)] flex flex-col bg-transparent text-sacred-brown font-body selection:bg-saffron selection:text-white overflow-x-hidden", layoutConfig.container.mt)}>
+
+      {/* --- BACKGROUND IMAGE LAYER (Exactly like Home Page Hero) --- */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/home-page/hero/banner 1.png"
+          alt="Sacred Hero Background"
+          fill
+          className="object-cover"
+          priority
+          unoptimized
+        />
+        {/* Subtle Bottom Gradient like Home Page */}
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-ivory to-transparent z-[1]" />
+      </div>
 
       {/* Decorative Background Elements */}
       <div className="absolute inset-0 pointer-events-none opacity-20">
