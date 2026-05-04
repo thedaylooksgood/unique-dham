@@ -406,7 +406,7 @@ export default function PujaBookingClient() {
                       <label className="text-[10px] font-bold tracking-widest uppercase text-warm-umber/60 ml-1">Phone Number</label>
                       <input
                         type="tel"
-                        placeholder="+91 98765 43210"
+                        placeholder="+91 82508 88275"
                         className="w-full px-6 py-4 bg-white border border-saffron/10 rounded-2xl text-sacred-brown placeholder:text-warm-umber/20 focus:outline-none focus:ring-2 focus:ring-saffron/20 transition-all"
                       />
                     </div>
