@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
+import { trackEvent, SEO_EVENTS } from "@/lib/analytics";
 
 export function Footer() {
   return (
@@ -68,8 +69,8 @@ export function Footer() {
           {/* Spacer */}
           <div className="hidden lg:block lg:col-span-1" />
 
-          {/* Links Column */}
-          <div className="lg:col-span-3 space-y-5 pt-2">
+          {/* Sacred Path Column */}
+          <div className="lg:col-span-2 space-y-5 pt-2">
             <h4 className="font-display text-sm text-saffron tracking-[0.3em] uppercase font-bold flex items-center gap-2">
               <span className="w-6 h-px bg-saffron/50" />
               Sacred Path
@@ -87,9 +88,37 @@ export function Footer() {
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="font-body text-sacred-brown/80 hover:text-saffron transition-all duration-300 text-sm flex items-center gap-2 group w-fit font-bold"
+                    className="font-body text-sacred-brown/80 hover:text-saffron transition-all duration-300 text-xs flex items-center gap-2 group w-fit font-bold"
                   >
-                    <ArrowRight size={14} className="opacity-0 -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-saffron" />
+                    <ArrowRight size={12} className="opacity-0 -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-saffron" />
+                    <span className="group-hover:translate-x-1 transition-transform duration-300">{item.name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Spiritual Darjeeling Column */}
+          <div className="lg:col-span-2 space-y-5 pt-2">
+            <h4 className="font-display text-sm text-saffron tracking-[0.3em] uppercase font-bold flex items-center gap-2">
+              <span className="w-6 h-px bg-saffron/50" />
+              Darjeeling
+            </h4>
+            <ul className="space-y-3">
+              {[
+                { name: "Temple in Darjeeling", href: "/temple-in-darjeeling" },
+                { name: "Hindu Temple", href: "/hindu-temple-darjeeling" },
+                { name: "Best Temple", href: "/best-temple-darjeeling" },
+                { name: "Top Temples", href: "/best-temples-darjeeling" },
+                { name: "Places to Visit", href: "/places-to-visit-darjeeling" },
+                { name: "Spiritual Places", href: "/spiritual-places-darjeeling" },
+              ].map((item) => (
+                <li key={item.name}>
+                  <Link
+                    href={item.href}
+                    className="font-body text-sacred-brown/80 hover:text-saffron transition-all duration-300 text-xs flex items-center gap-2 group w-fit font-bold"
+                  >
+                    <ArrowRight size={12} className="opacity-0 -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-saffron" />
                     <span className="group-hover:translate-x-1 transition-transform duration-300">{item.name}</span>
                   </Link>
                 </li>
@@ -98,7 +127,7 @@ export function Footer() {
           </div>
 
           {/* Connect Column */}
-          <div className="lg:col-span-3 space-y-5 pt-2">
+          <div className="lg:col-span-2 space-y-5 pt-2">
             <h4 className="font-display text-sm text-saffron tracking-[0.3em] uppercase font-bold flex items-center gap-2">
               <span className="w-6 h-px bg-saffron/50" />
               Connect
@@ -114,6 +143,10 @@ export function Footer() {
                     href={contact.href}
                     target={contact.icon === MapPin ? "_blank" : undefined}
                     rel={contact.icon === MapPin ? "noopener noreferrer" : undefined}
+                    onClick={() => {
+                      if (contact.icon === Phone) trackEvent(SEO_EVENTS.PHONE_CLICK);
+                      if (contact.icon === MapPin) trackEvent(SEO_EVENTS.DIRECTIONS_CLICK);
+                    }}
                     className="flex items-start gap-3 cursor-pointer"
                   >
                     <div className="p-2 rounded-md bg-white/80 border border-saffron/30 group-hover:bg-saffron group-hover:text-white transition-colors duration-300 shadow-sm text-saffron shrink-0">

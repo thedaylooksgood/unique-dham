@@ -1,7 +1,12 @@
-// app/puja-booking/page.tsx (or wherever your page is located)
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import PujaBookingClient from "@/components/puja-booking/PujaBookingClient"; // Adjust path as needed
+import PujaBookingClient from "@/components/puja-booking/PujaBookingClient"; 
+import { constructMetadata } from "@/lib/seo-metadata";
+
+export const metadata = constructMetadata({
+  title: "Online Puja Booking in Darjeeling",
+  description: "Book authentic Vedic rituals and personalized pujas at Maa Unique Dham. Connect with divine energy through sacred offerings.",
+});
 
 export default function PujaBookingPage() {
   return (

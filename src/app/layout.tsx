@@ -7,17 +7,10 @@ import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import NextTopLoader from 'nextjs-toploader';
 import Script from "next/script";
 
-export const metadata: Metadata = {
-  title: "Maa Unique Dham | Darjeeling",
-  description: "A sacred spiritual platform born in the hills of Darjeeling. Where Maa is not invoked. She Arrives.",
-  keywords: ["Maa Unique Dham", "Darjeeling", "Spiritual", "Puja", "Shakti", "Mahant", "Sanatan", "Durga"],
-  authors: [{ name: "Maa Unique Dham" }],
-  openGraph: {
-    title: "Maa Unique Dham | Darjeeling",
-    description: "A sacred spiritual platform born in the hills of Darjeeling.",
-    type: "website",
-  },
-};
+import { constructMetadata } from "@/lib/seo-metadata";
+import { GTM } from "@/components/seo/GTM";
+
+export const metadata = constructMetadata();
 
 export default function RootLayout({
   children,
@@ -42,6 +35,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-ivory text-sacred-brown relative">
+        <GTM gtmId="GTM-XXXXXXX" />
         <NextTopLoader 
           color="#e95d24"
           initialPosition={0.08}

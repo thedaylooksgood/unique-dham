@@ -9,6 +9,7 @@ import { SparklesText } from "@/components/ui/sparkles-text";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { ArrowRight } from "lucide-react";
+import { trackEvent, SEO_EVENTS } from "@/lib/analytics";
 
 const mantras = [
   "ॐ नमो दुर्गायै नमः",
@@ -271,7 +272,7 @@ export function HeroSection() {
         {/* CTAs */}
         <BlurFade delay={1.0}>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <Link href="/puja-booking">
+            <Link href="/puja-booking" onClick={() => trackEvent(SEO_EVENTS.CTA_CLICK, { location: "hero", label: "Book a Sacred Puja" })}>
               <ShimmerButton className="px-10 py-4 shadow-2xl transition-all hover:scale-105 active:scale-95">
                 <span className="font-display text-base tracking-widest uppercase">
                   Book a Sacred Puja

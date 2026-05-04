@@ -12,6 +12,12 @@ import { DevoteeSection } from "@/components/home/DevoteeSection";
 import { GallerySection } from "@/components/home/GallerySection";
 import { InvocationSection } from "@/components/home/InvocationSection";
 import { Footer } from "@/components/layout/Footer";
+import { constructMetadata } from "@/lib/seo-metadata";
+
+export const metadata = constructMetadata({
+  title: "Temple in Darjeeling",
+  description: "Experience the divine presence at Maa Unique Dham, the most peaceful and powerful temple in Darjeeling. Book pujas and find spiritual guidance.",
+});
 
 // Server Actions
 import { getSequences } from "@/app/actions/getSequences";
