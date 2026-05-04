@@ -15,13 +15,15 @@ import { Footer } from "@/components/layout/Footer";
 import { constructMetadata } from "@/lib/seo-metadata";
 
 export const metadata = constructMetadata({
-  title: "Temple in Darjeeling",
+  title: "Maa Unique Dham | Temple in Darjeeling",
   description: "Experience the divine presence at Maa Unique Dham, the most peaceful and powerful temple in Darjeeling. Book pujas and find spiritual guidance.",
 });
 
 // Server Actions
 import { getSequences } from "@/app/actions/getSequences";
 import { getGalleryImages } from "@/app/actions/getGalleryImages";
+
+import { BrandSchema } from "@/components/seo/BrandSchema";
 
 export default async function Home() {
   // Parallel fetching of all required page data
@@ -42,6 +44,7 @@ export default async function Home() {
 
   return (
     <>
+      <BrandSchema />
       <Navbar />
       <main className="overflow-x-hidden">
         <HeroSection />

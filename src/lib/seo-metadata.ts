@@ -2,9 +2,10 @@ import { Metadata } from "next";
 
 const siteConfig = {
   name: "Maa Unique Dham",
+  shortName: "Maa Unique Dham",
   description: "A sacred spiritual platform born in the hills of Darjeeling. Where Maa is not invoked. She Arrives.",
-  url: "https://maauniquedham.com", // Replace with actual URL if different
-  ogImage: "https://maauniquedham.com/og-image.jpg",
+  url: "https://maauniquedham.vercel.app",
+  ogImage: "https://maauniquedham.vercel.app/og-image.jpg",
   keywords: [
     "Maa Unique Dham",
     "Darjeeling",
@@ -17,10 +18,11 @@ const siteConfig = {
     "Spiritual Guidance",
     "Online Puja Booking"
   ],
+  googleVerification: "google267a6b5cf39818e4", // Updated with user's specific code
 };
 
 export function constructMetadata({
-  title = "Temple in Darjeeling",
+  title,
   description = siteConfig.description,
   image = siteConfig.ogImage,
   noIndex = false,
@@ -32,17 +34,22 @@ export function constructMetadata({
   noIndex?: boolean;
   keywords?: string[];
 } = {}): Metadata {
+  const fullTitle = title 
+    ? (title.includes(siteConfig.name) ? title : `${title} | ${siteConfig.name}`)
+    : `${siteConfig.name} | Best Temple in Darjeeling`;
+
   return {
-    title: `${title} | ${siteConfig.name}`,
+    title: fullTitle,
     description,
     keywords: [...siteConfig.keywords, ...keywords],
     authors: [{ name: siteConfig.name }],
     creator: siteConfig.name,
+    // Google uses siteName for the brand name in search results
     openGraph: {
       type: "website",
       locale: "en_US",
       url: siteConfig.url,
-      title: `${title} | ${siteConfig.name}`,
+      title: fullTitle,
       description,
       siteName: siteConfig.name,
       images: [
@@ -50,13 +57,13 @@ export function constructMetadata({
           url: image,
           width: 1200,
           height: 630,
-          alt: title,
+          alt: fullTitle,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | ${siteConfig.name}`,
+      title: fullTitle,
       description,
       images: [image],
       creator: "@maauniquedham",
@@ -67,11 +74,19 @@ export function constructMetadata({
       apple: "/apple-touch-icon.png",
     },
     metadataBase: new URL(siteConfig.url),
+    verification: {
+      google: siteConfig.googleVerification,
+    },
     ...(noIndex && {
       robots: {
         index: false,
         follow: false,
       },
     }),
+    // For proper brand naming in search
+    other: {
+      "application-name": siteConfig.name,
+      "apple-mobile-web-app-title": siteConfig.name,
+    }
   };
 }

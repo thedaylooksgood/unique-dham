@@ -8,7 +8,7 @@ import NextTopLoader from 'nextjs-toploader';
 import Script from "next/script";
 
 import { constructMetadata } from "@/lib/seo-metadata";
-import { GTM } from "@/components/seo/GTM";
+import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google';
 
 export const metadata = constructMetadata();
 
@@ -35,7 +35,8 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-ivory text-sacred-brown relative">
-        <GTM gtmId="GTM-XXXXXXX" />
+        <GoogleTagManager gtmId="GTM-XXXXXXX" />
+        <GoogleAnalytics gaId="G-XXXXXXX" />
         <NextTopLoader 
           color="#e95d24"
           initialPosition={0.08}
