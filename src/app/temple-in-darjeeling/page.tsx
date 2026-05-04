@@ -5,6 +5,7 @@ const keyword = "Temple in Darjeeling";
 export const metadata = constructMetadata({
   title: keyword,
   description: `Maa Unique Dham is the most sacred and peaceful temple in Darjeeling. Visit for divine blessings, spiritual guidance, and authentic Vedic pujas.`,
+  canonicalPath: "/temple-in-darjeeling",
 });
 
 const content = `

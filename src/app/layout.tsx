@@ -61,8 +61,8 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-ivory text-sacred-brown relative">
-        <GoogleTagManager gtmId="GTM-XXXXXXX" />
-        <GoogleAnalytics gaId="G-XXXXXXX" />
+        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID || ""} />
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ""} />
         <NextTopLoader 
           color="#e95d24"
           initialPosition={0.08}

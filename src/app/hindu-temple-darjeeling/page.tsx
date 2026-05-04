@@ -5,6 +5,7 @@ const keyword = "Hindu Temple Darjeeling";
 export const metadata = constructMetadata({
   title: keyword,
   description: `Discover the most authentic Hindu temple in Darjeeling. Maa Unique Dham offers Vedic rituals, Shakti worship, and spiritual peace.`,
+  canonicalPath: "/hindu-temple-darjeeling",
 });
 
 const content = `

@@ -34,12 +34,14 @@ export function constructMetadata({
   image = siteConfig.ogImage,
   noIndex = false,
   keywords = [],
+  canonicalPath = "/",
 }: {
   title?: string;
   description?: string;
   image?: string;
   noIndex?: boolean;
   keywords?: string[];
+  canonicalPath?: string;
 } = {}): Metadata {
   const fullTitle = title 
     ? (title.includes(siteConfig.name) ? title : `${title} | ${siteConfig.name}`)
@@ -52,7 +54,7 @@ export function constructMetadata({
     authors: [{ name: siteConfig.name }],
     creator: siteConfig.name,
     alternates: {
-      canonical: "/",
+      canonical: canonicalPath,
     },
     // Google uses siteName for the brand name in search results
     openGraph: {

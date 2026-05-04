@@ -5,6 +5,7 @@ const keyword = "Best Temple in Darjeeling";
 export const metadata = constructMetadata({
   title: keyword,
   description: `Find out why Maa Unique Dham is considered the best temple in Darjeeling for spiritual seekers and devotees. Experience divine peace today.`,
+  canonicalPath: "/best-temple-darjeeling",
 });
 
 const content = `
