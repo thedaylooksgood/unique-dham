@@ -230,10 +230,11 @@
 @layer base {
 
   /* Prevent flash of content before preloader handles it */
-  html.js-loading body>*:not(.preloader-root) {
+  html.js-loading body > *:not(.preloader-root) {
     visibility: hidden;
     min-height: 100vh;
     opacity: 0;
+    pointer-events: none;
   }
 
   * {

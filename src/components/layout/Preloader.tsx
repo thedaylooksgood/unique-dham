@@ -91,8 +91,16 @@ export function Preloader() {
 
   // Lock scrolling
   useEffect(() => {
+    // Check if this is a back/forward navigation
+    const isBackForward = typeof window !== 'undefined' && 
+      (window.performance?.getEntriesByType?.("navigation")?.[0] as PerformanceNavigationTiming)?.type === "back_forward";
+
     if (phase !== "complete") {
-      document.body.style.overflow = "hidden";
+      // Only lock scroll if it's not a back/forward navigation
+      // This allows the browser's native scroll restoration to work better
+      if (!isBackForward) {
+        document.body.style.overflow = "hidden";
+      }
       document.documentElement.classList.add("js-loading");
     } else {
       document.body.style.overflow = "";
