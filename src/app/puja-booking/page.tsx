@@ -7,10 +7,9 @@ export default function PujaBookingPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-32 bg-ivory">
+      <main className="min-h-screen bg-ivory">
         <PujaBookingClient />
       </main>
-      <div className="h-20 bg-ivory" />
       <Footer />
     </>
   );
