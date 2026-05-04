@@ -11,6 +11,8 @@ const navLinks = [
   { href: "/guidance", label: "Guidance" },
   { href: "/sacred-store", label: "Sacred Store" },
   { href: "/gallery", label: "Gallery" },
+  { href: "/events", label: "Events" },
+  { href: "/volunteer", label: "Volunteer" },
 ];
 
 export function Navbar() {
@@ -58,12 +60,24 @@ export function Navbar() {
           <motion.div
             animate={{ opacity: isScrolled ? 1 : 0 }}
             transition={dockTransition}
-            className="absolute inset-0 bg-ivory/95 backdrop-blur-xl border border-saffron/30 z-0"
+            className="absolute inset-0 bg-ivory/95 backdrop-blur-xl z-0"
           />
           <motion.div
             animate={{ opacity: isScrolled ? 0 : 1 }}
             transition={dockTransition}
-            className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/50 to-transparent z-0"
+            className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/50 to-transparent z-0 shadow-sm"
+          />
+          
+          {/* Continuous Border for connectivity */}
+          <motion.div
+            animate={{ 
+              borderRadius: isScrolled ? "18px" : "0px",
+            }}
+            transition={dockTransition}
+            className={cn(
+              "absolute inset-0 pointer-events-none z-[1]",
+              isScrolled ? "border border-saffron/30" : "border-b border-saffron/10"
+            )}
           />
 
           {/* Foreground Content */}
@@ -126,13 +140,17 @@ export function Navbar() {
             </nav>
 
             {/* CTA & Mobile Toggle */}
-            <div className="flex items-center shrink-0">
-              <div className="hidden lg:block">
+            <div className="flex items-center gap-3 shrink-0">
+              <div className="hidden lg:flex items-center gap-3">
+                <Link href="/events">
+                  <motion.div transition={dockTransition}>
+                    <button className="px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest text-sacred-brown border border-saffron/20 hover:bg-saffron/5 transition-all">
+                      Events
+                    </button>
+                  </motion.div>
+                </Link>
                 <Link href="/puja-booking">
-                  <motion.div
-                    animate={{ scale: isScrolled ? 1 : 1 }} // Keep button full size for prominence
-                    transition={dockTransition}
-                  >
+                  <motion.div transition={dockTransition}>
                     <ShimmerButton background="#e95d24" className="shadow-lg hover:scale-105 active:scale-95 transition-transform duration-300 px-6 py-2.5">
                       <span className="font-display text-sm tracking-widest uppercase whitespace-nowrap text-white">
                         Book a Puja
