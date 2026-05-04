@@ -18,6 +18,26 @@ import { cn } from "@/lib/utils";
 import { pujasData } from "@/lib/data/pujas";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 
+const layoutConfig = {
+  container: {
+    mt: "mt-4 md:mt-6 lg:mt-8",
+    maxW: "max-w-7xl"
+  },
+  textSection: {
+    mt: "mt-0 lg:mt-[-40px]", // Added negative margin to push text up
+    pt: "pt-2 md:pt-4 lg:pt-6",
+    pb: "pb-8 md:pb-12", 
+    innerPy: "py-4 md:py-6",
+    spacing: "space-y-4 md:space-y-5",
+    px: "px-6 md:px-16 lg:px-0"
+  },
+  imageSection: {
+    mt: "mt-4 lg:mt-10",
+    p: "p-0",
+    h: "h-[350px] md:h-[450px] lg:h-[550px]"
+  }
+};
+
 export default function PujaBookingClient() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
@@ -43,8 +63,8 @@ export default function PujaBookingClient() {
   const handlePrev = () => setActiveIndex((prev) => (prev - 1 + pujasData.length) % pujasData.length);
 
   return (
-    <div className="relative w-full h-[100vh] min-h-[700px] bg-ivory text-sacred-brown overflow-hidden font-body selection:bg-saffron selection:text-white">
-      
+    <div className={cn("relative w-full min-h-[calc(100vh-8rem)] flex flex-col bg-ivory text-sacred-brown font-body selection:bg-saffron selection:text-white overflow-x-hidden", layoutConfig.container.mt)}>
+
       {/* Decorative Background Elements */}
       <div className="absolute inset-0 pointer-events-none opacity-20">
         <div className="absolute top-[10%] left-[5%] w-64 h-64 bg-saffron/5 rounded-full" />
@@ -52,10 +72,10 @@ export default function PujaBookingClient() {
       </div>
 
       {/* Main Content Layout */}
-      <div className="relative z-10 w-full max-w-[1600px] mx-auto h-full flex flex-col lg:flex-row items-center">
-        
+      <div className={cn("relative z-10 w-full mx-auto flex-grow flex flex-col lg:flex-row items-center gap-8 lg:gap-0", layoutConfig.container.maxW)}>
+
         {/* --- LEFT CONTENT AREA --- */}
-        <div className="w-full lg:w-[45%] h-full flex flex-col justify-center px-6 md:px-16 lg:pl-20 z-20 pt-20 lg:pt-0 pb-64 lg:pb-56">
+        <div className={cn("w-full lg:w-[45%] h-full flex flex-col justify-start z-20 relative", layoutConfig.textSection.px, layoutConfig.textSection.pt, layoutConfig.textSection.pb, layoutConfig.textSection.mt)}>
           <AnimatePresence mode="wait">
             <motion.div
               key={activePuja.id}
@@ -63,10 +83,17 @@ export default function PujaBookingClient() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="w-full"
+              className={cn("w-full", layoutConfig.textSection.spacing,
+                "p-6 md:p-8 lg:p-0 lg:py-10",
+                "bg-ivory/85 md:bg-ivory/70 lg:bg-transparent",
+                "backdrop-blur-xl lg:backdrop-blur-none",
+                "rounded-[2rem] lg:rounded-none",
+                "border border-white/60 lg:border-none",
+                "shadow-2xl shadow-black/5 lg:shadow-none"
+              )}
             >
               {/* Meta Info */}
-              <div className="flex items-center gap-4 mb-6">
+              <div className="flex items-center gap-4">
                 <div className="px-3 py-1 bg-saffron/10 border border-saffron/20 rounded-full flex items-center gap-2">
                   <Clock size={12} className="text-saffron" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-saffron">
@@ -82,47 +109,62 @@ export default function PujaBookingClient() {
               </div>
 
               {/* Title */}
-              <h1 className="font-display text-5xl md:text-6xl xl:text-7xl leading-[1.1] text-sacred-brown mb-8">
+              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-sacred-brown tracking-tight">
                 {activePuja.name}
               </h1>
 
               {/* Description */}
-              <p className="text-warm-umber/80 text-base md:text-lg leading-relaxed mb-10 max-w-xl">
+              <p className="font-body text-sm md:text-base text-warm-umber leading-relaxed font-semibold tracking-wide max-w-lg">
                 {activePuja.shortDescription}
               </p>
 
               {/* Benefits Highlights */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
-                {activePuja.benefits.slice(0, 4).map((benefit, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full bg-saffron/10 flex items-center justify-center shrink-0">
-                      <CheckCircle2 size={12} className="text-saffron" />
+              <div className="flex flex-col gap-4">
+                {activePuja.benefits.slice(0, 5).map((benefit, i) => (
+                  <div key={i} className="flex items-start gap-4 group">
+                    <div className="mt-1 relative flex items-center justify-center shrink-0">
+                      {/* Custom Sacred Icon */}
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform duration-500 group-hover:rotate-45">
+                        <path 
+                          d="M12 2L13.5 7.5H19L14.5 11L16 16.5L12 13L8 16.5L9.5 11L5 7.5H10.5L12 2Z" 
+                          stroke="#E8860C" 
+                          strokeWidth="1.2" 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round"
+                        />
+                        <circle cx="12" cy="11" r="2.5" fill="#E8860C" fillOpacity="0.2" stroke="#E8860C" strokeWidth="1" />
+                        <circle cx="12" cy="11" r="0.8" fill="#E8860C" />
+                      </svg>
+                      {/* Subtle glow behind icon */}
+                      <div className="absolute inset-0 bg-saffron/10 blur-[6px] rounded-full -z-10 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
-                    <span className="text-sm font-medium text-sacred-brown/70">{benefit}</span>
+                    <span className="text-[15px] font-medium text-sacred-brown/80 leading-snug tracking-wide group-hover:text-sacred-brown transition-colors">
+                      {benefit}
+                    </span>
                   </div>
                 ))}
               </div>
 
               {/* Primary Actions */}
-              <div className="flex flex-wrap items-center gap-6">
-                <ShimmerButton 
+              <div className="flex flex-nowrap items-center gap-4 lg:gap-6">
+                <ShimmerButton
                   onClick={() => setIsEnquiryModalOpen(true)}
-                  className="px-10 py-4 shadow-2xl hover:scale-105 transition-transform"
+                  className="px-6 md:px-8 py-3 md:py-3.5 shadow-2xl hover:scale-105 transition-transform"
                 >
                   <div className="flex items-center gap-3">
                     <span className="font-display text-sm tracking-widest uppercase">Reserve Ritual</span>
-                    <ArrowRight size={18} />
+                    <ArrowRight size={16} />
                   </div>
                 </ShimmerButton>
 
-                <button 
+                <button
                   onClick={() => setIsVideoModalOpen(true)}
-                  className="group flex items-center gap-3 px-6 py-3 rounded-full hover:bg-saffron/5 transition-colors"
+                  className="group flex items-center gap-2 px-4 py-2 rounded-full hover:bg-saffron/5 transition-colors shrink-0"
                 >
-                  <div className="w-10 h-10 rounded-full border border-saffron/20 flex items-center justify-center text-saffron group-hover:bg-saffron group-hover:text-white transition-all duration-500">
-                    <Play size={16} fill="currentColor" className="ml-1" />
+                  <div className="w-8 h-8 rounded-full border border-saffron/20 flex items-center justify-center text-saffron group-hover:bg-saffron group-hover:text-white transition-all duration-300">
+                    <Play size={14} fill="currentColor" className="ml-0.5" />
                   </div>
-                  <span className="text-xs font-bold tracking-[0.15em] text-sacred-brown uppercase border-b border-sacred-brown/20 pb-0.5 group-hover:border-saffron transition-colors">
+                  <span className="font-display text-xs tracking-widest uppercase text-sacred-brown border-b border-sacred-brown/20 pb-0.5 group-hover:border-saffron transition-colors">
                     Watch Ritual
                   </span>
                 </button>
@@ -131,10 +173,13 @@ export default function PujaBookingClient() {
           </AnimatePresence>
         </div>
 
-        {/* --- RIGHT IMAGE AREA --- */}
-        <div className="absolute lg:relative inset-0 lg:inset-auto w-full lg:w-[55%] h-full z-0 lg:z-10 mt-20 lg:mt-0 flex items-center justify-center p-4">
-          <div 
-            className="relative w-full h-[80%] lg:h-[90%] overflow-hidden group transition-all duration-700"
+        {/* --- RIGHT IMAGE AREA (Background on mobile) --- */}
+        <div className={cn("absolute lg:relative inset-0 lg:inset-auto w-full lg:w-[55%] h-full z-0 lg:z-10 flex items-center justify-center lg:order-2", layoutConfig.imageSection.mt, layoutConfig.imageSection.p)}>
+          {/* Mobile Overlay */}
+          <div className="absolute inset-0 bg-black/20 lg:hidden z-10 pointer-events-none" />
+
+          <div
+            className={cn("relative w-full h-[40vh] lg:h-full overflow-hidden group transition-all duration-700", layoutConfig.imageSection.h)}
             style={{
               maskImage: "url('/images/home-page/mahant/brush-mask.png')",
               WebkitMaskImage: "url('/images/home-page/mahant/brush-mask.png')",
@@ -158,22 +203,22 @@ export default function PujaBookingClient() {
                 className="absolute inset-0 w-full h-full object-cover object-center"
               />
             </AnimatePresence>
-            
-            {/* Nav Arrows (Floating on Image) */}
-            <div className="absolute bottom-12 right-12 flex gap-4 z-30">
-              <button 
-                onClick={handlePrev}
-                className="w-14 h-14 rounded-full bg-black/60 border border-white/20 flex items-center justify-center text-white hover:bg-saffron hover:border-saffron transition-all duration-300 group/btn"
-              >
-                <ChevronLeft size={24} className="group-hover/btn:-translate-x-1 transition-transform" />
-              </button>
-              <button 
-                onClick={handleNext}
-                className="w-14 h-14 rounded-full bg-black/60 border border-white/20 flex items-center justify-center text-white hover:bg-saffron hover:border-saffron transition-all duration-300 group/btn"
-              >
-                <ChevronRight size={24} className="group-hover/btn:translate-x-1 transition-transform" />
-              </button>
-            </div>
+          </div>
+
+          {/* Nav Arrows (Beside the image) */}
+          <div className="absolute top-[65%] lg:top-1/2 -translate-y-1/2 inset-x-4 lg:-inset-x-2 flex justify-between z-30 pointer-events-none">
+            <button
+              onClick={handlePrev}
+              className="pointer-events-auto w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-black/30 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-saffron hover:border-saffron hover:scale-110 transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.12)] group/btn"
+            >
+              <ChevronLeft size={24} className="group-hover/btn:-translate-x-1 transition-transform drop-shadow-md" />
+            </button>
+            <button
+              onClick={handleNext}
+              className="pointer-events-auto w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-black/30 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-saffron hover:border-saffron hover:scale-110 transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.12)] group/btn"
+            >
+              <ChevronRight size={24} className="group-hover/btn:translate-x-1 transition-transform drop-shadow-md" />
+            </button>
           </div>
         </div>
       </div>
@@ -181,41 +226,41 @@ export default function PujaBookingClient() {
       {/* =========================================
           LIGHT THEMED NAVIGATION DOCK
           ========================================= */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[40] w-full max-w-7xl px-4 hidden md:block pointer-events-none">
-        <motion.div 
+      <div className="relative lg:sticky bottom-4 lg:bottom-[130px] inset-x-0 mx-auto z-[40] w-full max-w-7xl px-4 lg:px-8 pointer-events-none mt-0 mb-8">
+        <motion.div
           initial={false}
-          animate={{ 
+          animate={{
             height: isExpanded ? "auto" : "auto",
             width: isExpanded ? "100%" : "auto",
           }}
           className={cn(
-            "mx-auto pointer-events-auto bg-ivory border border-saffron/20 shadow-[0_30px_60px_rgba(233,93,36,0.15)] rounded-2xl overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col",
-            isExpanded ? "p-6" : "p-2"
+            "mx-auto pointer-events-auto bg-ivory border border-saffron/20 shadow-[0_20px_50px_rgba(233,93,36,0.1)] rounded-2xl overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col",
+            isExpanded ? "p-4 md:p-6" : "p-2"
           )}
         >
           {/* Dock Header */}
-          <div className="flex items-center justify-between px-6 py-2 mb-2">
-            <div className="flex items-center gap-3">
-              <div className="w-1.5 h-1.5 rounded-full bg-saffron animate-pulse" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-sacred-brown/60">
+          <div className="flex items-center justify-between px-3 md:px-6 py-1 mb-1">
+            <div className="flex items-center gap-2">
+              <div className="w-1 h-1 rounded-full bg-saffron animate-pulse" />
+              <span className="text-[8px] md:text-[9px] font-bold uppercase tracking-[0.2em] md:tracking-[0.3em] text-sacred-brown/60">
                 Pujas Offered
               </span>
             </div>
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-saffron/5 border border-saffron/10 hover:bg-saffron/10 transition-all text-saffron"
+              className="flex items-center gap-1.5 px-2 md:px-3 py-1 rounded-full bg-saffron/5 border border-saffron/10 hover:bg-saffron/10 transition-all text-saffron"
             >
-              <span className="text-[10px] font-bold uppercase tracking-widest">
-                {isExpanded ? "Minimize" : "Show All Library"}
+              <span className="text-[8px] md:text-[9px] font-bold uppercase tracking-widest">
+                {isExpanded ? "Close" : "Change"}
               </span>
-              {isExpanded ? <X size={12} /> : <Info size={12} />}
+              {isExpanded ? <X size={8} /> : <Info size={8} />}
             </button>
           </div>
 
           <div className="flex items-center">
             {/* Navigation Left Arrow (Only show when NOT expanded) */}
             {!isExpanded && (
-              <button 
+              <button
                 onClick={scrollLeftNav}
                 className="p-2 text-sacred-brown/60 hover:text-saffron transition-colors shrink-0"
               >
@@ -223,12 +268,12 @@ export default function PujaBookingClient() {
               </button>
             )}
 
-            <div 
+            <div
               ref={scrollContainerRef}
               className={cn(
                 "flex scrollbar-hide scroll-smooth",
-                isExpanded 
-                  ? "flex-wrap justify-center items-start gap-4 max-h-[60vh] overflow-y-auto px-4 py-4" 
+                isExpanded
+                  ? "flex-wrap justify-center items-start gap-4 max-h-[60vh] overflow-y-auto px-4 py-4"
                   : "items-center gap-3 overflow-x-hidden w-full px-2 py-1"
               )}
             >
@@ -244,33 +289,33 @@ export default function PujaBookingClient() {
                       if (isExpanded) setIsExpanded(false);
                     }}
                     className={cn(
-                      "group relative flex items-center gap-4 px-8 py-4 rounded-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] whitespace-nowrap",
+                      "group relative flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-2.5 rounded-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] whitespace-nowrap",
                       isActive
-                        ? "bg-saffron text-white shadow-xl shadow-saffron/40 scale-105"
+                        ? "bg-saffron text-white shadow-lg shadow-saffron/30 scale-105"
                         : "hover:bg-saffron/5 text-sacred-brown/70 hover:text-saffron",
-                      isExpanded && "min-w-[280px] justify-start bg-white/50 border border-saffron/5 shadow-sm"
+                      isExpanded && "min-w-[200px] md:min-w-[280px] justify-start bg-white/50 border border-saffron/5 shadow-sm py-3 md:py-4"
                     )}
                   >
-                    <Icon size={22} className={cn("transition-transform duration-500", isActive ? "scale-110" : "group-hover:scale-110")} />
-                    <div className="flex flex-col items-start">
+                    <Icon size={14} className={cn("md:w-[18px] md:h-[18px] transition-transform duration-500", isActive ? "scale-110" : "group-hover:scale-110")} />
+                    <div className="flex flex-col items-start min-w-0 overflow-hidden">
                       <span className={cn(
-                        "text-sm xl:text-base font-bold tracking-wide transition-all duration-500",
+                        "text-[11px] md:text-xs xl:text-sm font-bold tracking-wide transition-all duration-500 truncate w-full",
                         isActive ? "opacity-100" : "opacity-80"
                       )}>
                         {puja.name}
                       </span>
                       {isExpanded && (
                         <span className={cn(
-                          "text-[10px] uppercase tracking-widest font-medium transition-all duration-500",
+                          "text-[8px] md:text-[9px] uppercase tracking-widest font-medium transition-all duration-500",
                           isActive ? "text-white/70" : "text-sacred-brown/40"
                         )}>
                           {puja.deity}
                         </span>
                       )}
                     </div>
-                    
+
                     {isActive && (
-                      <motion.div 
+                      <motion.div
                         layoutId="dock-indicator"
                         className="absolute inset-0 bg-saffron rounded-xl -z-10 shadow-lg shadow-saffron/30"
                       />
@@ -282,7 +327,7 @@ export default function PujaBookingClient() {
 
             {/* Navigation Right Arrow (Only show when NOT expanded) */}
             {!isExpanded && (
-              <button 
+              <button
                 onClick={scrollRightNav}
                 className="p-2 text-sacred-brown/60 hover:text-saffron transition-colors shrink-0"
               >
@@ -296,7 +341,7 @@ export default function PujaBookingClient() {
       {/* =========================================
           MODALS (Enquiry & Video)
           ========================================= */}
-      
+
       {/* Enquiry Modal */}
       <AnimatePresence>
         {isEnquiryModalOpen && (

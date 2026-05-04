@@ -864,3 +864,4 @@ html.lenis body {
 
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 .scrollbar-hide::-webkit-scrollbar { display: none; }
+html, body { overflow-x: hidden !important; max-width: 100vw !important; }
