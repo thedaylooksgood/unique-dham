@@ -16,7 +16,14 @@ const siteConfig = {
     "Maa Durga",
     "Darjeeling Tourism",
     "Spiritual Guidance",
-    "Online Puja Booking"
+    "Online Puja Booking",
+    "Places to visit in Darjeeling",
+    "Darjeeling sightseeing",
+    "Peaceful places in Darjeeling",
+    "Nav Kanya Devi Mandir",
+    "Mahant Yogiraj",
+    "Shakti Peeth Darjeeling",
+    "Spiritual healing Darjeeling"
   ],
   googleVerification: "mLv150vGWImZ6OzkhcyMd8s89eqNzrAPk-WhTlKfC6M",
 };
@@ -44,6 +51,9 @@ export function constructMetadata({
     keywords: [...siteConfig.keywords, ...keywords],
     authors: [{ name: siteConfig.name }],
     creator: siteConfig.name,
+    alternates: {
+      canonical: "/",
+    },
     // Google uses siteName for the brand name in search results
     openGraph: {
       type: "website",

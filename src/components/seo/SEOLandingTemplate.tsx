@@ -24,9 +24,45 @@ export function SEOLandingTemplate({
   faqs,
   schema,
 }: SEOLandingTemplateProps) {
+  // Enhanced Schema for FAQs
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+
+  // Breadcrumb Schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://unique-dham.vercel.app"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": keyword,
+        "item": schema.url || `https://unique-dham.vercel.app/${keyword.toLowerCase().replace(/ /g, '-')}`
+      }
+    ]
+  };
+
   return (
     <>
       <JsonLd data={schema} />
+      <JsonLd data={faqSchema} />
+      <JsonLd data={breadcrumbSchema} />
       <Navbar />
       <main className="bg-ivory overflow-x-hidden">
         {/* Hero Section */}

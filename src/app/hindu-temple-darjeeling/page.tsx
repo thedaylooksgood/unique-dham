@@ -42,7 +42,7 @@ const schema = {
   "@type": "PlaceOfWorship",
   "name": "Maa Unique Dham - Hindu Temple Darjeeling",
   "description": "A premier Hindu temple in Darjeeling dedicated to Sanatan Shakti and Vedic traditions.",
-  "url": "https://maauniquedham.com/hindu-temple-darjeeling"
+  "url": "https://unique-dham.vercel.app/hindu-temple-darjeeling"
 };
 
 export default function HinduTempleDarjeelingPage() {

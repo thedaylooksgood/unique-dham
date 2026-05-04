@@ -26,6 +26,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.youtube.com" />
         <link rel="preconnect" href="https://www.google.com" />
         <link rel="preconnect" href="https://i.ytimg.com" />
+        <link rel="sitemap" type="application/xml" href="https://unique-dham.vercel.app/sitemap.xml" />
         <Script
           id="scroll-restoration"
           strategy="beforeInteractive"

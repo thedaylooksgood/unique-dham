@@ -39,7 +39,7 @@ const schema = {
   "@type": "PlaceOfWorship",
   "name": "Maa Unique Dham - Best Temple in Darjeeling",
   "description": "Ranked among the best spiritual destinations in Darjeeling for authentic worship and peace.",
-  "url": "https://maauniquedham.com/best-temple-darjeeling"
+  "url": "https://unique-dham.vercel.app/best-temple-darjeeling"
 };
 
 export default function BestTempleDarjeelingPage() {

@@ -48,7 +48,7 @@ const schema = {
   "@type": "PlaceOfWorship",
   "name": "Maa Unique Dham",
   "description": "The most sacred spiritual temple in Darjeeling, dedicated to Maa Durga and Sanatan Shakti.",
-  "url": "https://maauniquedham.com/temple-in-darjeeling",
+  "url": "https://unique-dham.vercel.app/temple-in-darjeeling",
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Darjeeling",
