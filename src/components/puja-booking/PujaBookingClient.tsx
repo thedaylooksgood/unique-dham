@@ -50,6 +50,7 @@ export default function PujaBookingClient() {
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({ name: "", phone: "", pujaId: pujasData[0].id, message: "" });
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -469,20 +470,62 @@ export default function PujaBookingClient() {
                           <label className="flex items-center gap-2 text-[10px] font-bold tracking-[0.1em] uppercase text-sacred-brown ml-1">
                             <Sparkles size={14} className="text-saffron" /> Select Ritual <span className="text-saffron">*</span>
                           </label>
-                          <div className="relative group">
-                            <select
-                              required
-                              value={formData.pujaId}
-                              onChange={(e) => setFormData({ ...formData, pujaId: e.target.value })}
-                              className="w-full px-5 py-4 bg-white border border-saffron/10 rounded-xl text-sacred-brown focus:outline-none focus:ring-4 focus:ring-saffron/5 focus:border-saffron/20 transition-all font-bold text-base appearance-none cursor-pointer pr-12 group-hover:border-saffron/30"
+                          <div className="relative">
+                            <button
+                              type="button"
+                              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                              className="w-full px-5 py-4 bg-white border border-saffron/10 rounded-xl text-sacred-brown focus:outline-none focus:ring-4 focus:ring-saffron/5 focus:border-saffron/20 transition-all font-bold text-base flex items-center justify-between group hover:border-saffron/30"
                             >
-                              {pujasData.filter(p => p.isBookable !== false).map(p => (
-                                <option key={p.id} value={p.id} className="py-2">{p.name}</option>
-                              ))}
-                            </select>
-                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-saffron/50 group-hover:text-saffron transition-colors">
-                              <ChevronDown size={20} />
-                            </div>
+                              <span className="truncate">
+                                {pujasData.find(p => p.id === formData.pujaId)?.name || "Select Ritual"}
+                              </span>
+                              <ChevronDown 
+                                size={20} 
+                                className={cn("text-saffron/50 group-hover:text-saffron transition-all duration-300", isDropdownOpen ? "rotate-180" : "rotate-0")} 
+                              />
+                            </button>
+
+                            <AnimatePresence>
+                              {isDropdownOpen && (
+                                <>
+                                  <div 
+                                    className="fixed inset-0 z-[120]" 
+                                    onClick={() => setIsDropdownOpen(false)} 
+                                  />
+                                  <motion.div
+                                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                    transition={{ duration: 0.2, ease: "easeOut" }}
+                                    className="absolute left-0 right-0 top-full mt-2 bg-white/95 backdrop-blur-xl border border-saffron/20 rounded-2xl shadow-2xl z-[130] overflow-hidden py-2"
+                                  >
+                                    <div className="max-h-60 overflow-y-auto custom-scrollbar">
+                                      {pujasData.filter(p => p.isBookable !== false).map(p => (
+                                        <button
+                                          key={p.id}
+                                          type="button"
+                                          onClick={() => {
+                                            setFormData({ ...formData, pujaId: p.id });
+                                            setIsDropdownOpen(false);
+                                          }}
+                                          className={cn(
+                                            "w-full px-5 py-3 text-left transition-all flex items-center justify-between group",
+                                            formData.pujaId === p.id 
+                                              ? "bg-saffron/10 text-saffron font-bold" 
+                                              : "text-sacred-brown hover:bg-saffron/5 hover:text-saffron"
+                                          )}
+                                        >
+                                          <span className="text-sm sm:text-base">{p.name}</span>
+                                          {formData.pujaId === p.id && (
+                                            <div className="w-2 h-2 rounded-full bg-saffron shadow-[0_0_8px_rgba(233,93,36,0.5)]" />
+                                          )}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  </motion.div>
+                                </>
+                              )}
+                            </AnimatePresence>
                           </div>
                         </div>
 
