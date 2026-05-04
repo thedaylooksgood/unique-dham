@@ -33,7 +33,7 @@ const layoutConfig = {
   textSection: {
     mt: "mt-4 md:mt-8 lg:mt-[-40px]",
     pt: "pt-4 md:pt-4 lg:pt-6",
-    pb: "pb-6 md:pb-12", 
+    pb: "pb-6 md:pb-12",
     innerPy: "py-6 md:py-6",
     spacing: "space-y-5 md:space-y-5",
     px: "px-4 md:px-16 lg:px-0"
@@ -185,11 +185,11 @@ export default function PujaBookingClient() {
                     <div className="mt-1 relative flex items-center justify-center shrink-0">
                       {/* Custom Sacred Icon */}
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform duration-500 group-hover:rotate-45">
-                        <path 
-                          d="M12 2L13.5 7.5H19L14.5 11L16 16.5L12 13L8 16.5L9.5 11L5 7.5H10.5L12 2Z" 
-                          stroke="#E8860C" 
-                          strokeWidth="1.2" 
-                          strokeLinecap="round" 
+                        <path
+                          d="M12 2L13.5 7.5H19L14.5 11L16 16.5L12 13L8 16.5L9.5 11L5 7.5H10.5L12 2Z"
+                          stroke="#E8860C"
+                          strokeWidth="1.2"
+                          strokeLinecap="round"
                           strokeLinejoin="round"
                         />
                         <circle cx="12" cy="11" r="2.5" fill="#E8860C" fillOpacity="0.2" stroke="#E8860C" strokeWidth="1" />
@@ -425,7 +425,7 @@ export default function PujaBookingClient() {
       {/* Enquiry Modal */}
       <AnimatePresence>
         {isEnquiryModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-sacred-brown/40 backdrop-blur-sm">
+          <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-sacred-brown/40 backdrop-blur-sm">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -479,18 +479,18 @@ export default function PujaBookingClient() {
                               <span className="truncate">
                                 {pujasData.find(p => p.id === formData.pujaId)?.name || "Select Ritual"}
                               </span>
-                              <ChevronDown 
-                                size={20} 
-                                className={cn("text-saffron/50 group-hover:text-saffron transition-all duration-300", isDropdownOpen ? "rotate-180" : "rotate-0")} 
+                              <ChevronDown
+                                size={20}
+                                className={cn("text-saffron/50 group-hover:text-saffron transition-all duration-300", isDropdownOpen ? "rotate-180" : "rotate-0")}
                               />
                             </button>
 
                             <AnimatePresence>
                               {isDropdownOpen && (
                                 <>
-                                  <div 
-                                    className="fixed inset-0 z-[120]" 
-                                    onClick={() => setIsDropdownOpen(false)} 
+                                  <div
+                                    className="fixed inset-0 z-[120]"
+                                    onClick={() => setIsDropdownOpen(false)}
                                   />
                                   <motion.div
                                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -510,8 +510,8 @@ export default function PujaBookingClient() {
                                           }}
                                           className={cn(
                                             "w-full px-5 py-3 text-left transition-all flex items-center justify-between group",
-                                            formData.pujaId === p.id 
-                                              ? "bg-saffron/10 text-saffron font-bold" 
+                                            formData.pujaId === p.id
+                                              ? "bg-saffron/10 text-saffron font-bold"
                                               : "text-sacred-brown hover:bg-saffron/5 hover:text-saffron"
                                           )}
                                         >
@@ -630,7 +630,7 @@ export default function PujaBookingClient() {
       {/* Video Modal */}
       <AnimatePresence>
         {isVideoModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-12">
+          <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-12">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
