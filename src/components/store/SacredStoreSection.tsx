@@ -9,6 +9,7 @@ import { X, ShoppingBag, ChevronLeft, ChevronRight, Sparkles, Gem, Zap, Droplets
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useLenis } from "lenis/react";
+import { handleEnquiry } from "@/lib/contact";
 
 // Mapping icons to string keys for serialization
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -75,8 +76,16 @@ export function SacredStoreSection({ products, backgroundImage }: SacredStoreSec
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        
+        await handleEnquiry({
+            name: formData.name,
+            phone: formData.phone,
+            subject: `Product Enquiry: ${products.find(p => p.id === formData.productId)?.name || 'Unknown Item'}`,
+            message: formData.message,
+            productId: formData.productId,
+            source: "Sacred Store"
+        });
+
         setIsSubmitting(false);
         setIsSubmitted(true);
     };

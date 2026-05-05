@@ -14,6 +14,7 @@ import {
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
+import { handleEnquiry } from "@/lib/contact";
 
 export default function VolunteerClient() {
   const [formData, setFormData] = useState({ name: "", phone: "" });
@@ -23,8 +24,15 @@ export default function VolunteerClient() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    
+    await handleEnquiry({
+      name: formData.name,
+      phone: formData.phone,
+      subject: "Volunteer Enquiry",
+      message: "Interested in volunteering at Maa Unique Dham.",
+      source: "Volunteer Seva"
+    });
+
     setIsSubmitting(false);
     setIsSubmitted(true);
   };

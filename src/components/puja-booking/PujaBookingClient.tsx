@@ -24,6 +24,7 @@ import { cn } from "@/lib/utils";
 import { pujasData } from "@/lib/data/pujas";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { useLenis } from "lenis/react";
+import { handleEnquiry } from "@/lib/contact";
 
 const layoutConfig = {
   container: {
@@ -87,8 +88,16 @@ export default function PujaBookingClient() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    
+    await handleEnquiry({
+      name: formData.name,
+      phone: formData.phone,
+      subject: `Puja Booking: ${pujasData.find(p => p.id === formData.pujaId)?.name || 'Unknown Ritual'}`,
+      message: formData.message,
+      pujaId: formData.pujaId,
+      source: "Puja Booking"
+    });
+
     setIsSubmitting(false);
     setIsSubmitted(true);
   };

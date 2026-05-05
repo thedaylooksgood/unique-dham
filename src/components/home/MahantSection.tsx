@@ -20,10 +20,13 @@ export function MahantSection() {
           src="/images/home-page/mahant/mahant-section-bg.png"
           alt="Mahant Section Background"
           fill
-          className="object-fill contrast-[1.15] brightness-[1.02]"
+          className="object-cover object-[center_35%] md:object-center contrast-[1.1] brightness-[1.05] opacity-90"
           priority
           unoptimized
         />
+        {/* Subtle Overlays for Premium Look */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/80" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
