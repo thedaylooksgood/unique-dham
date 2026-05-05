@@ -20,13 +20,14 @@ export function MahantSection() {
           src="/images/home-page/mahant/mahant-section-bg.png"
           alt="Mahant Section Background"
           fill
-          className="object-cover object-[center_35%] md:object-center contrast-[1.1] brightness-[1.05] opacity-90"
+          className="object-cover object-center"
           priority
-          unoptimized
         />
-        {/* Subtle Overlays for Premium Look */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/80" />
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
+        
+        {/* Sacred Overlays - Matching Hero Style */}
+        <div className="absolute inset-0 bg-white/10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-white via-white/40 to-transparent" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -42,7 +43,13 @@ export function MahantSection() {
                 </span>
               </div>
 
-              <div className="space-y-2 mt-2">
+              <div className="space-y-2 mt-2 relative">
+                {/* Cloud Overlay - Matching Hero Style */}
+                <div className="absolute inset-x-[-20%] inset-y-[-10%] pointer-events-none z-[-1]">
+                  <div className="absolute inset-0 bg-[#FFFBF5]/80 blur-[40px] rounded-[100%] opacity-80" />
+                  <div className="absolute inset-[-10%] bg-white/60 blur-[30px] rounded-[100%] opacity-60" />
+                </div>
+                
                 <h2 className="font-display text-4xl md:text-5xl text-sacred-brown leading-[1.1]">
                   Shri Shri <br />
                   <span className="italic text-gradient-saffron font-bold">Mahant Yogiraj</span>
