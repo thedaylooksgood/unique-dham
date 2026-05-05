@@ -36,7 +36,7 @@ const schema = {
   "@type": "TouristAttraction",
   "name": "Maa Unique Dham",
   "description": "A must-visit spiritual and cultural destination in Darjeeling.",
-  "url": "https://unique-dham.vercel.app/places-to-visit-darjeeling"
+  "url": "https://www.maauniquedham.in/places-to-visit-darjeeling"
 };
 
 export default function PlacesToVisitDarjeelingPage() {

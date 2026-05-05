@@ -26,7 +26,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.youtube.com" />
         <link rel="preconnect" href="https://www.google.com" />
         <link rel="preconnect" href="https://i.ytimg.com" />
-        <link rel="sitemap" type="application/xml" href="https://unique-dham.vercel.app/sitemap.xml" />
+        <link rel="sitemap" type="application/xml" href="https://www.maauniquedham.in/sitemap.xml" />
       </head>
       <body className="min-h-full flex flex-col bg-ivory text-sacred-brown relative">
         <Script
@@ -45,19 +45,46 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "HinduTemple",
               "name": "Maa Unique Dham",
+              "alternateName": ["Nav Kanya Devi Mandir", "Unique Dham"],
               "description": "A sacred spiritual platform born in the hills of Darjeeling. Where Maa is not invoked. She Arrives.",
-              "url": "https://unique-dham.vercel.app",
-              "logo": "https://unique-dham.vercel.app/logo.png",
-              "image": "https://unique-dham.vercel.app/og-image.jpg",
+              "url": "https://www.maauniquedham.in",
+              "logo": "https://www.maauniquedham.in/logo.png",
+              "image": "https://www.maauniquedham.in/og-image.jpg",
+              "telephone": "+91 82508 88275",
               "address": {
                 "@type": "PostalAddress",
+                "streetAddress": "Unique Market, RN Sinha Rd, Chauk Bazaar",
                 "addressLocality": "Darjeeling",
                 "addressRegion": "West Bengal",
+                "postalCode": "734101",
                 "addressCountry": "IN"
               },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "27.0410",
+                "longitude": "88.2663"
+              },
+              "openingHoursSpecification": [
+                {
+                  "@type": "OpeningHoursSpecification",
+                  "dayOfWeek": [
+                    "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+                  ],
+                  "opens": "06:00",
+                  "closes": "20:00"
+                }
+              ],
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+91 82508 88275",
+                "contactType": "Enquiry",
+                "areaServed": "IN",
+                "availableLanguage": ["English", "Hindi", "Bengali", "Nepali"]
+              },
               "sameAs": [
-                "https://www.instagram.com/maauniquedham",
-                "https://www.facebook.com/maauniquedham"
+                "https://www.instagram.com/maa_unique_dham/",
+                "https://www.facebook.com/p/Unique-dham-darjeeling-100068201122988/",
+                "https://youtube.com/@maauniquedham5911"
               ]
             })
           }}

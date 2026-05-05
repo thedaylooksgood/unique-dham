@@ -4,10 +4,11 @@ const siteConfig = {
   name: "Maa Unique Dham",
   shortName: "Maa Unique Dham",
   description: "A sacred spiritual platform born in the hills of Darjeeling. Where Maa is not invoked. She Arrives.",
-  url: "https://unique-dham.vercel.app",
-  ogImage: "https://unique-dham.vercel.app/og-image.jpg",
+  url: "https://www.maauniquedham.in",
+  ogImage: "https://www.maauniquedham.in/og-image.jpg",
   keywords: [
     "Maa Unique Dham",
+    "www.maauniquedham.in",
     "Darjeeling",
     "Temple in Darjeeling",
     "Hindu Temple Darjeeling",
@@ -23,7 +24,13 @@ const siteConfig = {
     "Nav Kanya Devi Mandir",
     "Mahant Yogiraj",
     "Shakti Peeth Darjeeling",
-    "Spiritual healing Darjeeling"
+    "Spiritual healing Darjeeling",
+    "Famous temples in West Bengal",
+    "Durga Mandir North Bengal",
+    "Religious places in Darjeeling",
+    "Dham in Darjeeling",
+    "Spiritual travel India",
+    "Himalayan spiritual retreat"
   ],
   googleVerification: "mLv150vGWImZ6OzkhcyMd8s89eqNzrAPk-WhTlKfC6M",
 };

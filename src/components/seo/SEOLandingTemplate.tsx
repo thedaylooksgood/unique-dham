@@ -47,13 +47,13 @@ export function SEOLandingTemplate({
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://unique-dham.vercel.app"
+        "item": "https://www.maauniquedham.in"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": keyword,
-        "item": schema.url || `https://unique-dham.vercel.app/${keyword.toLowerCase().replace(/ /g, '-')}`
+        "item": schema.url || `https://www.maauniquedham.in/${keyword.toLowerCase().replace(/ /g, '-')}`
       }
     ]
   };

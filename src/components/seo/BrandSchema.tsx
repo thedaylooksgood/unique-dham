@@ -7,9 +7,9 @@ export function BrandSchema() {
     "name": "Maa Unique Dham",
     "alternateName": ["Nav Kanya Devi Mandir", "Unique Dham"],
     "description": "A sacred spiritual platform and temple born in the hills of Darjeeling. Dedicated to Maa Durga and Sanatan Shakti.",
-    "url": "https://unique-dham.vercel.app",
-    "logo": "https://unique-dham.vercel.app/logo.png",
-    "image": "https://unique-dham.vercel.app/images/home-page/hero/banner 1.png",
+    "url": "https://www.maauniquedham.in",
+    "logo": "https://www.maauniquedham.in/logo.png",
+    "image": "https://www.maauniquedham.in/images/home-page/hero/banner 1.png",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Unique Market, RN Sinha Rd, Chauk Bazaar",

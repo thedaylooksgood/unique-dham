@@ -34,7 +34,7 @@ const schema = {
   "@type": "PlaceOfWorship",
   "name": "Maa Unique Dham - Spiritual Center",
   "description": "One of the most powerful spiritual places in Darjeeling for meditation and Shakti worship.",
-  "url": "https://unique-dham.vercel.app/spiritual-places-darjeeling"
+  "url": "https://www.maauniquedham.in/spiritual-places-darjeeling"
 };
 
 export default function SpiritualPlacesDarjeelingPage() {

@@ -35,7 +35,8 @@ const schema = {
     {
       "@type": "ListItem",
       "position": 1,
-      "name": "Maa Unique Dham"
+      "name": "Maa Unique Dham",
+      "url": "https://www.maauniquedham.in/best-temples-darjeeling"
     }
   ]
 };
