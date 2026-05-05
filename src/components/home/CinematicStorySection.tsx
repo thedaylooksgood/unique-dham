@@ -17,6 +17,7 @@ import React, { useRef, useMemo } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { motion } from "framer-motion";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -89,6 +90,10 @@ export function CinematicStorySection({
           end: `+=${CHAPTERS.length * 300}%`, // 3 screens of scroll per chapter
           invalidateOnRefresh: true,
           refreshPriority: 1,
+          onUpdate: (self) => {
+            const progress = self.progress * 100;
+            gsap.set(".cs-progress-bar", { width: `${progress}%` });
+          }
         },
       });
 
@@ -288,15 +293,37 @@ export function CinematicStorySection({
               </div>
             </div>
 
-            {/* ── Scroll hint (Only on first panel or global) ────────── */}
-            {i === 0 && (
-              <div className="absolute bottom-8 right-8 z-50 flex items-center gap-3">
-                <span className="uppercase tracking-widest text-xs text-white/40">Scroll Sequence</span>
-                <div className="cs-scroll-wheel">
-                  <div className="cs-scroll-dot" />
+            {/* ── Prominent Scroll Indicators ─────────────────────────── */}
+            <div className="absolute bottom-6 md:bottom-10 left-0 right-0 z-50 flex flex-col items-center gap-4 md:gap-6 px-6 pointer-events-none">
+              <div className="bg-black/40 backdrop-blur-md border border-white/20 px-5 md:px-8 py-2.5 md:py-4 rounded-full flex items-center gap-4 md:gap-6 shadow-2xl">
+                <div className="flex flex-col items-center">
+                  <span className="font-sans text-[9px] md:text-[11px] tracking-[0.4em] md:tracking-[0.6em] uppercase text-white font-black opacity-90 whitespace-nowrap">
+                    Scroll the Journey
+                  </span>
+                  <div className="w-full h-[1.5px] mt-0.5" style={{ backgroundColor: ch.accent, opacity: 0.5 }} />
                 </div>
+                <div className="w-px h-6 md:h-8 bg-white/20" />
+                <motion.div 
+                  animate={{ y: [0, 8, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  style={{ color: ch.accent }}
+                  className="scale-75 md:scale-100"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
+                  </svg>
+                </motion.div>
               </div>
-            )}
+              
+              {/* Progress Container */}
+              <div className="w-full max-w-[280px] md:max-w-[400px] h-[3px] md:h-[4px] bg-white/10 rounded-full overflow-hidden backdrop-blur-sm">
+                <div className="cs-progress-bar h-full w-0 transition-all duration-100 ease-out shadow-[0_0_15px_rgba(255,255,255,0.4)]" style={{ backgroundColor: ch.accent }} />
+              </div>
+              
+              <div className="text-[8px] md:text-[10px] tracking-[0.3em] md:tracking-[0.5em] uppercase text-white/50 font-bold">
+                Sequence Progress
+              </div>
+            </div>
           </div>
         );
       })}

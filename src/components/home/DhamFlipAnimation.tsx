@@ -12,6 +12,7 @@ import React, { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 
 if (typeof window !== "undefined") {
@@ -27,39 +28,50 @@ export function DhamFlipAnimation() {
     () => {
       if (!sectionRef.current || !containerRef.current) return;
 
-      // Initial soft fade-in for the very first words so they don't pop abruptly
-      gsap.from(".phase-1-word", {
-        autoAlpha: 0,
-        y: 30,
-        duration: 1.5,
-        stagger: 0.1,
-        ease: "power3.out"
-      });
-
       // ── MASTER TIMELINE ──────────────────────────────────────────
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=5000", // Increased scroll distance for 3 distinct phases
+          end: "+=5000",
           pin: true,
-          scrub: 1.2, // Buttery smooth dampening
+          scrub: 1.2,
           refreshPriority: 2,
+          onUpdate: (self) => {
+            // Update progress bar
+            const progress = self.progress * 100;
+            gsap.set(".dham-progress-bar", { width: `${progress}%` });
+          }
         }
       });
 
       // --- PARALLAX BACKGROUND ---
       tl.to(bgRef.current, {
         scale: 1.15,
-        duration: 6, // Runs constantly across all phases
+        duration: 6,
         ease: "none"
       }, 0);
 
-      // --- PHASE 1: SCATTER "Jai Maa Unique Dham" ---
+      // --- PHASE 1: REVEAL & SCATTER "Jai Maa Unique Dham" ---
       const p1Words = containerRef.current.querySelectorAll(".phase-1-word");
+      
+      // Reveal them first if we are at the top
+      tl.fromTo(p1Words, {
+        autoAlpha: 0,
+        y: 30,
+        filter: "blur(0px)"
+      }, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.5,
+        stagger: 0.1,
+        ease: "power3.out"
+      }, 0);
+
+      // Then scatter them
       p1Words.forEach((word, index) => {
-        const xDir = [-45, -15, 15, 45][index]; // Spread left to right
-        const yDir = [-30, 40, -40, 30][index]; // Spread up and down
+        const xDir = [-45, -15, 15, 45][index]; 
+        const yDir = [-30, 40, -40, 30][index]; 
 
         tl.to(word, {
           x: `${xDir}vw`,
@@ -70,8 +82,9 @@ export function DhamFlipAnimation() {
           filter: "blur(12px)",
           autoAlpha: 0,
           duration: 1.5,
-          ease: "power2.inOut"
-        }, 0);
+          ease: "power2.inOut",
+          immediateRender: false
+        }, 0.5); // Starts after reveal
       });
 
       // --- PHASE 2: REVEAL & DISSIPATE "formerly Nav Kanya Devi Mandir" ---
@@ -107,8 +120,7 @@ export function DhamFlipAnimation() {
         y: 50,
         z: -150
       }, {
-        // Uses an array to match the cascading opacities from your reference image
-        autoAlpha: (i) => [1, 1, 0.7, 0.4][i],
+        autoAlpha: 1,
         rotationX: 0,
         y: 0,
         z: 0,
@@ -117,6 +129,8 @@ export function DhamFlipAnimation() {
         ease: "back.out(1.2)"
       }, 3.2);
 
+      // Ensure scroll positions are perfectly synced on mount/navigation
+      ScrollTrigger.refresh();
     },
     { scope: sectionRef }
   );
@@ -146,11 +160,13 @@ export function DhamFlipAnimation() {
         <div ref={containerRef} className="relative z-10 w-full h-full flex flex-col items-center justify-center">
 
           {/* ── PHASE 1: "Jai Maa Unique Dham" ───────────────────── */}
-          <div className="absolute inset-0 flex flex-wrap items-center justify-center gap-4 md:gap-6 pointer-events-none px-4">
-            <span className="phase-1-word font-yatra text-5xl md:text-7xl lg:text-8xl text-[#1A0F0A] drop-shadow-sm">Jai</span>
-            <span className="phase-1-word font-yatra text-5xl md:text-7xl lg:text-8xl text-[#1A0F0A] drop-shadow-sm">Maa</span>
-            <span className="phase-1-word font-yatra text-5xl md:text-7xl lg:text-8xl text-[#e95d24] drop-shadow-sm">Unique</span>
-            <span className="phase-1-word font-yatra text-5xl md:text-7xl lg:text-8xl text-[#1A0F0A] drop-shadow-sm">Dham</span>
+          <div className="absolute inset-0 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-6 pointer-events-none px-4">
+            <div className="flex items-center justify-center gap-4 md:gap-6 flex-wrap max-w-[280px] md:max-w-none">
+              <span className="phase-1-word opacity-0 font-yatra text-5xl md:text-7xl lg:text-8xl text-[#1A0F0A] drop-shadow-sm">Jai</span>
+              <span className="phase-1-word opacity-0 font-yatra text-5xl md:text-7xl lg:text-8xl text-[#1A0F0A] drop-shadow-sm">Maa</span>
+              <span className="phase-1-word opacity-0 font-yatra text-5xl md:text-7xl lg:text-8xl text-[#e95d24] drop-shadow-sm">Unique</span>
+            </div>
+            <span className="phase-1-word opacity-0 font-yatra text-5xl md:text-7xl lg:text-8xl text-[#1A0F0A] drop-shadow-sm">Dham</span>
           </div>
 
           {/* ── PHASE 2: "formerly Nav Kanya Devi Mandir" ────────── */}
@@ -185,6 +201,32 @@ export function DhamFlipAnimation() {
             </h2>
           </div>
 
+          {/* ── Prominent Scroll Indicators ─────────────────────────── */}
+          <div className="absolute bottom-6 md:bottom-12 left-0 right-0 z-30 flex flex-col items-center gap-4 md:gap-6 px-6 pointer-events-none">
+            <div className="bg-white/40 backdrop-blur-md border border-white/60 px-4 md:px-6 py-2 md:py-3 rounded-full flex items-center gap-3 md:gap-4 shadow-xl">
+              <div className="flex flex-col items-center">
+                <span className="font-body text-[9px] md:text-[11px] tracking-[0.3em] md:tracking-[0.5em] uppercase text-sacred-brown font-black whitespace-nowrap">
+                  Keep Scrolling
+                </span>
+                <div className="w-full h-[1.5px] bg-saffron/40 mt-0.5" />
+              </div>
+              <div className="w-px h-5 md:h-6 bg-sacred-brown/20" />
+              <motion.div 
+                animate={{ y: [0, 6, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                className="text-saffron scale-75 md:scale-100"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
+                </svg>
+              </motion.div>
+            </div>
+            
+            {/* Progress Container */}
+            <div className="w-full max-w-[300px] h-[3px] bg-sacred-brown/10 rounded-full overflow-hidden backdrop-blur-sm">
+              <div className="dham-progress-bar h-full bg-saffron w-0 transition-all duration-100 ease-out shadow-[0_0_12px_rgba(233,93,36,0.6)]" />
+            </div>
+          </div>
         </div>
       </section>
     </>
