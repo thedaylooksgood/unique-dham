@@ -68,7 +68,7 @@ export default function PujaBookingClient({ initialPujas }: { initialPujas: Puja
   const [isExpanded, setIsExpanded] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [formData, setFormData] = useState({ name: "", phone: "", pujaId: pujasData[0].id, message: "" });
+  const [formData, setFormData] = useState({ name: "", phone: "", pujaId: pujasData[0]?.id || "", message: "" });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const lenis = useLenis();
@@ -77,10 +77,10 @@ export default function PujaBookingClient({ initialPujas }: { initialPujas: Puja
 
   // Auto-select current puja when modal opens
   React.useEffect(() => {
-    if (isEnquiryModalOpen) {
+    if (isEnquiryModalOpen && activePuja) {
       setFormData(prev => ({ ...prev, pujaId: activePuja.id }));
     }
-  }, [isEnquiryModalOpen, activePuja.id]);
+  }, [isEnquiryModalOpen, activePuja?.id]);
 
   // Lock scroll when modal is open
   React.useEffect(() => {
@@ -128,6 +128,18 @@ export default function PujaBookingClient({ initialPujas }: { initialPujas: Puja
       scrollContainerRef.current.scrollBy({ left: 300, behavior: "smooth" });
     }
   };
+
+  if (!pujasData || pujasData.length === 0) {
+    return (
+      <div className="w-full min-h-[60vh] flex flex-col items-center justify-center bg-ivory text-sacred-brown p-8">
+        <Sparkles className="w-12 h-12 text-saffron/20 mb-4" />
+        <h2 className="font-display text-2xl mb-2">No Rituals Available</h2>
+        <p className="text-warm-umber/60 max-w-md text-center">
+          We are currently updating our sacred offerings. Please check back soon or contact us for inquiries.
+        </p>
+      </div>
+    );
+  }
 
   const handleNext = () => setActiveIndex((prev) => (prev + 1) % pujasData.length);
   const handlePrev = () => setActiveIndex((prev) => (prev - 1 + pujasData.length) % pujasData.length);
