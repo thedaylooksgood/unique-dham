@@ -21,10 +21,24 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { pujasData } from "@/lib/data/pujas";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { useLenis } from "lenis/react";
 import { handleEnquiry } from "@/lib/contact";
+import * as LucideIcons from "lucide-react";
+
+interface Puja {
+  id: string;
+  name: string;
+  deity: string;
+  short_description: string;
+  full_description: string;
+  benefits: string[];
+  duration: string;
+  icon: string;
+  image: string;
+  video_url: string;
+  is_bookable?: boolean;
+}
 
 const layoutConfig = {
   container: {
@@ -46,14 +60,15 @@ const layoutConfig = {
   }
 };
 
-export default function PujaBookingClient() {
+export default function PujaBookingClient({ initialPujas }: { initialPujas: Puja[] }) {
+  const [pujasData] = useState<Puja[]>(initialPujas);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [formData, setFormData] = useState({ name: "", phone: "", pujaId: pujasData[0].id, message: "" });
+  const [formData, setFormData] = useState({ name: "", phone: "", pujaId: pujasData[0]?.id || "", message: "" });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const lenis = useLenis();
@@ -62,10 +77,10 @@ export default function PujaBookingClient() {
 
   // Auto-select current puja when modal opens
   React.useEffect(() => {
-    if (isEnquiryModalOpen) {
+    if (isEnquiryModalOpen && activePuja) {
       setFormData(prev => ({ ...prev, pujaId: activePuja.id }));
     }
-  }, [isEnquiryModalOpen, activePuja.id]);
+  }, [isEnquiryModalOpen, activePuja?.id]);
 
   // Lock scroll when modal is open
   React.useEffect(() => {
@@ -113,6 +128,18 @@ export default function PujaBookingClient() {
       scrollContainerRef.current.scrollBy({ left: 300, behavior: "smooth" });
     }
   };
+
+  if (!pujasData || pujasData.length === 0) {
+    return (
+      <div className="w-full min-h-[60vh] flex flex-col items-center justify-center bg-ivory text-sacred-brown p-8">
+        <Sparkles className="w-12 h-12 text-saffron/20 mb-4" />
+        <h2 className="font-display text-2xl mb-2">No Rituals Available</h2>
+        <p className="text-warm-umber/60 max-w-md text-center">
+          We are currently updating our sacred offerings. Please check back soon or contact us for inquiries.
+        </p>
+      </div>
+    );
+  }
 
   const handleNext = () => setActiveIndex((prev) => (prev + 1) % pujasData.length);
   const handlePrev = () => setActiveIndex((prev) => (prev - 1 + pujasData.length) % pujasData.length);
@@ -184,7 +211,7 @@ export default function PujaBookingClient() {
 
               {/* Description */}
               <p className="font-body text-sm md:text-base text-warm-umber leading-relaxed font-semibold tracking-wide max-w-lg">
-                {activePuja.shortDescription}
+                {activePuja.short_description}
               </p>
 
               {/* Benefits Highlights */}
@@ -216,7 +243,7 @@ export default function PujaBookingClient() {
 
               {/* Primary Actions */}
               <div className="flex flex-nowrap items-center gap-4 lg:gap-6">
-                {activePuja.isBookable !== false && (
+                {activePuja.is_bookable !== false && (
                   <ShimmerButton
                     onClick={() => setIsEnquiryModalOpen(true)}
                     className="px-5 sm:px-8 py-3 md:py-3.5 shadow-2xl hover:scale-105 transition-transform"
@@ -368,7 +395,7 @@ export default function PujaBookingClient() {
             >
               {pujasData.map((puja, i) => {
                 const isActive = activeIndex === i;
-                const Icon = puja.icon;
+                const Icon = (LucideIcons as any)[puja.icon] || LucideIcons.Sparkles;
 
                 return (
                   <button
@@ -509,7 +536,7 @@ export default function PujaBookingClient() {
                                     className="absolute left-0 right-0 top-full mt-2 bg-white/95 backdrop-blur-xl border border-saffron/20 rounded-2xl shadow-2xl z-[130] overflow-hidden py-2"
                                   >
                                     <div className="max-h-60 overflow-y-auto custom-scrollbar">
-                                      {pujasData.filter(p => p.isBookable !== false).map(p => (
+                                      {pujasData.filter(p => p.is_bookable !== false).map(p => (
                                         <button
                                           key={p.id}
                                           type="button"
@@ -661,7 +688,7 @@ export default function PujaBookingClient() {
               </button>
               <iframe
                 className="w-full h-full"
-                src={activePuja.videoUrl}
+                src={activePuja.video_url}
                 title={`${activePuja.name} Ritual Video`}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen

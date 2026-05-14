@@ -91,10 +91,12 @@ export function SacredStoreSection({ products, backgroundImage }: SacredStoreSec
     };
 
     const handleNext = useCallback(() => {
+        if (products.length === 0) return;
         setCurrentIndex((prev) => (prev + 1) % products.length);
     }, [products.length]);
 
     const handlePrev = useCallback(() => {
+        if (products.length === 0) return;
         setCurrentIndex((prev) => (prev - 1 + products.length) % products.length);
     }, [products.length]);
 
@@ -116,6 +118,18 @@ export function SacredStoreSection({ products, backgroundImage }: SacredStoreSec
             handleNext();
         }
     };
+
+    if (!products || products.length === 0) {
+        return (
+            <div className="w-full min-h-[60vh] flex flex-col items-center justify-center bg-ivory text-sacred-brown p-8">
+                <Sparkles className="w-12 h-12 text-saffron/20 mb-4" />
+                <h2 className="font-display text-2xl mb-2">No Items Available</h2>
+                <p className="text-warm-umber/60 max-w-md text-center">
+                    We are currently preparing energized offerings. Please check back soon or contact us for inquiries.
+                </p>
+            </div>
+        );
+    }
 
     return (
         <>

@@ -12,6 +12,7 @@ import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google';
 import { SEOExhaustiveKeywords } from "@/components/seo/SEOExhaustiveKeywords";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Announcement } from "@/components/layout/Announcement";
 
 export const metadata = constructMetadata();
 
@@ -254,6 +255,7 @@ export default function RootLayout({
           <SmoothScroll>
             {children}
           </SmoothScroll>
+          <Announcement />
         </div>
         <Analytics />
         <SpeedInsights />
