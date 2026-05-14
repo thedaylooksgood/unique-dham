@@ -36,6 +36,19 @@ interface TempleEvent {
 
 const events: TempleEvent[] = [
   {
+    id: 7,
+    day: "16",
+    dayName: "Saturday",
+    month: "MAY",
+    monthIndex: 4,
+    year: 2026,
+    title: "Falharini Amavasya Mahakali Puja",
+    time: "6:00 PM onwards",
+    location: "Maa Unique Dham, Darjeeling",
+    description: "Experience the divine grace of Maa Kali on this sacred Falharini Amavasya. Join us for a special Mahapuja, Vedic chanting, and spiritual energy invocation.",
+    tag: "Mahapuja",
+  },
+  {
     id: 1,
     day: "08",
     dayName: "Monday",
