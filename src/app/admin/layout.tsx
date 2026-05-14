@@ -11,7 +11,8 @@ import {
     LogOut,
     Menu,
     ChevronRight,
-    LayoutDashboard
+    LayoutDashboard,
+    X
 } from 'lucide-react'
 
 // ============================================
@@ -28,7 +29,7 @@ interface AdminUser {
 }
 
 interface ThemeContextType {
-    theme: 'light'
+    theme: 'light' | 'dark'
     currentUser: AdminUser | null
 }
 
@@ -389,4 +390,3 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     )
 }
 
-import { X } from 'lucide-react'
